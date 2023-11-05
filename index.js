@@ -17,7 +17,13 @@ const {
   makeWASocket
   , makeCacheableSignalKeyStore
 } = require("@whiskeysockets/baileys");
-
+const express = require('express')
+const app = express()
+require('dotenv').config()
+const port = process.env.PORT || 5000;
+app.listen(port,()=>{
+  console.log(`server started on port : ${port}`)
+})
 const func = async()=>{
 
 const { state, saveCreds } = await useMultiFileAuthState('auth_info_baileys')
