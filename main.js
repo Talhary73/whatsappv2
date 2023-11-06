@@ -473,7 +473,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
             client.sendMessage(m.sender , {text:welcomeMessage})
         }
         else {
-          console.log('iam rinngsdjkfsdkskldf j',budy)
+          
           gpt(client, m, budy)
         }
 
