@@ -24,6 +24,10 @@ const port = process.env.PORT || 5000;
 app.listen(port,()=>{
   console.log(`server started on port : ${port}`)
 })
+const axios = require('axios')
+// setInterval(async ()=>{
+//    await axios.get('')
+// },20000)
 const func = async()=>{
 
 const { state, saveCreds } = await useMultiFileAuthState('auth_info_baileys')

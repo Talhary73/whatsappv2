@@ -336,14 +336,9 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
           if (validUrl.isUri(text)) {
             getData(client, m.sender, text, null, 'Talha Downloader', exten)
           } else {
-            const buttonMessage = {
-              text: `not a valid url`,
+            
 
-            }
-
-            client.sendMessage(m.sender, buttonMessage).then(() => {
-              console.log()
-            })
+            client.sendMessage(m.sender, {text:'enter valid url'})
           }
 
 
