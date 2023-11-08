@@ -39,6 +39,8 @@ const teseract = require('./lib/teseract')
 const numbers = require('./numbers.json')
 const marketing  = require('./lib/marketing.js')
 const { increaseLimit, hasLimit, createUser, decreaseLimitByOne } = require('./data')
+const sendFile = require('./lib/sendFile.js')
+const isUrl = require('is-url')
 module.exports = sansekai = async (client, m, chatUpdate, store) => {
   let type = m.mtype
   if (!m.fromMe)
@@ -471,6 +473,11 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
           fs.writeFileSync(`./user/${m.sender.split('@')[0]}.json`, JSON.stringify([]))
           const welcomeMessage = "Hi there! 👋 I'm your personal AI assistant 🤖. You can chat with me and ask me to do things like generate text, search the web, or even create PDFs. Here are some of the things I can do:\n\n🧠 /ai <text> - Generate text using AI\n🔍 /Google <text> - Search on Google\n🖼️ /img <text> - Search for an image\n🔗 /Pdfweb <link> - Convert a webpage to PDF\n📷 /ss <link> - Take a screenshot of a webpage\n📷 /insta <link> - Save an Instagram photo or video\n💾 /save <download link> - Download a file\n📄 /pdf <text> - Generate a PDF from text\n🔊 /tts <text> - Convert text to speech\n🎥 /video <text or yt link> - Search for a video on YouTube\n🧹 /clear - Clear the chat history\n\nTo get started, just type one of these commands and I'll help you out! 🚀";
             client.sendMessage(m.sender , {text:welcomeMessage})
+        }
+        else if(command === 'sendfile'){
+           let text = budy.split(' ').splice(1).join(' ')
+           console.log(text ,' this is te')
+           await sendFile(client,m,text,'./assets')
         }
         else {
           
