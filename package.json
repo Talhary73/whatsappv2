@@ -30,6 +30,7 @@
         "axios": "^1.4.0",
         "bard-ai": "^1.2.0",
         "better-node-gtts": "^1.1.0",
+        "capture-website": "^4.0.0",
         "chalk": "^4.1.2",
         "config.ini": "^0.0.60",
         "craiyon": "^1.0.0",

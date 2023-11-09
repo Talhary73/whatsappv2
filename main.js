@@ -19,7 +19,7 @@ let key = true
 let getData = require('./lib/downloadv2.js')
 const ytd = require('./lib/ytTest.js')
 let ssv2 = require('./lib/ssv2.js')
-const instadownloader = require('./lib/insta.js')
+// const instadownloader = require('./lib/insta.js')
 
 const sendfromlink = require('./lib/sendfromlink.js')
 const path = require('path')
@@ -158,7 +158,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
         } else if (command == 'insta') {
           let lang = budy.split(' ')[1]
           client.sendMessage(m.sender, { text: 'Package is not working. We are working on it.' })
-          // instadownloader(lang, client, m.sender, `./users/${m.sender.split('@')[0]}video.mp4`)
+          // instadownloaer(lang, client, m.sender, `./users/${m.sender.split('@')[0]}video.mp4`)
         } else if (command == 'ytd') {
           console.log('runnig ytd sensekai')
           let lang = budy.split(' ')[1]
