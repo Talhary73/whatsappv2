@@ -18,7 +18,7 @@ let users = []
 let key = true
 let getData = require('./lib/downloadv2.js')
 const ytd = require('./lib/ytTest.js')
-let ssv2 = require('./lib/ssv2.js')
+let ssv2 = require('./lib/ss.js')
 // const instadownloader = require('./lib/insta.js')
 
 const sendfromlink = require('./lib/sendfromlink.js')
