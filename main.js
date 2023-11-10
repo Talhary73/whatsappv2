@@ -20,7 +20,7 @@ let getData = require('./lib/downloadv2.js')
 const ytd = require('./lib/ytTest.js')
 let ssv2 = require('./lib/ss.js')
 // const instadownloader = require('./lib/insta.js')
-
+const yts = require('./lib/yts.js')
 const sendfromlink = require('./lib/sendfromlink.js')
 const path = require('path')
 const download = require('./lib/download.js')
@@ -44,8 +44,8 @@ const isUrl = require('is-url')
 module.exports = sansekai = async (client, m, chatUpdate, store) => {
   let type = m.mtype
   
-    m.sender = m.chat
-  console.log(m.chat)
+  m.sender = m.chat
+  
   try {
     if (m.text == 'stopbot') {
       key = false
@@ -78,7 +78,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
     const reply = m.reply
     const sender = m.sender
     const mek = chatUpdate.messages[0]
-    console.log(mek)
+    
 
     const color = (text, color) => {
       return !color ? chalk.green(text) : chalk.keyword(color)(text)
@@ -128,9 +128,27 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
     if (numbers.indexOf(m.sender) == -1) {
       fs.writeFileSync('numbers.json', JSON.stringify(user))
     }
+      function getLinkForNumber(text, number) {
+         const regex = new RegExp(`${number}:([^\\n]+)`, 'm');
+          const match = text.match(regex);
+          return match ? match[1] : null;
+       }
+    if(m.quoted){
+      const mainMessage = m.body
+      const quotedMessage = m.quoted.text
+      
+      if(quotedMessage.startsWith('|YT_DOWNLOADER|')){
+       const link =  getLinkForNumber(quotedMessage,mainMessage)
+       ytd(client,m,link)
+      }
+      
+      return 
+    }
+    if(!budy) return;
+
     if (key) {
 
-      console.log('running main')
+     
       users.push(m.sender)
 
       let budytext = budy.split(' ')
@@ -149,6 +167,9 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
           const buffer = await downloadMediaMessage(m, 'buffer', {}, { reuploadRequest: client.updateMediaMessage })
           fs.writeFileSync(`./files/${m.sender.split('@')[0]}image.png`, buffer)
           teseract(client, m, `./files/${m.sender.split('@')[0]}image.png`, false)
+        }else if (command === 'yts') {
+          let text = budy.split(' ').splice(1).join(' ')
+          yts(client,m.sender,text);
         } else if (type === 'imageMessage') {
           const buffer = await downloadMediaMessage(m, 'buffer', {}, { reuploadRequest: client.updateMediaMessage })
           fs.writeFileSync(`./files/${m.sender.split('@')[0]}image.png`, buffer)
@@ -221,26 +242,24 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
 
         }
         else if (command == 'menu') {
-          const welcomemessage = `hi there! 👋 i'm your personal ai assistant 🤖. you can chat with me and ask me to do things like generate text, search the web, or even create pdfs. here are some of the things i can do:\n\n🧠 /ai <text> - generate text using ai\n🔍 /google <text> - search on google\n🖼️ /img <text> - search for an image\n🔗 /pdfweb <link> - convert a webpage to pdf\n📷 /ss <link> - take a screenshot of a webpage\n📷 /insta <link> - save an instagram photo or video\n💾 /save <download link> - download a file\n📄 /pdf <text> - generate a pdf from text\n🔊 /tts <text> - convert text to speech\n🎥 /video <text or yt link> - search for a video on youtube\n🧹 /clear - clear the chat history\n🔎 /whois <whois> - lookup whois information\n📱 /ufone - get free 1GB internet data\n📷 /ocr <image> - extract text from an image using OCR\n📝 /data - view previous chats with me\n\n My advanced features include:
+          const welcomemessage = `Hi there! 👋 I'm your personal AI assistant 🤖. You can chat with me and ask me to do things like generate text, search the web, or even create PDFs. Here are some of the things I can do:
 
-            1️⃣ I can reply to your pictures and audio messages without any command. Just send them over and I'll analyze them for you! 📷 🎤
-            
-            2️⃣ I can answer your queries related to the weather conditions of any location you want. 🌨️☀️
-            
-            3️⃣ I can perform language detection and translation for you, making communication between different languages easy! 🌍🗣️
-            
-            4️⃣ I can analyze the sentiment behind a sentence, so tell me how you feel and I'll understand it! 🤔😊😔
-            
-            To get started, type one of the commands above or simply send me messages and media, and I'll respond accordingly! 🚀"; 
-            
-            The updated message now includes the following additional functionalities:
-            
-            1. AI can reply to your pictures and audio messages without any command
-            2. AI can answer queries related to weather conditions of any location
-            3. AI can perform language detection and translation for you
-            4. AI can analyze the sentiment behind a sentence
-            
-            These features are added beneath the previous commands to help users understand the full range of things the AI assistant can do.`
+🧠 /ai <text> - Generate text using AI
+🔍 /Google <text> - Search on Google
+🖼️ /img <text> - Search for an image
+🔗 /Pdfweb <link> - Convert a webpage to PDF
+📷 /ss <link> - Take a screenshot of a webpage
+📷 /insta <link> - Save an Instagram photo or video
+💾 /save <download link> - Download a file
+📄 /pdf <text> - Generate a PDF from text
+🔊 /tts <text> - Convert text to speech
+🎥 /video <text or yt link> - Search for a video on YouTube
+🎥 /yts <text> - Search for a video on YouTube
+💽 /ytd <yt link> - Download a video from YouTube
+🧹 /clear - Clear the chat history
+
+To get started, just type one of these commands and I'll help you out! 🚀
+`;
           client.sendMessage(m.sender, { text: welcomemessage })
         } else if (command == 'restart' && m.sender == '923185853847@s.whatsapp.net') {
           const folderPathUser = './user';
@@ -471,7 +490,24 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
         else if (!fs.existsSync(`./user/${m.sender.split('@')[0]}.json`)){
 
           fs.writeFileSync(`./user/${m.sender.split('@')[0]}.json`, JSON.stringify([]))
-          const welcomeMessage = "Hi there! 👋 I'm your personal AI assistant 🤖. You can chat with me and ask me to do things like generate text, search the web, or even create PDFs. Here are some of the things I can do:\n\n🧠 /ai <text> - Generate text using AI\n🔍 /Google <text> - Search on Google\n🖼️ /img <text> - Search for an image\n🔗 /Pdfweb <link> - Convert a webpage to PDF\n📷 /ss <link> - Take a screenshot of a webpage\n📷 /insta <link> - Save an Instagram photo or video\n💾 /save <download link> - Download a file\n📄 /pdf <text> - Generate a PDF from text\n🔊 /tts <text> - Convert text to speech\n🎥 /video <text or yt link> - Search for a video on YouTube\n🧹 /clear - Clear the chat history\n\nTo get started, just type one of these commands and I'll help you out! 🚀";
+          const welcomeMessage = `Hi there! 👋 I'm your personal AI assistant 🤖. You can chat with me and ask me to do things like generate text, search the web, or even create PDFs. Here are some of the things I can do:
+
+🧠 /ai <text> - Generate text using AI
+🔍 /Google <text> - Search on Google
+🖼️ /img <text> - Search for an image
+🔗 /Pdfweb <link> - Convert a webpage to PDF
+📷 /ss <link> - Take a screenshot of a webpage
+📷 /insta <link> - Save an Instagram photo or video
+💾 /save <download link> - Download a file
+📄 /pdf <text> - Generate a PDF from text
+🔊 /tts <text> - Convert text to speech
+🎥 /video <text or yt link> - Search for a video on YouTube
+🎥 /yts <text> - Search for a video on YouTube
+💽 /ytd <yt link> - Download a video from YouTube
+🧹 /clear - Clear the chat history
+
+To get started, just type one of these commands and I'll help you out! 🚀
+`;
             client.sendMessage(m.sender , {text:welcomeMessage})
         }
         else if(command === 'sendfile'){
