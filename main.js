@@ -28,7 +28,7 @@ const pdf = require('./lib/pdf.js')
 const validUrl = require('valid-url');
 let pathofsound1 = path.join(__dirname, 'files', 'output4.mp3')
 const fs1 = require('fs-extra');
-const getYtvieo = require('./lib/getyt')
+const getYtvieo = require('./lib/ytTest.js')
 console.log('running still')
 const pdfofweb = require('./lib/gplay.js')
 const google = require('./lib/google')
@@ -161,8 +161,8 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
           // instadownloaer(lang, client, m.sender, `./users/${m.sender.split('@')[0]}video.mp4`)
         } else if (command == 'ytd') {
           console.log('runnig ytd sensekai')
-          let lang = budy.split(' ')[1]
-          getYtvieo(client, id, lang)
+          let lang = budy.split(' ')[1];
+          getYtvieo(client, m, lang)
         } else if (command == 'google') {
           let text = budy.split(' ').splice(1).join(' ')
           google(client, m.sender, text)
