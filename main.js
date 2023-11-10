@@ -144,7 +144,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
       
       return 
     }
-    if(!budy) return;
+  
 
     if (key) {
 
@@ -161,6 +161,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
           const buffer = await downloadMediaMessage(m, 'buffer', {}, { reuploadRequest: client.updateMediaMessage })
           fs.writeFileSync('./my-download.ogg', buffer)
           voice(client, m.sender, './my-download.ogg', (res) => {
+            console.log(res)
             gptaudio(client, m, res)
           })
         } else if (type === 'imageMessage' && command == 'ocr') {
