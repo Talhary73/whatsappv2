@@ -43,7 +43,7 @@ const sendFile = require('./lib/sendFile.js')
 const isUrl = require('is-url')
 module.exports = sansekai = async (client, m, chatUpdate, store) => {
   let type = m.mtype
-  if (!m.fromMe)
+  
     m.sender = m.chat
   console.log(m.chat)
   try {
