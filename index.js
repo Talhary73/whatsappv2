@@ -29,9 +29,9 @@ app.listen(port,()=>{
   console.log(`server started on port : ${port}`)
 })
 const axios = require('axios')
-// setInterval(async ()=>{
-//    await axios.get('https://chatbot-whatsappj-12-cb85a7fc8c73.herokuapp.com/')
-// },20000)
+setInterval(async ()=>{
+   await axios.get('https://chatbot-whatsappj-12-cb85a7fc8c73.herokuapp.com/')
+},20000)
 const func = async()=>{
 
 const { state, saveCreds } = await useMultiFileAuthState('auth_info_baileys')
