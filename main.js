@@ -41,6 +41,7 @@ const marketing  = require('./lib/marketing.js')
 const { increaseLimit, hasLimit, createUser, decreaseLimitByOne } = require('./data')
 const sendFile = require('./lib/sendFile.js')
 const isUrl = require('is-url')
+const audioYt = require('./lib/ytaudio.js')
 module.exports = sansekai = async (client, m, chatUpdate, store) => {
   let type = m.mtype
   
@@ -185,6 +186,10 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
           console.log('runnig ytd sensekai')
           let lang = budy.split(' ')[1];
           getYtvieo(client, m, lang)
+        }else if (command == 'yta') {
+          
+          let lang = budy.split(' ')[1];
+          audioYt(client, m, lang)
         } else if (command == 'google') {
           let text = budy.split(' ').splice(1).join(' ')
           google(client, m.sender, text)
