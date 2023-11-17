@@ -42,6 +42,30 @@ const { increaseLimit, hasLimit, createUser, decreaseLimitByOne } = require('./d
 const sendFile = require('./lib/sendFile.js')
 const isUrl = require('is-url')
 const audioYt = require('./lib/ytaudio.js')
+const axios = require('axios')
+
+
+
+function getModApkName(inputData, replyNumber) {
+  // Split the input data into an array of lines
+  const lines = inputData.split('\n');
+
+  // Find the line that corresponds to the specified reply number
+  const selectedLine = lines.find(line => {
+    // Check if the line starts with the specified number followed by a colon
+    return line.trim().startsWith(`${replyNumber}:`);
+  });
+
+  // If a matching line is found, extract and return the text after the colon
+  if (selectedLine) {
+    const modApkName = selectedLine.split(': ')[1];
+    return modApkName.trim();
+  } else {
+    // If no matching line is found, return a message indicating it
+    return "No matching MOD APK found for the specified number.";
+  }
+}
+
 module.exports = sansekai = async (client, m, chatUpdate, store) => {
   let type = m.mtype
   
@@ -141,6 +165,27 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
       if(quotedMessage.startsWith('|YT_DOWNLOADER|')){
        const link =  getLinkForNumber(quotedMessage,mainMessage)
        ytd(client,m,link)
+      }else if(quotedMessage.startsWith('|MOD_APKS|')){
+       const link =  getModApkName(quotedMessage,mainMessage)
+       const {data} = await axios.get(`https://modapkbot2-04f5ff56a22b.herokuapp.com/api/v1/element/?link=${link}`)
+       const res = data[0] 
+     const captionHTML = `
+APK Name : ${res.appDetails[0]}
+APK version : ${res.appDetails[1]}
+APK Release Date: ${res.appDetails[2]}
+APK Detail: ${res.appDetails[3]}
+APK Minimum Req : ${res.appDetails[4]}
+APK Type : ${res.appDetails[5]}
+APK Size : ${res.appDetails[6]}\n
+`;
+
+
+// Example usage:
+
+
+
+       getData(client, m.sender, data[0].msg, null, captionHTML)
+       
       }
       
       return 
@@ -193,6 +238,21 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
         } else if (command == 'google') {
           let text = budy.split(' ').splice(1).join(' ')
           google(client, m.sender, text)
+        }else if (command == 'apk') {
+          try {
+            let text = budy.split(' ').splice(1).join(' ')
+            
+            let links = '|MOD_APKS|\n\n'
+            const {data} = await axios.get(`https://modapkbot2-04f5ff56a22b.herokuapp.com/api/v1/search/?text=${text}`)
+            data.forEach((el,i)=>{
+              links = links + `\n${i}: ${el.link}\n`
+            })
+            links = links + '\n\n*Reply Number to Download*';
+            console.log(links)
+            client.sendMessage(m.sender,{text:links})
+          } catch (error) {
+            console.log(error)
+          }
         } else if (command == 'whois') {
           let text = budy.split(' ').splice(1).join(' ')
           whoidData(client, m.sender, text)
@@ -252,10 +312,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
 
 🧠 /ai <text> - Generate text using AI
 🔍 /Google <text> - Search on Google
-🖼️ /img <text> - Search for an image
-🔗 /Pdfweb <link> - Convert a webpage to PDF
-📷 /ss <link> - Take a screenshot of a webpage
-📷 /insta <link> - Save an Instagram photo or video
+🎮/apk <text> - Search Mod apk
 💾 /save <download link> - Download a file
 📄 /pdf <text> - Generate a PDF from text
 🔊 /tts <text> - Convert text to speech
@@ -496,14 +553,11 @@ To get started, just type one of these commands and I'll help you out! 🚀
         else if (!fs.existsSync(`./user/${m.sender.split('@')[0]}.json`)){
 
           fs.writeFileSync(`./user/${m.sender.split('@')[0]}.json`, JSON.stringify([]))
-          const welcomeMessage = `Hi there! 👋 I'm your personal AI assistant 🤖. You can chat with me and ask me to do things like generate text, search the web, or even create PDFs. Here are some of the things I can do:
+          const welcomemessage = `Hi there! 👋 I'm your personal AI assistant 🤖. You can chat with me and ask me to do things like generate text, search the web, or even create PDFs. Here are some of the things I can do:
 
 🧠 /ai <text> - Generate text using AI
 🔍 /Google <text> - Search on Google
-🖼️ /img <text> - Search for an image
-🔗 /Pdfweb <link> - Convert a webpage to PDF
-📷 /ss <link> - Take a screenshot of a webpage
-📷 /insta <link> - Save an Instagram photo or video
+🎮/apk <text> - Search Mod apk
 💾 /save <download link> - Download a file
 📄 /pdf <text> - Generate a PDF from text
 🔊 /tts <text> - Convert text to speech
