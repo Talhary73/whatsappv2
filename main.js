@@ -46,6 +46,8 @@ const audioYt = require('./lib/ytaudio.js')
 const axios = require('axios')
 const gimage = require('./lib/gimage.js')
 const ytaFromText = require('./lib/ytafromtext.js')
+const ttsv3 = require('./lib/ttsv3.js')
+const gptUrl = require('./lib/gptUrl.js')
 function getRandomItemFromArray(arr) {
   const randomIndex = Math.floor(Math.random() * arr.length);
   return arr[randomIndex];
@@ -69,6 +71,337 @@ function getModApkName(inputData, replyNumber) {
     return "No matching MOD APK found for the specified number.";
   }
 }
+
+const chatGpt = async (client,m,budy)=>{
+  
+          
+        
+
+
+     const apiKeys = [process.env.OPENAI_API_KEY,process.env.API_KEY_1,process.env.API_KEY_3]
+
+  const openai = new OpenAI({apiKey:getRandomItemFromArray(apiKeys)});
+   
+  try {
+    const chat = `I am a personal AI assistant for WhatsApp. I am created by M.Talha. My email is talhariaz5425869@gmail.com. My website is talhariaz.tech. You can contact me at +923320843832. Here are some of the things I can do:\n\n🧠 /ai <text> - generate text using AI\n🔍 /google <text> - search on Google\n🖼️ /img <text> - search for an image\n🔗 /pdfweb <link> - convert a webpage to PDF\n📷 /ss <link> - take a screenshot of a webpage\n📷 /insta <link> - save an Instagram photo or video\n💾 /save <download link> - download a file\n📄 /pdf <text> - generate a PDF from text\n🔊 /tts <text> - convert text to speech\n🎥 /video <text or YT link> - search for a video on YouTube\n🧹 /clear - clear the chat history\n🔎 /whois <whois> - lookup WHOIS information\n📱 /ufone - get free 1GB internet data\n📷 /ocr <image> - extract text from an image using OCR\n📝 /data - view previous chats with me\n\nI can also do voice chat with you.`;
+
+    let data = [];
+
+    if (!fs.existsSync(`./user/${m.sender.split('@')[0]}.json`)) {
+      fs.writeFileSync(`./user/${m.sender.split('@')[0]}.json`, JSON.stringify([]));
+      let user = { role: "user", content: budy };
+      data.push(user);
+      fs.writeFileSync(`./user/${m.sender.split('@')[0]}.json`, JSON.stringify([user]));
+      let data1 = [{ role: "system", content: chat }, ...data];
+      data = data1;
+    } else {
+      let user = fs.readFileSync(`./user/${m.sender.split('@')[0]}.json`);
+      user = JSON.parse(user);
+      user.push({ role: "user", content: budy});
+
+      data = user;
+      let data1 = [{ role: "system", content: chat }, ...data];
+      data = data1;
+
+      fs.writeFileSync(`./user/${m.sender.split('@')[0]}.json`, JSON.stringify(user));
+    }
+
+   
+    
+      const response = await openai.chat.completions.create({
+        model: "gpt-3.5-turbo-0613",
+        messages: data,
+        functions:[
+            {
+       
+            name: "gimage",
+            description: "This will send User picture according to giving text.",
+            parameters: {
+                type: "object",
+                properties: {
+                    address: {
+                        "type": "string",
+                       
+                        "description": "This will return Text for function so it will send picture",
+                    },
+                    number: {
+                        "type": "number",
+                       
+                        "description": "This will return number of how many pictures for normal set it to 3",
+                    },
+                    width: {
+                        "type": "number",
+                       
+                        "description": "This will return minimum width for picture",
+                    }
+                    
+                },
+                required: ["address","number","width"],
+            }
+        
+           }
+           , {
+      
+            name: "getYtAudio",
+            description: "This will take text as input and send the video based on Text. It search on youtube get the first video download it and send it.",
+            parameters: {
+                type: "object",
+                properties: {
+                    text: {
+                        "type": "string",
+                       
+                        "description": "This will return Title of video that best describe the user request",
+                    }
+                    
+                    
+                },
+                required: ["text"],
+            }
+        
+           },{
+      
+            name: "gptUrl",
+            description: "Url and question as input send it to AI chatBot and respond back required result",
+            parameters: {
+                type: "object",
+                properties: {
+                    text: {
+                        "type": "string",
+                       
+                        "description": "This will return question of User that best describe the user request",
+                    }
+                    ,url: {
+                        "type": "string",
+                       
+                        "description": "This will return Direct Url that best describe the user request",
+                    }
+                    
+                    
+                },
+                required: ["text",'url'],
+            }
+        
+           },{
+      
+            name: "sendFile",
+            description: "This will take Direct Link as input download it and send it to user. It must be smaller than 200 MB",
+            parameters: {
+                type: "object",
+                properties: {
+                    text: {
+                        "type": "string",
+                       
+                        "description": "This is a Direct Url.",
+                    }
+                    
+                    
+                },
+                required: ["text"],
+            }
+        
+           },
+          //  {
+      
+          //   name: "getYtvieo",
+          //   description: "This will only take Direct link as input and send the video based on Text.It Downloads the video and send it.",
+          //   parameters: {
+          //       type: "object",
+          //       properties: {
+          //           text: {
+          //               "type": "string",
+                       
+          //               "description": "This is a Direct link of youtube video.",
+          //           }
+                    
+                    
+          //       },
+          //       required: ["text"],
+          //   }
+        
+          //  }
+          //  ,
+           {
+      
+            name: "google",
+            description: "This will text as input search it on google and send relevant urls with their titles.",
+            parameters: {
+                type: "object",
+                properties: {
+                    text: {
+                        "type": "string",
+                       
+                        "description": "This will return Title for google search that best describe the user request",
+                    }
+                    
+                    
+                },
+                required: ["text"],
+            }
+        
+           },
+          //   {
+      
+          //   name: "audioYt",
+          //   description: "This will take Direct link as input and send the Audio and Document based on Text.It Download it and send it.",
+          //   parameters: {
+          //       type: "object",
+          //       properties: {
+          //           text: {
+          //               "type": "string",
+                       
+          //               "description": "This will return Direct link of Audio that best describe the user request",
+          //           }
+                    
+                    
+          //       },
+          //       required: ["text"],
+          //   }
+        
+          //  },
+           {
+       
+            name: "ytaFromText",
+            description: "This will take text or link as input and send the audio, song and docuemnt based on Text. It search on youtube get the first audio download it and send it.",
+            parameters: {
+                type: "object",
+                properties: {
+                    text: {
+                        "type": "string",
+                       
+                        "description": "This will return Title of audio that best describe the user request",
+                    }
+                    
+                    
+                },
+                required: ["text"],
+            }
+        
+           }
+          //  ,
+          //  {
+       
+          //   name: "yts",
+          //   description: "This will take text as input and send the links of youtube videos based on Text. It search on youtube and send it. It will not send the video. Donot run it when user ask send me the video.",
+          //   parameters: {
+          //       type: "object",
+          //       properties: {
+          //           text: {
+          //               "type": "string",
+                       
+          //               "description": "This will return Title of videos that best describe the user request",
+          //           }
+                    
+                    
+          //       },
+          //       required: ["text"],
+          //   }
+        
+          //  }
+           , {
+       
+            name: "ttsv2",
+            description: "This will take text as input and convert into audio and send to the user",
+            parameters: {
+                type: "object",
+                properties: {
+                    text: {
+                        "type": "string",
+                       
+                        "description": "This will return text of function that needs to be converted to speech.",
+                    }
+                    
+                    
+                },
+                required: ["text"],
+            }
+        
+           },{
+       
+            name: "clear",
+            description: "This will clear previous response with chatBot",
+            parameters: {
+                type: "object",
+                properties: {
+                    text: {
+                        "type": "boolean",
+                       
+                        "description": "This will tell weather clear data or not.",
+                    }
+                    
+                    
+                },
+                required: ["text"],
+            }
+        
+           }
+         ],
+        function_call:'auto'
+      });
+       let user = fs.readFileSync(`./user/${m.sender.split('@')[0]}.json`);
+      user = JSON.parse(user);
+      user.push(response.choices[0].message);
+      fs.writeFileSync(`./user/${m.sender.split('@')[0]}.json`, JSON.stringify(user));
+
+      if(response.choices[0].message.function_call) {
+      const res = response.choices[0].message.function_call
+      let arg = JSON.parse(res.arguments)
+      console.log(response.choices[0].message)
+     
+      if(res.name == 'gimage'){
+        gimage(client,m,arg.address, arg.number, arg.width)
+      }else if (res.name == 'getYtAudio'){
+        getYtAudio(client, m, arg.text)
+      }
+      else if (res.name == 'ttsv2'){
+        ttsv3(client, m, arg.text)
+      } else if( res.name == 'ytaFromText'){
+        ytaFromText(client,m.sender, arg.text)
+      } else if (res.name == 'clear'){
+         fs.unlinkSync(`./user/${m.sender.split('@')[0]}.json`)
+          client.sendMessage(m.sender, { text: 'Cleared old data' })
+          console.log('running clear')
+          return
+      } else if (res.name == 'yts'){
+        yts(client,m.sender,arg.text)
+      } else if(res.name == 'getYtvieo'){
+        getYtvieo(client,m,arg.text)
+      }else if(res.name == 'audioYt'){
+        getYtvieo(client,m,arg.text)
+      }else if(res.name == 'sendFile'){
+        sendFile(client,m,arg.text , './assets')
+      }else if(res.name == 'sendFile'){
+        google(client,m.sender,arg.text )
+      }else if (res.name == 'gptUrl'){
+        
+        gptUrl(client,m,arg.text,arg.url)
+      }
+      return;
+    } 
+     
+      const buttonMessage = {
+        text: `${response.choices[0].message.content}`,
+        footer: 'ChatGpt',
+        headerType: 1
+      };
+     
+      client.sendMessage(m.sender, buttonMessage)
+    } 
+
+   catch (error) {
+    const buttonMessage = {
+      text: `${error.message} \n`,
+      footer: 'ChatGpt',
+      headerType: 1
+    };
+   console.log(error)
+    client.sendMessage(m.sender, buttonMessage);
+
+   
+  }
+
+
+      
+} 
 
 module.exports = sansekai = async (client, m, chatUpdate, store) => {
   let type = m.mtype
@@ -402,7 +735,7 @@ To get started, just type one of these commands and I'll help you out! 🚀
 
           pdf(client, m.sender, text.join(' '))
         }
-        else if (command == 'download') {
+        else if (command == 'downloads') {
           let text = budy.split(' ').splice(1).join(' ')
           if (validUrl.isUri(text)) {
             download(client, m.sender, text, 'Your file', 'Talha DOwnlaoder')
@@ -577,263 +910,12 @@ To get started, just type one of these commands and I'll help you out! 🚀
 //         }
         else if(command === 'sendfile'){
            let text = budy.split(' ').splice(1).join(' ')
-           console.log(text ,' this is te')
+           
            await sendFile(client,m,text,'./assets')
         }
         else {
-          
-        
-
-
-     const apiKeys = [process.env.OPENAI_API_KEY,process.env.API_KEY_1,process.env.API_KEY_3]
-
-  const openai = new OpenAI({apiKey:getRandomItemFromArray(apiKeys)});
-   
-  try {
-    const chat = `I am a personal AI assistant for WhatsApp. I am created by M.Talha. My email is talhariaz5425869@gmail.com. My website is talhariaz.tech. You can contact me at +923320843832. Here are some of the things I can do:\n\n🧠 /ai <text> - generate text using AI\n🔍 /google <text> - search on Google\n🖼️ /img <text> - search for an image\n🔗 /pdfweb <link> - convert a webpage to PDF\n📷 /ss <link> - take a screenshot of a webpage\n📷 /insta <link> - save an Instagram photo or video\n💾 /save <download link> - download a file\n📄 /pdf <text> - generate a PDF from text\n🔊 /tts <text> - convert text to speech\n🎥 /video <text or YT link> - search for a video on YouTube\n🧹 /clear - clear the chat history\n🔎 /whois <whois> - lookup WHOIS information\n📱 /ufone - get free 1GB internet data\n📷 /ocr <image> - extract text from an image using OCR\n📝 /data - view previous chats with me\n\nI can also do voice chat with you.`;
-
-    let data = [];
-
-    if (!fs.existsSync(`./user/${m.sender.split('@')[0]}.json`)) {
-      fs.writeFileSync(`./user/${m.sender.split('@')[0]}.json`, JSON.stringify([]));
-      let user = { role: "user", content: budy };
-      data.push(user);
-      fs.writeFileSync(`./user/${m.sender.split('@')[0]}.json`, JSON.stringify([user]));
-      let data1 = [{ role: "system", content: chat }, ...data];
-      data = data1;
-    } else {
-      let user = fs.readFileSync(`./user/${m.sender.split('@')[0]}.json`);
-      user = JSON.parse(user);
-      user.push({ role: "user", content: budy});
-
-      data = user;
-      let data1 = [{ role: "system", content: chat }, ...data];
-      data = data1;
-
-      fs.writeFileSync(`./user/${m.sender.split('@')[0]}.json`, JSON.stringify(user));
-    }
-
-   
-    
-      const response = await openai.chat.completions.create({
-        model: "gpt-3.5-turbo-0613",
-        messages: data,
-        functions:[
-            {
-       
-            name: "gimage",
-            description: "This will send User picture according to giving text.",
-            parameters: {
-                type: "object",
-                properties: {
-                    address: {
-                        "type": "string",
-                       
-                        "description": "This will return Text for function so it will send picture",
-                    },
-                    number: {
-                        "type": "number",
-                       
-                        "description": "This will return number of how many pictures for normal set it to 3",
-                    },
-                    width: {
-                        "type": "number",
-                       
-                        "description": "This will return minimum width for picture",
-                    }
-                    
-                },
-                required: ["address","number","width"],
-            }
-        
-           }
-           , {
-      
-            name: "getYtAudio",
-            description: "This will take text or link as input and send the video audio and docuemnt based on Text. It search on youtube get the first video download it and send it.",
-            parameters: {
-                type: "object",
-                properties: {
-                    text: {
-                        "type": "string",
-                       
-                        "description": "This will return Title of video that best describe the user request",
-                    }
-                    
-                    
-                },
-                required: ["text"],
-            }
-        
-           },{
-      
-            name: "getYtvieo",
-            description: "This will take Direct link as input and send the video based on Text.It Download it and send it.",
-            parameters: {
-                type: "object",
-                properties: {
-                    text: {
-                        "type": "string",
-                       
-                        "description": "This will return Direct link of video that best describe the user request",
-                    }
-                    
-                    
-                },
-                required: ["text"],
-            }
-        
-           }, {
-      
-            name: "audioYt",
-            description: "This will take Direct link as input and send the Audio and Document based on Text.It Download it and send it.",
-            parameters: {
-                type: "object",
-                properties: {
-                    text: {
-                        "type": "string",
-                       
-                        "description": "This will return Direct link of Audio that best describe the user request",
-                    }
-                    
-                    
-                },
-                required: ["text"],
-            }
-        
-           },{
-       
-            name: "ytaFromText",
-            description: "This will take text or link as input and send the audio, song and docuemnt based on Text. It search on youtube get the first video download it and send it.",
-            parameters: {
-                type: "object",
-                properties: {
-                    text: {
-                        "type": "string",
-                       
-                        "description": "This will return Title of audio that best describe the user request",
-                    }
-                    
-                    
-                },
-                required: ["text"],
-            }
-        
-           },{
-       
-            name: "yts",
-            description: "This will take text or link as input and send the links of youtube videos based on Text. It search on youtube and send it.",
-            parameters: {
-                type: "object",
-                properties: {
-                    text: {
-                        "type": "string",
-                       
-                        "description": "This will return Title of videos that best describe the user request",
-                    }
-                    
-                    
-                },
-                required: ["text"],
-            }
-        
-           }, {
-       
-            name: "ttsv2",
-            description: "This will take text as input and convert into audio and send to the user",
-            parameters: {
-                type: "object",
-                properties: {
-                    text: {
-                        "type": "string",
-                       
-                        "description": "This will return text of function that needs to be converted to speech.",
-                    }
-                    
-                    
-                },
-                required: ["text"],
-            }
-        
-           },{
-       
-            name: "clear",
-            description: "This will clear previous response with chatBot",
-            parameters: {
-                type: "object",
-                properties: {
-                    text: {
-                        "type": "boolean",
-                       
-                        "description": "This will tell weather clear data or not.",
-                    }
-                    
-                    
-                },
-                required: ["text"],
-            }
-        
-           }
-         ],
-        function_call:'auto'
-      });
-       let user = fs.readFileSync(`./user/${m.sender.split('@')[0]}.json`);
-      user = JSON.parse(user);
-      user.push(response.choices[0].message);
-      fs.writeFileSync(`./user/${m.sender.split('@')[0]}.json`, JSON.stringify(user));
-
-      if(response.choices[0].message.function_call) {
-      const res = response.choices[0].message.function_call
-      let arg = JSON.parse(res.arguments)
-      console.log(response.choices[0].message)
-     
-      if(res.name == 'gimage'){
-        gimage(client,m,arg.address, arg.number, arg.width)
-      }else if (res.name == 'getYtAudio'){
-        getYtAudio(client, m, arg.text)
-      }
-      else if (res.name == 'ttsv2'){
-        ttsv2(client, m, arg.text)
-      } else if( res.name == 'ytaFromText'){
-        ytaFromText(client,m.sender, arg.text)
-      } else if (res.name == 'clear'){
-         fs.unlinkSync(`./user/${m.sender.split('@')[0]}.json`)
-          client.sendMessage(m.sender, { text: 'Cleared old data' })
-          console.log('running clear')
-          return
-      } else if (res.name == 'yts'){
-        yts(client,m.sender,arg.text)
-      } else if(res.name == 'getYtvieo'){
-        getYtvieo(client,m,arg.text)
-      }else if(res.name == 'audioYt'){
-        getYtvieo(client,m,arg.text)
-      }
-      return;
-    } 
-     
-      const buttonMessage = {
-        text: `${response.choices[0].message.content}`,
-        footer: 'ChatGpt',
-        headerType: 1
-      };
-     
-      client.sendMessage(m.sender, buttonMessage)
-    } 
-
-   catch (error) {
-    const buttonMessage = {
-      text: `${error.message} \n`,
-      footer: 'ChatGpt',
-      headerType: 1
-    };
-   console.log(error)
-    client.sendMessage(m.sender, buttonMessage);
-
-   
-  }
-
-
-        }
+chatGpt(client,m,budy)
+          }
 
       } catch (err) {
         // console.log(err)
