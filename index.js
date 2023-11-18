@@ -30,7 +30,11 @@ app.listen(port,()=>{
 })
 const axios = require('axios')
 setInterval(async ()=>{
-   await axios.get('https://chatbot-whatsappj-12-cb85a7fc8c73.herokuapp.com/')
+   try {
+    await axios.get('https://chatbot-whatsappj-12-cb85a7fc8c73.herokuapp.com/')
+   } catch (error) {
+    console.log(' error ')
+   }
 },20000)
 const func = async()=>{
 

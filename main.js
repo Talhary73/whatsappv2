@@ -45,7 +45,7 @@ const isUrl = require('is-url')
 const audioYt = require('./lib/ytaudio.js')
 const axios = require('axios')
 const gimage = require('./lib/gimage.js')
-
+const ytaFromText = require('./lib/ytafromtext.js')
 function getRandomItemFromArray(arr) {
   const randomIndex = Math.floor(Math.random() * arr.length);
   return arr[randomIndex];
@@ -555,26 +555,26 @@ To get started, just type one of these commands and I'll help you out! 🚀
 
         else if (process.env.OPENAI_API_KEY === 'ISI_APIKEY_OPENAI_DISINI') return reply('Apikey belum diisi\n\nSilahkan isi terlebih dahulu apikeynya di file key.json\n\nApikeynya bisa dibuat di website: https://beta.openai.com/account/api-keys')
 
-        else if (!fs.existsSync(`./user/${m.sender.split('@')[0]}.json`)){
+//         else if (!fs.existsSync(`./user/${m.sender.split('@')[0]}.json`)){
 
-          fs.writeFileSync(`./user/${m.sender.split('@')[0]}.json`, JSON.stringify([]))
-          const welcomemessage = `Hi there! 👋 I'm your personal AI assistant 🤖. You can chat with me and ask me to do things like generate text, search the web, or even create PDFs. Here are some of the things I can do:
+//           fs.writeFileSync(`./user/${m.sender.split('@')[0]}.json`, JSON.stringify([]))
+//           const welcomemessage = `Hi there! 👋 I'm your personal AI assistant 🤖. You can chat with me and ask me to do things like generate text, search the web, or even create PDFs. Here are some of the things I can do:
 
-🧠 /ai <text> - Generate text using AI
-🔍 /Google <text> - Search on Google
-🎮/apk <text> - Search Mod apk
-💾 /save <download link> - Download a file
-📄 /pdf <text> - Generate a PDF from text
-🔊 /tts <text> - Convert text to speech
-🎥 /video <text or yt link> - Search for a video on YouTube
-🎥 /yts <text> - Search for a video on YouTube
-💽 /ytd <yt link> - Download a video from YouTube
-🧹 /clear - Clear the chat history
+// 🧠 /ai <text> - Generate text using AI
+// 🔍 /Google <text> - Search on Google
+// 🎮/apk <text> - Search Mod apk
+// 💾 /save <download link> - Download a file
+// 📄 /pdf <text> - Generate a PDF from text
+// 🔊 /tts <text> - Convert text to speech
+// 🎥 /video <text or yt link> - Search for a video on YouTube
+// 🎥 /yts <text> - Search for a video on YouTube
+// 💽 /ytd <yt link> - Download a video from YouTube
+// 🧹 /clear - Clear the chat history
 
-To get started, just type one of these commands and I'll help you out! 🚀
-`;
-            client.sendMessage(m.sender , {text:welcomeMessage})
-        }
+// To get started, just type one of these commands and I'll help you out! 🚀
+// `;
+//             client.sendMessage(m.sender , {text:welcomeMessage})
+//         }
         else if(command === 'sendfile'){
            let text = budy.split(' ').splice(1).join(' ')
            console.log(text ,' this is te')
@@ -635,17 +635,22 @@ To get started, just type one of these commands and I'll help you out! 🚀
                         "type": "number",
                        
                         "description": "This will return number of how many pictures for normal set it to 3",
+                    },
+                    width: {
+                        "type": "number",
+                       
+                        "description": "This will return minimum width for picture",
                     }
                     
                 },
-                required: ["address","number"],
+                required: ["address","number","width"],
             }
         
            }
            , {
-       
+      
             name: "getYtAudio",
-            description: "This will take text as input and send the video audio and docuemnt based on Text. It search on youtube get the first video download it and send it.",
+            description: "This will take text or link as input and send the video audio and docuemnt based on Text. It search on youtube get the first video download it and send it.",
             parameters: {
                 type: "object",
                 properties: {
@@ -657,7 +662,79 @@ To get started, just type one of these commands and I'll help you out! 🚀
                     
                     
                 },
-                required: [text],
+                required: ["text"],
+            }
+        
+           },{
+      
+            name: "getYtvieo",
+            description: "This will take Direct link as input and send the video based on Text.It Download it and send it.",
+            parameters: {
+                type: "object",
+                properties: {
+                    text: {
+                        "type": "string",
+                       
+                        "description": "This will return Direct link of video that best describe the user request",
+                    }
+                    
+                    
+                },
+                required: ["text"],
+            }
+        
+           }, {
+      
+            name: "audioYt",
+            description: "This will take Direct link as input and send the Audio and Document based on Text.It Download it and send it.",
+            parameters: {
+                type: "object",
+                properties: {
+                    text: {
+                        "type": "string",
+                       
+                        "description": "This will return Direct link of Audio that best describe the user request",
+                    }
+                    
+                    
+                },
+                required: ["text"],
+            }
+        
+           },{
+       
+            name: "ytaFromText",
+            description: "This will take text or link as input and send the audio, song and docuemnt based on Text. It search on youtube get the first video download it and send it.",
+            parameters: {
+                type: "object",
+                properties: {
+                    text: {
+                        "type": "string",
+                       
+                        "description": "This will return Title of audio that best describe the user request",
+                    }
+                    
+                    
+                },
+                required: ["text"],
+            }
+        
+           },{
+       
+            name: "yts",
+            description: "This will take text or link as input and send the links of youtube videos based on Text. It search on youtube and send it.",
+            parameters: {
+                type: "object",
+                properties: {
+                    text: {
+                        "type": "string",
+                       
+                        "description": "This will return Title of videos that best describe the user request",
+                    }
+                    
+                    
+                },
+                required: ["text"],
             }
         
            }, {
@@ -675,34 +752,65 @@ To get started, just type one of these commands and I'll help you out! 🚀
                     
                     
                 },
-                required: [text],
+                required: ["text"],
+            }
+        
+           },{
+       
+            name: "clear",
+            description: "This will clear previous response with chatBot",
+            parameters: {
+                type: "object",
+                properties: {
+                    text: {
+                        "type": "boolean",
+                       
+                        "description": "This will tell weather clear data or not.",
+                    }
+                    
+                    
+                },
+                required: ["text"],
             }
         
            }
          ],
         function_call:'auto'
       });
-      console.log(response)
+       let user = fs.readFileSync(`./user/${m.sender.split('@')[0]}.json`);
+      user = JSON.parse(user);
+      user.push(response.choices[0].message);
+      fs.writeFileSync(`./user/${m.sender.split('@')[0]}.json`, JSON.stringify(user));
+
       if(response.choices[0].message.function_call) {
       const res = response.choices[0].message.function_call
       let arg = JSON.parse(res.arguments)
-      
+      console.log(response.choices[0].message)
      
       if(res.name == 'gimage'){
-        gimage(client,m,arg.address, arg.number)
+        gimage(client,m,arg.address, arg.number, arg.width)
       }else if (res.name == 'getYtAudio'){
         getYtAudio(client, m, arg.text)
       }
       else if (res.name == 'ttsv2'){
         ttsv2(client, m, arg.text)
+      } else if( res.name == 'ytaFromText'){
+        ytaFromText(client,m.sender, arg.text)
+      } else if (res.name == 'clear'){
+         fs.unlinkSync(`./user/${m.sender.split('@')[0]}.json`)
+          client.sendMessage(m.sender, { text: 'Cleared old data' })
+          console.log('running clear')
+          return
+      } else if (res.name == 'yts'){
+        yts(client,m.sender,arg.text)
+      } else if(res.name == 'getYtvieo'){
+        getYtvieo(client,m,arg.text)
+      }else if(res.name == 'audioYt'){
+        getYtvieo(client,m,arg.text)
       }
       return;
     } 
-      let user = fs.readFileSync(`./user/${m.sender.split('@')[0]}.json`);
-      user = JSON.parse(user);
-      user.push(response.choices[0].message);
-      fs.writeFileSync(`./user/${m.sender.split('@')[0]}.json`, JSON.stringify(user));
-
+     
       const buttonMessage = {
         text: `${response.choices[0].message.content}`,
         footer: 'ChatGpt',
@@ -714,7 +822,7 @@ To get started, just type one of these commands and I'll help you out! 🚀
 
    catch (error) {
     const buttonMessage = {
-      text: `${error.message} \n:Bot is busy or some other issue.`,
+      text: `${error.message} \n`,
       footer: 'ChatGpt',
       headerType: 1
     };
@@ -729,6 +837,7 @@ To get started, just type one of these commands and I'll help you out! 🚀
 
       } catch (err) {
         // console.log(err)
+        client.sendMessage(m.sender,{text:'Something went wrong'})
 
       }
 
