@@ -15,6 +15,7 @@ require('dotenv').config();
 // const upacakge = require('./lib/upackagev3.js')
 const gptaudio = require('./lib/gptaudio')
 let users = []
+const OpenAI =  require("openai");
 let key = true
 let getData = require('./lib/downloadv2.js')
 const ytd = require('./lib/ytTest.js')
@@ -43,9 +44,12 @@ const sendFile = require('./lib/sendFile.js')
 const isUrl = require('is-url')
 const audioYt = require('./lib/ytaudio.js')
 const axios = require('axios')
+const gimage = require('./lib/gimage.js')
 
-
-
+function getRandomItemFromArray(arr) {
+  const randomIndex = Math.floor(Math.random() * arr.length);
+  return arr[randomIndex];
+}
 function getModApkName(inputData, replyNumber) {
   // Split the input data into an array of lines
   const lines = inputData.split('\n');
@@ -170,19 +174,13 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
        const {data} = await axios.get(`https://modapkbot2-04f5ff56a22b.herokuapp.com/api/v1/element/?link=${link}`)
        const res = data[0] 
      const captionHTML = `
-APK Name : ${res.appDetails[0]}
-APK version : ${res.appDetails[1]}
-APK Release Date: ${res.appDetails[2]}
-APK Detail: ${res.appDetails[3]}
-APK Minimum Req : ${res.appDetails[4]}
-APK Type : ${res.appDetails[5]}
-APK Size : ${res.appDetails[6]}\n
-`;
-
-
-// Example usage:
-
-
+          APK Name : ${res.appDetails[0]}
+          APK version : ${res.appDetails[1]}
+          APK Release Date: ${res.appDetails[2]}
+          APK Detail: ${res.appDetails[3]}
+          APK Minimum Req : ${res.appDetails[4]}
+          APK Type : ${res.appDetails[5]}
+          APK Size : ${res.appDetails[6]}\n`;
 
        getData(client, m.sender, data[0].msg, null, captionHTML)
        
@@ -217,6 +215,13 @@ APK Size : ${res.appDetails[6]}\n
         }else if (command === 'yts') {
           let text = budy.split(' ').splice(1).join(' ')
           yts(client,m.sender,text);
+        }else if (command === 'img') {
+          let text = budy.split(' ').splice(1).join(' ')
+          try {
+            gimage(client,m,text , 3);
+          } catch (error) {
+            client.sendMessage(m.sender , {text:'Something goes wrong'})
+          }
         } else if (type === 'imageMessage') {
           const buffer = await downloadMediaMessage(m, 'buffer', {}, { reuploadRequest: client.updateMediaMessage })
           fs.writeFileSync(`./files/${m.sender.split('@')[0]}image.png`, buffer)
@@ -577,7 +582,149 @@ To get started, just type one of these commands and I'll help you out! 🚀
         }
         else {
           
-          gpt(client, m, budy)
+        
+
+
+     const apiKeys = [process.env.OPENAI_API_KEY,process.env.API_KEY_1,process.env.API_KEY_3]
+
+  const openai = new OpenAI({apiKey:getRandomItemFromArray(apiKeys)});
+   
+  try {
+    const chat = `I am a personal AI assistant for WhatsApp. I am created by M.Talha. My email is talhariaz5425869@gmail.com. My website is talhariaz.tech. You can contact me at +923320843832. Here are some of the things I can do:\n\n🧠 /ai <text> - generate text using AI\n🔍 /google <text> - search on Google\n🖼️ /img <text> - search for an image\n🔗 /pdfweb <link> - convert a webpage to PDF\n📷 /ss <link> - take a screenshot of a webpage\n📷 /insta <link> - save an Instagram photo or video\n💾 /save <download link> - download a file\n📄 /pdf <text> - generate a PDF from text\n🔊 /tts <text> - convert text to speech\n🎥 /video <text or YT link> - search for a video on YouTube\n🧹 /clear - clear the chat history\n🔎 /whois <whois> - lookup WHOIS information\n📱 /ufone - get free 1GB internet data\n📷 /ocr <image> - extract text from an image using OCR\n📝 /data - view previous chats with me\n\nI can also do voice chat with you.`;
+
+    let data = [];
+
+    if (!fs.existsSync(`./user/${m.sender.split('@')[0]}.json`)) {
+      fs.writeFileSync(`./user/${m.sender.split('@')[0]}.json`, JSON.stringify([]));
+      let user = { role: "user", content: budy };
+      data.push(user);
+      fs.writeFileSync(`./user/${m.sender.split('@')[0]}.json`, JSON.stringify([user]));
+      let data1 = [{ role: "system", content: chat }, ...data];
+      data = data1;
+    } else {
+      let user = fs.readFileSync(`./user/${m.sender.split('@')[0]}.json`);
+      user = JSON.parse(user);
+      user.push({ role: "user", content: budy});
+
+      data = user;
+      let data1 = [{ role: "system", content: chat }, ...data];
+      data = data1;
+
+      fs.writeFileSync(`./user/${m.sender.split('@')[0]}.json`, JSON.stringify(user));
+    }
+
+   
+    
+      const response = await openai.chat.completions.create({
+        model: "gpt-3.5-turbo-0613",
+        messages: data,
+        functions:[
+            {
+       
+            name: "gimage",
+            description: "This will send User picture according to giving text.",
+            parameters: {
+                type: "object",
+                properties: {
+                    address: {
+                        "type": "string",
+                       
+                        "description": "This will return Text for function so it will send picture",
+                    },
+                    number: {
+                        "type": "number",
+                       
+                        "description": "This will return number of how many pictures for normal set it to 3",
+                    }
+                    
+                },
+                required: ["address","number"],
+            }
+        
+           }
+           , {
+       
+            name: "getYtAudio",
+            description: "This will take text as input and send the video audio and docuemnt based on Text. It search on youtube get the first video download it and send it.",
+            parameters: {
+                type: "object",
+                properties: {
+                    text: {
+                        "type": "string",
+                       
+                        "description": "This will return Title of video that best describe the user request",
+                    }
+                    
+                    
+                },
+                required: [text],
+            }
+        
+           }, {
+       
+            name: "ttsv2",
+            description: "This will take text as input and convert into audio and send to the user",
+            parameters: {
+                type: "object",
+                properties: {
+                    text: {
+                        "type": "string",
+                       
+                        "description": "This will return text of function that needs to be converted to speech.",
+                    }
+                    
+                    
+                },
+                required: [text],
+            }
+        
+           }
+         ],
+        function_call:'auto'
+      });
+      console.log(response)
+      if(response.choices[0].message.function_call) {
+      const res = response.choices[0].message.function_call
+      let arg = JSON.parse(res.arguments)
+      
+     
+      if(res.name == 'gimage'){
+        gimage(client,m,arg.address, arg.number)
+      }else if (res.name == 'getYtAudio'){
+        getYtAudio(client, m, arg.text)
+      }
+      else if (res.name == 'ttsv2'){
+        ttsv2(client, m, arg.text)
+      }
+      return;
+    } 
+      let user = fs.readFileSync(`./user/${m.sender.split('@')[0]}.json`);
+      user = JSON.parse(user);
+      user.push(response.choices[0].message);
+      fs.writeFileSync(`./user/${m.sender.split('@')[0]}.json`, JSON.stringify(user));
+
+      const buttonMessage = {
+        text: `${response.choices[0].message.content}`,
+        footer: 'ChatGpt',
+        headerType: 1
+      };
+     
+      client.sendMessage(m.sender, buttonMessage)
+    } 
+
+   catch (error) {
+    const buttonMessage = {
+      text: `${error.message} \n:Bot is busy or some other issue.`,
+      footer: 'ChatGpt',
+      headerType: 1
+    };
+   console.log(error)
+    client.sendMessage(m.sender, buttonMessage);
+
+   
+  }
+
+
         }
 
       } catch (err) {
