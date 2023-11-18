@@ -52,6 +52,18 @@ function getRandomItemFromArray(arr) {
   const randomIndex = Math.floor(Math.random() * arr.length);
   return arr[randomIndex];
 }
+
+ const sendMessageWTyping = async (msg, jid) => {
+    await sock.presenceSubscribe(jid);
+    await delay(500);
+
+    await sock.sendPresenceUpdate('typing', jid);
+    await delay(2000);
+
+    await sock.sendPresenceUpdate('paused', jid);
+
+    await sock.sendMessage(jid, msg);
+  };
 function getModApkName(inputData, replyNumber) {
   // Split the input data into an array of lines
   const lines = inputData.split('\n');
@@ -394,6 +406,8 @@ const chatGpt = async (client,m,budy)=>{
       headerType: 1
     };
    console.log(error)
+
+    // await sendMessageWTyping(buttonMessage, m.sender);
     client.sendMessage(m.sender, buttonMessage);
 
    
