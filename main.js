@@ -126,21 +126,21 @@ const chatGpt = async (client,m,budy)=>{
                     address: {
                         "type": "string",
                        
-                        "description": "This will return Text for function so it will send picture",
+                        "description": "Text for function so it will send picture",
                     },
                     number: {
                         "type": "number",
                        
-                        "description": "This will return number of how many pictures for normal set it to 3",
+                        "description": "number of how many pictures to send default is 3",
                     },
                     width: {
                         "type": "number",
                        
-                        "description": "This will return minimum width for picture",
+                        "description": "minimum width for picture",
                     },height: {
                         "type": "number",
                        
-                        "description": "This will return minimum height for picture",
+                        "description": "minimum height for picture",
                     }
                     
                 },
@@ -151,14 +151,14 @@ const chatGpt = async (client,m,budy)=>{
            , {
       
             name: "getYtAudio",
-            description: "This will take text as input and send the video based on Text. It search on youtube get the first video download it and send it.",
+            description: "send youtube video.",
             parameters: {
                 type: "object",
                 properties: {
                     text: {
                         "type": "string",
                        
-                        "description": "This will return Title of video that best describe the user request",
+                        "description": "Title of video",
                     }
                     
                     
@@ -170,7 +170,7 @@ const chatGpt = async (client,m,budy)=>{
             {
       
             name: "wiki",
-            description: "This will search text on Wikipedia and send it to user.",
+            description: "search article on Wikipedia and send it to user.",
             parameters: {
                 type: "object",
                 properties: {
@@ -200,7 +200,7 @@ const chatGpt = async (client,m,budy)=>{
            },{
       
             name: "instaDl",
-            description: "This will download instagram video or image from instagram post link ",
+            description: "download instagram video or image and send it to user",
             parameters: {
                 type: "object",
                 properties: {
@@ -229,12 +229,12 @@ const chatGpt = async (client,m,budy)=>{
                     text: {
                         "type": "string",
                        
-                        "description": "This will return question of User that best describe the user request",
+                        "description": "question of User that best describe the user request",
                     }
                     ,url: {
                         "type": "string",
                        
-                        "description": "This will return Direct Url that best describe the user request",
+                        "description": "Direct Url that best describe the user request",
                     }
                     
                     
@@ -245,7 +245,7 @@ const chatGpt = async (client,m,budy)=>{
            },{
       
             name: "sendFile",
-            description: "This will take Direct Link as input download it and send it to user. It must be smaller than 200 MB",
+            description: "Send any type of File.",
             parameters: {
                 type: "object",
                 properties: {
@@ -322,14 +322,14 @@ const chatGpt = async (client,m,budy)=>{
            {
        
             name: "ytaFromText",
-            description: "This will take text or link as input and send the audio, song and docuemnt based on Text. It search on youtube get the first audio download it and send it.",
+            description: "Send audio form of youtube video",
             parameters: {
                 type: "object",
                 properties: {
                     text: {
                         "type": "string",
                        
-                        "description": "This will return Title of audio that best describe the user request",
+                        "description": " Title of audio ",
                     }
                     
                     
@@ -342,14 +342,14 @@ const chatGpt = async (client,m,budy)=>{
            {
        
             name: "yts",
-            description: "This will take text as input and send the links of youtube videos based on Text. It search on youtube and send it. It will not send the video. Donot run it when user ask send me the video.",
+            description: "send the links of youtube videos based on Text",
             parameters: {
                 type: "object",
                 properties: {
                     text: {
                         "type": "string",
                        
-                        "description": "This will return Title of videos that best describe the user request",
+                        "description": " Title of videos",
                     }
                     
                     
