@@ -186,11 +186,11 @@ const chatGpt = async (client,m,budy)=>{
                     ,url: {
                         "type": "boolean",
                        
-                        "description": "wether to send  url or not",
+                        "description": "wether to send  url or not. Default is false",
                     },textornot: {
                         "type": "boolean",
                        
-                        "description": "wether to send summary or not ",
+                        "description": "wether to send summary or not. Default is True",
                     }
                     
                 },
@@ -284,7 +284,7 @@ const chatGpt = async (client,m,budy)=>{
            {
       
             name: "google",
-            description: "This function will google anything user requested.",
+            description: "This will google anything and send urls to user.",
             parameters: {
                 type: "object",
                 properties: {
@@ -469,7 +469,7 @@ const chatGpt = async (client,m,budy)=>{
         footer: 'ChatGpt',
         headerType: 1
       };
-     
+      console.log(response)
       client.sendMessage(m.sender, buttonMessage)
     } 
 
@@ -480,7 +480,12 @@ const chatGpt = async (client,m,budy)=>{
       headerType: 1
     };
    console.log(error)
-
+   console.log(error.status+'error from chat gpt')
+  if(error.status==400){
+    fs.unlinkSync(`./user/${m.sender.split('@')[0]}.json`)
+          client.sendMessage(m.sender, { text: 'Cleared old data. Because Bot is overLoaded' })
+          console.log('running clear')
+  }
     // await sendMessageWTyping(buttonMessage, m.sender);
     client.sendMessage(m.sender, buttonMessage);
 
