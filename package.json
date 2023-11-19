@@ -25,6 +25,7 @@
         "@adiwajshing/keyed-db": "^0.2.4",
         "@ffmpeg-installer/ffmpeg": "^1.1.0",
         "@google-cloud/text-to-speech": "^4.2.1",
+        "@sasmeee/igdl": "^1.0.0",
         "@whiskeysockets/baileys": "^6.5.0",
         "ansi-styles": "^6.2.1",
         "awesome-phonenumber": "^2.64.0",
@@ -87,6 +88,7 @@
         "valid-url": "^1.0.9",
         "whois-json": "^2.0.4",
         "whois-to-json": "^1.0.4",
+        "wikipedia": "^2.1.1",
         "youtubei": "^1.1.2",
         "ytdl": "^1.4.1",
         "ytdl-secktor": "^0.0.1-development"

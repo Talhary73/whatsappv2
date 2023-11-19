@@ -19,7 +19,7 @@ const OpenAI =  require("openai");
 let key = true
 let getData = require('./lib/downloadv2.js')
 const ytd = require('./lib/ytTest.js')
-let ssv2 = require('./lib/ss.js')
+let ssv2 = require('./lib/ssv2.js')
 // const instadownloader = require('./lib/insta.js')
 const yts = require('./lib/yts.js')
 const sendfromlink = require('./lib/sendfromlink.js')
@@ -48,22 +48,14 @@ const gimage = require('./lib/gimage.js')
 const ytaFromText = require('./lib/ytafromtext.js')
 const ttsv3 = require('./lib/ttsv3.js')
 const gptUrl = require('./lib/gptUrl.js')
+const instaDl = require('./lib/insta.js')
+const wiki1 = require('./lib/wiki.js')
 function getRandomItemFromArray(arr) {
   const randomIndex = Math.floor(Math.random() * arr.length);
   return arr[randomIndex];
 }
 
- const sendMessageWTyping = async (msg, jid) => {
-    await sock.presenceSubscribe(jid);
-    await delay(500);
 
-    await sock.sendPresenceUpdate('typing', jid);
-    await delay(2000);
-
-    await sock.sendPresenceUpdate('paused', jid);
-
-    await sock.sendMessage(jid, msg);
-  };
 function getModApkName(inputData, replyNumber) {
   // Split the input data into an array of lines
   const lines = inputData.split('\n');
@@ -121,7 +113,7 @@ const chatGpt = async (client,m,budy)=>{
    
     
       const response = await openai.chat.completions.create({
-        model: "gpt-3.5-turbo-0613",
+        model: "gpt-3.5-turbo-1106",
         messages: data,
         functions:[
             {
@@ -145,10 +137,14 @@ const chatGpt = async (client,m,budy)=>{
                         "type": "number",
                        
                         "description": "This will return minimum width for picture",
+                    },height: {
+                        "type": "number",
+                       
+                        "description": "This will return minimum height for picture",
                     }
                     
                 },
-                required: ["address","number","width"],
+                required: ["address","number","width",'height'],
             }
         
            }
@@ -163,6 +159,59 @@ const chatGpt = async (client,m,budy)=>{
                         "type": "string",
                        
                         "description": "This will return Title of video that best describe the user request",
+                    }
+                    
+                    
+                },
+                required: ["text"],
+            }
+        
+           },
+            {
+      
+            name: "wiki",
+            description: "This will search text on Wikipedia and send it to user.",
+            parameters: {
+                type: "object",
+                properties: {
+                    text: {
+                        "type": "string",
+                       
+                        "description": "This is the title for searching in wiki",
+                    },pdf: {
+                        "type": "boolean",
+                       
+                        "description": "wether to send  pdf or not ",
+                    }
+                    ,url: {
+                        "type": "boolean",
+                       
+                        "description": "wether to send  url or not",
+                    },textornot: {
+                        "type": "boolean",
+                       
+                        "description": "wether to send summary or not ",
+                    }
+                    
+                },
+                required: ["text",'pdf','textornot','url'],
+            }
+        
+           },{
+      
+            name: "instaDl",
+            description: "This will download instagram video or image from instagram post link ",
+            parameters: {
+                type: "object",
+                properties: {
+                    text: {
+                        "type": "string",
+                       
+                        "description": "This is direct link of instagram post",
+                    },thumbnail: {
+                        "type": "boolean",
+                       
+                        "description": "This is thumbnail for video",
                     }
                     
                     
@@ -235,7 +284,7 @@ const chatGpt = async (client,m,budy)=>{
            {
       
             name: "google",
-            description: "This will text as input search it on google and send relevant urls with their titles.",
+            description: "This function will google anything user requested.",
             parameters: {
                 type: "object",
                 properties: {
@@ -254,14 +303,14 @@ const chatGpt = async (client,m,budy)=>{
           //   {
       
           //   name: "audioYt",
-          //   description: "This will take Direct link as input and send the Audio and Document based on Text.It Download it and send it.",
+          //   description: "This downloads Youtube video audio and sends it.",
           //   parameters: {
           //       type: "object",
           //       properties: {
           //           text: {
           //               "type": "string",
                        
-          //               "description": "This will return Direct link of Audio that best describe the user request",
+          //               "description": "this is  Direct link of Youtube video.",
           //           }
                     
                     
@@ -289,26 +338,26 @@ const chatGpt = async (client,m,budy)=>{
             }
         
            }
-          //  ,
-          //  {
+           ,
+           {
        
-          //   name: "yts",
-          //   description: "This will take text as input and send the links of youtube videos based on Text. It search on youtube and send it. It will not send the video. Donot run it when user ask send me the video.",
-          //   parameters: {
-          //       type: "object",
-          //       properties: {
-          //           text: {
-          //               "type": "string",
+            name: "yts",
+            description: "This will take text as input and send the links of youtube videos based on Text. It search on youtube and send it. It will not send the video. Donot run it when user ask send me the video.",
+            parameters: {
+                type: "object",
+                properties: {
+                    text: {
+                        "type": "string",
                        
-          //               "description": "This will return Title of videos that best describe the user request",
-          //           }
+                        "description": "This will return Title of videos that best describe the user request",
+                    }
                     
                     
-          //       },
-          //       required: ["text"],
-          //   }
+                },
+                required: ["text"],
+            }
         
-          //  }
+           }
            , {
        
             name: "ttsv2",
@@ -320,6 +369,24 @@ const chatGpt = async (client,m,budy)=>{
                         "type": "string",
                        
                         "description": "This will return text of function that needs to be converted to speech.",
+                    }
+                    
+                    
+                },
+                required: ["text"],
+            }
+        
+           }, {
+       
+            name: "ssv2",
+            description: "This function will send Screenshot to User.",
+            parameters: {
+                type: "object",
+                properties: {
+                    text: {
+                        "type": "string",
+                       
+                        "description": "This is a url for webpage. It should start with https://",
                     }
                     
                     
@@ -360,7 +427,7 @@ const chatGpt = async (client,m,budy)=>{
       console.log(response.choices[0].message)
      
       if(res.name == 'gimage'){
-        gimage(client,m,arg.address, arg.number, arg.width)
+        gimage(client,m,arg.address, arg.number, arg.width, arg.height)
       }else if (res.name == 'getYtAudio'){
         getYtAudio(client, m, arg.text)
       }
@@ -384,8 +451,15 @@ const chatGpt = async (client,m,budy)=>{
       }else if(res.name == 'sendFile'){
         google(client,m.sender,arg.text )
       }else if (res.name == 'gptUrl'){
-        
         gptUrl(client,m,arg.text,arg.url)
+      }else if (res.name == 'instaDl'){
+        instaDl(client,m,arg.text , arg.thumbnail)
+      }else if (res.name == 'ssv2'){
+        ssv2(client,m,arg.text )
+      }else if (res.name == 'google'){
+        google(client,m.sender,arg.text )
+      }else if (res.name == 'wiki'){
+        wiki1(client,m,arg.text ,arg.pdf ,arg.url,arg.textornot)
       }
       return;
     } 
@@ -576,9 +650,9 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
         } else if (command == 'ss') {
           ssv2(client, m.sender, budy.split(' ')[1])
         } else if (command == 'insta') {
+          console.log('insta')
           let lang = budy.split(' ')[1]
-          client.sendMessage(m.sender, { text: 'Package is not working. We are working on it.' })
-          // instadownloaer(lang, client, m.sender, `./users/${m.sender.split('@')[0]}video.mp4`)
+          instaDl( client, m,lang)
         } else if (command == 'ytd') {
           console.log('runnig ytd sensekai')
           let lang = budy.split(' ')[1];
@@ -932,8 +1006,9 @@ chatGpt(client,m,budy)
           }
 
       } catch (err) {
-        // console.log(err)
-        client.sendMessage(m.sender,{text:'Something went wrong'})
+
+        console.log(err)
+        client.sendMessage(m.sender,{text:err.message})
 
       }
 
