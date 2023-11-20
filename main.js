@@ -50,6 +50,7 @@ const ttsv3 = require('./lib/ttsv3.js')
 const gptUrl = require('./lib/gptUrl.js')
 const instaDl = require('./lib/insta.js')
 const wiki1 = require('./lib/wiki.js')
+const fb = require('./lib/fb.js')
 function getRandomItemFromArray(arr) {
   const randomIndex = Math.floor(Math.random() * arr.length);
   return arr[randomIndex];
@@ -170,7 +171,7 @@ const chatGpt = async (client,m,budy)=>{
             {
       
             name: "wiki",
-            description: "search article on Wikipedia and send it to user.",
+            description: "search article on Wikipedia and send it to user. Only Send Main topics and Definitions Donot pass everything into it.",
             parameters: {
                 type: "object",
                 properties: {
@@ -183,18 +184,14 @@ const chatGpt = async (client,m,budy)=>{
                        
                         "description": "wether to send  pdf or not ",
                     }
-                    ,url: {
-                        "type": "boolean",
-                       
-                        "description": "wether to send  url or not. Default is false",
-                    },textornot: {
+                    ,textornot: {
                         "type": "boolean",
                        
                         "description": "wether to send summary or not. Default is True",
                     }
                     
                 },
-                required: ["text",'pdf','textornot','url'],
+                required: ["text",'pdf','textornot'],
             }
         
            },{
@@ -240,6 +237,23 @@ const chatGpt = async (client,m,budy)=>{
                     
                 },
                 required: ["text",'url'],
+            }
+        
+           },{
+      
+            name: "fb",
+            description: "It will download and send facebook video",
+            parameters: {
+                type: "object",
+                properties: {
+                    text: {
+                        "type": "string",
+                       
+                        "description": "This is a Direct Url.",
+                    }
+                    
+                },
+                required: ["text","hd","sd"],
             }
         
            },{
@@ -322,7 +336,7 @@ const chatGpt = async (client,m,budy)=>{
            {
        
             name: "ytaFromText",
-            description: "Send audio form of youtube video",
+            description: "Send audio songs and audio form of youtube video",
             parameters: {
                 type: "object",
                 properties: {
@@ -331,6 +345,7 @@ const chatGpt = async (client,m,budy)=>{
                        
                         "description": " Title of audio ",
                     }
+                    
                     
                     
                 },
@@ -459,7 +474,10 @@ const chatGpt = async (client,m,budy)=>{
       }else if (res.name == 'google'){
         google(client,m.sender,arg.text )
       }else if (res.name == 'wiki'){
-        wiki1(client,m,arg.text ,arg.pdf ,arg.url,arg.textornot)
+        wiki1(client,m,arg.text ,arg.pdf ,arg.textornot)
+      }
+      else if (res.name == 'fb'){
+        fb(client,m,arg.text )
       }
       return;
     } 
@@ -654,6 +672,9 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
           teseract(client, m, `./files/${m.sender.split('@')[0]}image.png`, true)
         } else if (command == 'ss') {
           ssv2(client, m.sender, budy.split(' ')[1])
+        }
+        else if (command == 'fb') {
+          fb(client, m, budy.split(' ')[1], true, false)
         } else if (command == 'insta') {
           console.log('insta')
           let lang = budy.split(' ')[1]
