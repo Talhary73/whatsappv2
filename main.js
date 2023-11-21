@@ -51,6 +51,7 @@ const gptUrl = require('./lib/gptUrl.js')
 const instaDl = require('./lib/insta.js')
 const wiki1 = require('./lib/wiki.js')
 const fb = require('./lib/fb.js')
+const ytNew = require('./lib/ytNew.js')
 function getRandomItemFromArray(arr) {
   const randomIndex = Math.floor(Math.random() * arr.length);
   return arr[randomIndex];
@@ -163,6 +164,8 @@ const chatGpt = async (client,m,budy)=>{
                     }
                     
                     
+                    
+                    
                 },
                 required: ["text"],
             }
@@ -171,14 +174,14 @@ const chatGpt = async (client,m,budy)=>{
             {
       
             name: "wiki",
-            description: "search article on Wikipedia and send it to user. Only Send Main topics and Definitions Donot pass everything into it.",
+            description: "Send Wikipedia Articles.",
             parameters: {
                 type: "object",
                 properties: {
                     text: {
                         "type": "string",
                        
-                        "description": "This is the title for searching in wiki",
+                        "description": "This is the title for wikipedia",
                     },pdf: {
                         "type": "boolean",
                        
@@ -275,26 +278,30 @@ const chatGpt = async (client,m,budy)=>{
             }
         
            },
-          //  {
+           {
       
-          //   name: "getYtvieo",
-          //   description: "This will only take Direct link as input and send the video based on Text.It Downloads the video and send it.",
-          //   parameters: {
-          //       type: "object",
-          //       properties: {
-          //           text: {
-          //               "type": "string",
+            name: "getYtvieo",
+            description: "Download a youtube Video",
+            parameters: {
+                type: "object",
+                properties: {
+                    text: {
+                        "type": "string",
                        
-          //               "description": "This is a Direct link of youtube video.",
-          //           }
+                        "description": "This is a Direct link of youtube video.",
+                    }, itag: {
+                        "type": "number",
+                       
+                        "description": "Itag for video",
+                    }
                     
                     
-          //       },
-          //       required: ["text"],
-          //   }
+                },
+                required: ["text"],
+            }
         
-          //  }
-          //  ,
+           }
+           ,
            {
       
             name: "google",
@@ -458,9 +465,9 @@ const chatGpt = async (client,m,budy)=>{
       } else if (res.name == 'yts'){
         yts(client,m.sender,arg.text)
       } else if(res.name == 'getYtvieo'){
-        getYtvieo(client,m,arg.text)
+        ytNew(client,m,arg.text,arg.itag)
       }else if(res.name == 'audioYt'){
-        getYtvieo(client,m,arg.text)
+        audioYt(client,m,arg.text)
       }else if(res.name == 'sendFile'){
         sendFile(client,m,arg.text , './assets')
       }else if(res.name == 'sendFile'){
@@ -499,11 +506,11 @@ const chatGpt = async (client,m,budy)=>{
     };
    console.log(error)
    console.log(error.status+'error from chat gpt')
-  if(error.status==400){
+  
     fs.unlinkSync(`./user/${m.sender.split('@')[0]}.json`)
           client.sendMessage(m.sender, { text: 'Cleared old data. Because Bot is overLoaded' })
           console.log('running clear')
-  }
+  
     // await sendMessageWTyping(buttonMessage, m.sender);
     client.sendMessage(m.sender, buttonMessage);
 
@@ -704,10 +711,14 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
             client.sendMessage(m.sender,{text:links})
           } catch (error) {
             console.log(error)
+            client.sendMessage(m.sender,{text:error.message})
           }
         } else if (command == 'whois') {
           let text = budy.split(' ').splice(1).join(' ')
           whoidData(client, m.sender, text)
+        }else if (command == 'ytnew') {
+          let text = budy.split(' ').splice(1).join(' ')
+          ytNew(client, m, text)
         }
         else if (command == 'ttt') {
           let text = budy.split(' ').splice(1).join(' ')
