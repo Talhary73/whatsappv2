@@ -278,30 +278,30 @@ const chatGpt = async (client,m,budy)=>{
             }
         
            },
-          //  {
+           {
       
-          //   name: "getYtvieo",
-          //   description: "Download a youtube Video",
-          //   parameters: {
-          //       type: "object",
-          //       properties: {
-          //           text: {
-          //               "type": "string",
+            name: "getYtvieo",
+            description: "Download a youtube Video",
+            parameters: {
+                type: "object",
+                properties: {
+                    text: {
+                        "type": "string",
                        
-          //               "description": "This is a Direct link of youtube video.",
-          //           }, itag: {
-          //               "type": "number",
+                        "description": "This is a Direct link of youtube video.",
+                    }, itag: {
+                        "type": "number",
                        
-          //               "description": "Itag for video",
-          //           }
+                        "description": "Itag for video",
+                    }
                     
                     
-          //       },
-          //       required: ["text"],
-          //   }
+                },
+                required: ["text"],
+            }
         
-          //  }
-          //  ,
+           }
+           ,
            {
       
             name: "google",
@@ -324,14 +324,14 @@ const chatGpt = async (client,m,budy)=>{
           //   {
       
           //   name: "audioYt",
-          //   description: "This downloads Youtube video audio and sends it.",
+          //   description: "This downloads audio and sends it.",
           //   parameters: {
           //       type: "object",
           //       properties: {
           //           text: {
           //               "type": "string",
                        
-          //               "description": "this is  Direct link of Youtube video.",
+          //               "description": " Direct link of Youtube video.",
           //           }
                     
                     
