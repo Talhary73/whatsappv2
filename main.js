@@ -278,30 +278,30 @@ const chatGpt = async (client,m,budy)=>{
             }
         
            },
-           {
+          //  {
       
-            name: "getYtvieo",
-            description: "Download a youtube Video",
-            parameters: {
-                type: "object",
-                properties: {
-                    text: {
-                        "type": "string",
+          //   name: "getYtvieo",
+          //   description: "Download a youtube Video",
+          //   parameters: {
+          //       type: "object",
+          //       properties: {
+          //           text: {
+          //               "type": "string",
                        
-                        "description": "This is a Direct link of youtube video.",
-                    }, itag: {
-                        "type": "number",
+          //               "description": "This is a Direct link of youtube video.",
+          //           }, itag: {
+          //               "type": "number",
                        
-                        "description": "Itag for video",
-                    }
+          //               "description": "Itag for video",
+          //           }
                     
                     
-                },
-                required: ["text"],
-            }
+          //       },
+          //       required: ["text"],
+          //   }
         
-           }
-           ,
+          //  }
+          //  ,
            {
       
             name: "google",
