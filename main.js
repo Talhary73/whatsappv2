@@ -52,6 +52,7 @@ const instaDl = require('./lib/insta.js')
 const wiki1 = require('./lib/wiki.js')
 const fb = require('./lib/fb.js')
 const ytNew = require('./lib/ytNew.js')
+const sticker = require('./lib/sticker.js')
 function getRandomItemFromArray(arr) {
   const randomIndex = Math.floor(Math.random() * arr.length);
   return arr[randomIndex];
@@ -173,28 +174,20 @@ const chatGpt = async (client,m,budy)=>{
            },
             {
       
-            name: "wiki",
-            description: "Send Wikipedia Articles.",
+            name: "doc",
+            description: "Send Documents based on Text",
             parameters: {
                 type: "object",
                 properties: {
                     text: {
                         "type": "string",
                        
-                        "description": "This is the title for wikipedia",
-                    },pdf: {
-                        "type": "boolean",
-                       
-                        "description": "wether to send  pdf or not ",
-                    }
-                    ,textornot: {
-                        "type": "boolean",
-                       
-                        "description": "wether to send summary or not. Default is True",
+                        "description": "This is the title for searching document",
                     }
                     
+                    
                 },
-                required: ["text",'pdf','textornot'],
+                required: ["text",'pdf'],
             }
         
            },{
@@ -397,8 +390,9 @@ const chatGpt = async (client,m,budy)=>{
                 },
                 required: ["text"],
             }
-        
-           }, {
+          },
+         {
+
        
             name: "ssv2",
             description: "This function will send Screenshot to User.",
@@ -414,6 +408,36 @@ const chatGpt = async (client,m,budy)=>{
                     
                 },
                 required: ["text"],
+            }
+        
+           },{
+       
+            name: "sticker",
+            description: "create sticker from text.",
+            parameters: {
+                type: "object",
+                properties: {
+                    text: {
+                        "type": "string",
+                       
+                        "description": "simple text.",
+                    } ,
+                    height:{ type:"string","description":"Height of sticker"},
+                    width:{ type:"string","description":"width of sticker"},
+                    fontFamily:{ type:"string","description":"Font Family of Text"},
+                    fontColor:{ type:"string","description":"Font Color of Text"},
+                    fontSize:{ type:"string","description":"Font size of Text"},
+                    align:{ type:"string","description":"align"},
+                    valign:{ type:"string","description":"valign"},
+                    borderColor:{ type:"string","description":"border color"},
+                    backgoundColor:{ type:"string","description":"Background color code"},
+                    underLineColor:{ type:"string","description":"UnderLine color code"},
+                    marginTop:{ type:"string","description":"Margin top"},
+                    marginBottom:{ type:"string","description":"Margin bottom"},
+                    underlineSize:{ type:"string","description":"under line size"}
+                    
+                },
+                required: ["text",'width',"height", "fontFamily","fontColor","fontSize","align","valign","borderColor","backgroundColor","underLineColor","marginTop","marginBottom","underlineSize"],
             }
         
            },{
@@ -480,11 +504,15 @@ const chatGpt = async (client,m,budy)=>{
         ssv2(client,m,arg.text )
       }else if (res.name == 'google'){
         google(client,m.sender,arg.text )
-      }else if (res.name == 'wiki'){
-        wiki1(client,m,arg.text ,arg.pdf ,arg.textornot)
+      }else if (res.name == 'doc'){
+        wiki1(client,m,arg.text ,true )
       }
       else if (res.name == 'fb'){
         fb(client,m,arg.text )
+      }else if (res.name == 'sticker'){
+        //["text",'width',"height", "fontFamily","fontColor","fontSize","align","valign","borderColor","backgroundColor","underLineColor"],
+        const data = {width:arg.width,height:arg.height,fontFamily:arg.fontFamily,fontColor:arg.fontColor,fontSize:arg.fontSize,align:arg.align,valign:arg.valign,borderColor:arg.borderColor,backgoundColor:arg.backgoundColor,underLineColor:arg.underLineColor, marginBottom:arg.marginBottom,marginTop:arg.marginTop ,underlineSize:arg.underlineSize}
+        sticker(client,m,arg.text,data )
       }
       return;
     } 
@@ -663,6 +691,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
           const buffer = await downloadMediaMessage(m, 'buffer', {}, { reuploadRequest: client.updateMediaMessage })
           fs.writeFileSync(`./files/${m.sender.split('@')[0]}image.png`, buffer)
           teseract(client, m, `./files/${m.sender.split('@')[0]}image.png`, false)
+
         }else if (command === 'yts') {
           let text = budy.split(' ').splice(1).join(' ')
           yts(client,m.sender,text);
@@ -676,7 +705,9 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
         } else if (type === 'imageMessage') {
           const buffer = await downloadMediaMessage(m, 'buffer', {}, { reuploadRequest: client.updateMediaMessage })
           fs.writeFileSync(`./files/${m.sender.split('@')[0]}image.png`, buffer)
-          teseract(client, m, `./files/${m.sender.split('@')[0]}image.png`, true)
+          client.sendMessage(m.sender,{sticker:{url:`./files/${m.sender.split('@')[0]}image.png`} ,mimetype:'image/webp'})
+
+          // teseract(client, m, `./files/${m.sender.split('@')[0]}image.png`, true)
         } else if (command == 'ss') {
           ssv2(client, m.sender, budy.split(' ')[1])
         }
@@ -723,6 +754,9 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
         else if (command == 'ttt') {
           let text = budy.split(' ').splice(1).join(' ')
           ttsv1(`${text}`, client, pathofsound1, 'en')
+        }else if (command == 'stk') {
+          let text = budy.split(' ').splice(1).join(' ')
+          sticker(client,m,text)
         } else if (command == 'live') {
           let text =  m.text.split(' ').splice(1).join(' ')
           marketing(client, text,m.sender)
