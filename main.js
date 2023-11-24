@@ -53,6 +53,7 @@ const wiki1 = require('./lib/wiki.js')
 const fb = require('./lib/fb.js')
 const ytNew = require('./lib/ytNew.js')
 const sticker = require('./lib/sticker.js')
+const image = require('./lib/htmltopng.js')
 function getRandomItemFromArray(arr) {
   const randomIndex = Math.floor(Math.random() * arr.length);
   return arr[randomIndex];
@@ -410,6 +411,29 @@ const chatGpt = async (client,m,budy)=>{
                 required: ["text"],
             }
         
+           }, {
+
+       
+            name: "image",
+            description: "It will send Image from Text",
+            parameters: {
+                type: "object",
+                properties: {
+                    text: {
+                        "type": "string",
+                       
+                        "description": "This is text",
+                    },
+                    width:{ type:"string","description":"Width of Image"},
+                    height:{ type:"string","description":"height of Image"},
+                    fontSize:{ type:"string","description":"font size of Image"},
+                    backgoundColor: { type:"string","description":"font color of Image"},
+                    
+                    
+                },
+                required: ["text",'width','height','fontSize','backgoundColor'],
+            }
+        
            },{
        
             name: "sticker",
@@ -513,6 +537,8 @@ const chatGpt = async (client,m,budy)=>{
         //["text",'width',"height", "fontFamily","fontColor","fontSize","align","valign","borderColor","backgroundColor","underLineColor"],
         const data = {width:arg.width,height:arg.height,fontFamily:arg.fontFamily,fontColor:arg.fontColor,fontSize:arg.fontSize,align:arg.align,valign:arg.valign,borderColor:arg.borderColor,backgoundColor:arg.backgoundColor,underLineColor:arg.underLineColor, marginBottom:arg.marginBottom,marginTop:arg.marginTop ,underlineSize:arg.underlineSize}
         sticker(client,m,arg.text,data )
+      }else if (res.name == 'image'){
+        image(client,m,arg.text ,arg.width,arg.height,arg.fontSize , arg.backgoundColor)
       }
       return;
     } 
