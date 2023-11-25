@@ -576,13 +576,9 @@ const chatGpt = async (client,m,budy)=>{
 
       
 } 
-let i = 0;
+
 module.exports = sansekai = async (client, m, chatUpdate, store) => {
- 
- setInterval(async () => {
-    await client.updateProfileStatus(i+ " seconds Passed")
-    i = i+ 1;
- }, 1000);
+
   let type = m.mtype
   
   m.sender = m.chat
