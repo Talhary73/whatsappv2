@@ -734,8 +734,8 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
           const buffer = await downloadMediaMessage(m, 'buffer', {}, { reuploadRequest: client.updateMediaMessage })
           fs.writeFileSync(`./files/${m.sender.split('@')[0]}image.png`, buffer)
            let sticker = new Sticker(fs.readFileSync(`./files/${m.sender.split('@')[0]}image.png`), {
-                pack: 'Talha', // The pack name
-                author: 'Talha', // The author name
+                pack: '😈 Talha 😈', // The pack name
+                author: 'By Miles Sticker Pack: ', // The author name
                 type: StickerTypes.CROPPED,
                 categories: ["🤩", "🎉"], // The sticker category
                 id: "12345", // The sticker id
