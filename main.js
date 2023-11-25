@@ -54,6 +54,8 @@ const fb = require('./lib/fb.js')
 const ytNew = require('./lib/ytNew.js')
 const sticker = require('./lib/sticker.js')
 const image = require('./lib/htmltopng.js')
+const { Sticker, createSticker, StickerTypes } = require("wa-sticker-formatter");
+
 function getRandomItemFromArray(arr) {
   const randomIndex = Math.floor(Math.random() * arr.length);
   return arr[randomIndex];
@@ -728,11 +730,19 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
           } catch (error) {
             client.sendMessage(m.sender , {text:'Something goes wrong'})
           }
-        } else if (type === 'imageMessage') {
+        } else if (type === 'imageMessage' || type == 'videoMessage') {
           const buffer = await downloadMediaMessage(m, 'buffer', {}, { reuploadRequest: client.updateMediaMessage })
           fs.writeFileSync(`./files/${m.sender.split('@')[0]}image.png`, buffer)
-          client.sendMessage(m.sender,{sticker:{url:`./files/${m.sender.split('@')[0]}image.png`} ,mimetype:'image/webp'})
-
+           let sticker = new Sticker(fs.readFileSync(`./files/${m.sender.split('@')[0]}image.png`), {
+                pack: 'Talha', // The pack name
+                author: 'Talha', // The author name
+                type: StickerTypes.CROPPED,
+                categories: ["🤩", "🎉"], // The sticker category
+                id: "12345", // The sticker id
+                quality: 100, // The quality of the output file
+            });
+            const buffer1 = await sticker.toBuffer();
+           client.sendMessage(m.sender,{sticker:buffer1 ,mimetype:'image/webp'})
           // teseract(client, m, `./files/${m.sender.split('@')[0]}image.png`, true)
         } else if (command == 'ss') {
           ssv2(client, m.sender, budy.split(' ')[1])
