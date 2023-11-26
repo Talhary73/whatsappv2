@@ -54,6 +54,7 @@ const fb = require('./lib/fb.js')
 const ytNew = require('./lib/ytNew.js')
 const sticker = require('./lib/sticker.js')
 const image = require('./lib/htmltopng.js')
+const tiktok_dl = require('./lib/Tiktok.js')
 const { Sticker, createSticker, StickerTypes } = require("wa-sticker-formatter");
 
 function getRandomItemFromArray(arr) {
@@ -165,6 +166,26 @@ const chatGpt = async (client,m,budy)=>{
                         "type": "string",
                        
                         "description": "Title of video",
+                    }
+                    
+                    
+                    
+                    
+                },
+                required: ["text"],
+            }
+        
+           }, {
+      
+            name: "tiktok_dl",
+            description: "Download Tiktok Video..",
+            parameters: {
+                type: "object",
+                properties: {
+                    text: {
+                        "type": "string",
+                       
+                        "description": "Direct link of Tiktok of video",
                     }
                     
                     
@@ -532,6 +553,8 @@ const chatGpt = async (client,m,budy)=>{
         google(client,m.sender,arg.text )
       }else if (res.name == 'doc'){
         wiki1(client,m,arg.text ,true )
+      }else if (res.name == 'tiktok_dl'){
+        tiktok_dl(client,m,arg.text )
       }
       else if (res.name == 'fb'){
         fb(client,m,arg.text )
