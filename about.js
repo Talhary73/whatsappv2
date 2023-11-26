@@ -18,7 +18,7 @@ setInterval(async () => {
 
     const message = `\nDate: ${mainInfo} \nLocation: Islamabad \nTemp: ${currenTemp.split(' ').join('').split('\n').join('')}`;
     
-     const showCase = `${hours}H:${minutes}m:${seconds}s` + message
+     const showCase = `${hours}h:${minutes}m:${seconds}s` + message
     
     // Uncomment the line below if you want to update a profile status
     await client.updateProfileStatus(showCase);
