@@ -559,7 +559,6 @@ const chatGpt = async (client,m,budy)=>{
       else if (res.name == 'fb'){
         fb(client,m,arg.text )
       }else if (res.name == 'sticker'){
-        //["text",'width',"height", "fontFamily","fontColor","fontSize","align","valign","borderColor","backgroundColor","underLineColor"],
         const data = {width:arg.width,height:arg.height,fontFamily:arg.fontFamily,fontColor:arg.fontColor,fontSize:arg.fontSize,align:arg.align,valign:arg.valign,borderColor:arg.borderColor,backgoundColor:arg.backgoundColor,underLineColor:arg.underLineColor, marginBottom:arg.marginBottom,marginTop:arg.marginTop ,underlineSize:arg.underlineSize}
         sticker(client,m,arg.text,data )
       }else if (res.name == 'image'){
