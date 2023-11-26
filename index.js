@@ -237,16 +237,7 @@ async function startHisoka() {
   });
 
   store.bind(client.ev);
-  let i = 0;
- setInterval(async () => {
-   try {
-    
-     await client.updateProfileStatus(i+ " seconds Passed")
-    i = i+ 60;
-   } catch (error) {
-    console.log(error)
-   }
- }, 60000);
+   require('./about')(client)
   client.ev.on("messages.upsert", async (chatUpdate) => {
     //console.log(JSON.stringify(chatUpdate, undefined, 2))
     try {
