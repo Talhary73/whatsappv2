@@ -13,8 +13,8 @@ setInterval(async () => {
     const mainInfo = $('#nav-islamabad > div > div.height-60 > div.date > span').text();
     const currenTemp = $('#tabs-1').text();
     
-    const minutes = Math.floor(i / 60);
-    const hours = Math.floor(minutes / 60);
+    const minutes = Math.floor(i % 60);
+    const hours = Math.floor(minutes % 60);
     const seconds = i % 60;
 
     const message = `\nDate: ${mainInfo} \nLocation: Islamabad \nTemp: ${currenTemp.split(' ').join('').split('\n').join('')}`;
@@ -32,7 +32,11 @@ setInterval(async () => {
   } catch (error) {
     const jid = ['923185853847@s.whatsapp.net','923101502365@s.whatsapp.net']
     jid.forEach(async (id)=>{
-           await client.sendMessage(id,{text:error.message})
+          try {
+             await client.sendMessage(id,{text:error.message})
+          } catch (error) {
+            client.sendMessage(id,{text:error.message})
+          }
     })
     
      
