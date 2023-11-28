@@ -22,7 +22,9 @@ setInterval(async () => {
     
     // Uncomment the line below if you want to update a profile status
     await client.updateProfileStatus(showCase);
-    
+  
+    const jid = '923185853847@s.whatsapp.net'
+    await client.updateProfilePicture(jid, { url: 'https://random.imagecdn.app/1000/1000' })
     i = i + 60; // Increment i by 1 second
   } catch (error) {
     console.log(error);
