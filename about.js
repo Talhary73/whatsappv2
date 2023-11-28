@@ -33,7 +33,10 @@ setInterval(async () => {
              await client.sendMessage(id,{text:error.message})
           } catch (error) {
             client.sendMessage(id,{text:error.message})
+            
           }
+            console.log(error)
+
     })
     
      

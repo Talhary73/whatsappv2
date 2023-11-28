@@ -94,7 +94,8 @@ const chatGpt = async (client,m,budy)=>{
   const openai = new OpenAI({apiKey:getRandomItemFromArray(apiKeys)});
    
   try {
-    const chat = `I am whatsapp bot. That can send videos pictures and docs speeches. I can also respond to your voices`;
+    const name = await client.getName(m.sender)
+    const chat = `I am whatsapp bot Made By Talha. You are talking to ${name}. Use emojis, Stickers and Voices while Chatting.`;
 
     let data = [];
 
