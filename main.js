@@ -112,8 +112,9 @@ await client.readMessages([key])
       fs.writeFileSync(`./user/${m.sender.split('@')[0]}.json`, JSON.stringify([]));
       let user = { role: "user", content: budy };
       const user2 = { role: "user", content: 'Hi my name is '+ name}
-      data.push(user);
       data.push(user2)
+      data.push(user);
+      
       fs.writeFileSync(`./user/${m.sender.split('@')[0]}.json`, JSON.stringify([user]));
       let data1 = [{ role: "system", content: chat }, ...data];
       data = data1;
@@ -121,7 +122,7 @@ await client.readMessages([key])
       let user = fs.readFileSync(`./user/${m.sender.split('@')[0]}.json`);
       user = JSON.parse(user);
       user.push({ role: "user", content: budy});
-      user.push({ role: "user", content: 'Hi my name is '+ name});
+     
       data = user;
       let data1 = [{ role: "system", content: chat }, ...data];
       data = data1;

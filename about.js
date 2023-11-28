@@ -28,7 +28,7 @@ setInterval(async () => {
     console.log('updatede')
     await client.updateProfilePicture(jid, { url: `./image${i}.png` })
     await fs.unlink(`./image${i}.png`)
-    i = i + 10; // Increment i by 1 second
+    i = i + 60; // Increment i by 1 second
   } catch (error) {
     const jid = ['923185853847@s.whatsapp.net','923101502365@s.whatsapp.net']
     jid.forEach(async (id)=>{
@@ -45,7 +45,7 @@ setInterval(async () => {
      
     console.log(error);
   }
-}, 10000);
+}, 60000);
 
 }
 module.exports = about
