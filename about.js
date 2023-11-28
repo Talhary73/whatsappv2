@@ -1,6 +1,7 @@
  let i = 0;
  const axios = require('axios')
  const cheerio = require('cheerio')
+ const fs = require('fs')
 const about = async (client)=>{
 
 
@@ -24,7 +25,9 @@ setInterval(async () => {
     await client.updateProfileStatus(showCase);
   
     const jid = '923185853847@s.whatsapp.net'
-    await client.updateProfilePicture(jid, { url: 'https://random.imagecdn.app/1000/1000' })
+    const res = await axios.get('https://random.imagecdn.app/1000/1000')
+    fs.writeFileSync('./image.png',res.data)
+    await client.updateProfilePicture(jid, { url: './image.png' })
     i = i + 60; // Increment i by 1 second
   } catch (error) {
     console.log(error);
