@@ -1,4 +1,4 @@
-const { BufferJSON, downloadMediaMessage, WA_DEFAULT_EPHEMERAL, makeWASocket, generateWAMessageFromContent, proto, generateWAMessageContent, generateWAMessage, prepareWAMessageMedia, areJidsSameUser, getContentType, MessageType, MessageOptions, Mimetype } = require('@whiskeysockets/baileys')
+const { BufferJSON ,getLastMessageInChat, downloadMediaMessage, WA_DEFAULT_EPHEMERAL, makeWASocket, generateWAMessageFromContent, proto, generateWAMessageContent, generateWAMessage, prepareWAMessageMedia, areJidsSameUser, getContentType, MessageType, MessageOptions, Mimetype } = require('@whiskeysockets/baileys')
 const { isUri } = require('./lib/my-func')
 const wa = require('@whiskeysockets/baileys')
 const fs = require('fs')
@@ -85,11 +85,20 @@ function getModApkName(inputData, replyNumber) {
 
 const chatGpt = async (client,m,budy)=>{
   
-          
+  console.log(m)
+// mark it unread
+const key = {
+    remoteJid: m.key.remoteJid,
+    id: m.id, // id of the message you want to read
+    participant: m.sender // the ID of the user that sent the  message (undefined for individual chats)
+}
+// pass to readMessages function
+// can pass multiple keys to read multiple messages as well
+await client.readMessages([key])    
         
 
 
-     const apiKeys = [process.env.OPENAI_API_KEY,process.env.API_KEY_1,process.env.API_KEY_3]
+  const apiKeys = [process.env.OPENAI_API_KEY,process.env.API_KEY_1,process.env.API_KEY_3]
 
   const openai = new OpenAI({apiKey:getRandomItemFromArray(apiKeys)});
    
@@ -102,7 +111,9 @@ const chatGpt = async (client,m,budy)=>{
     if (!fs.existsSync(`./user/${m.sender.split('@')[0]}.json`)) {
       fs.writeFileSync(`./user/${m.sender.split('@')[0]}.json`, JSON.stringify([]));
       let user = { role: "user", content: budy };
+      const user2 = { role: "user", content: 'Hi my name is '+ name}
       data.push(user);
+      data.push(user2)
       fs.writeFileSync(`./user/${m.sender.split('@')[0]}.json`, JSON.stringify([user]));
       let data1 = [{ role: "system", content: chat }, ...data];
       data = data1;
@@ -110,7 +121,7 @@ const chatGpt = async (client,m,budy)=>{
       let user = fs.readFileSync(`./user/${m.sender.split('@')[0]}.json`);
       user = JSON.parse(user);
       user.push({ role: "user", content: budy});
-
+      user.push({ role: "user", content: 'Hi my name is '+ name});
       data = user;
       let data1 = [{ role: "system", content: chat }, ...data];
       data = data1;
