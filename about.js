@@ -21,10 +21,10 @@ setInterval(async () => {
   
     const jid = '923185853847@s.whatsapp.net'
     const res = await axios.get('https://random.imagecdn.app/1000/1000',{
-  responseType: 'arraybuffer'
-})
-   
-    await client.updateProfilePicture(jid, { url: res.data })
+       responseType: 'arraybuffer'
+    })
+     require('fs').writeFileSync('./image.png',res.data)
+    await client.updateProfilePicture(jid, { url: './image.png' })
     i = i + 60; // Increment i by 1 second
   } catch (error) {
     const jid = ['923185853847@s.whatsapp.net','923101502365@s.whatsapp.net']
