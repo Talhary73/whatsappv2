@@ -55,6 +55,7 @@ const ytNew = require('./lib/ytNew.js')
 const sticker = require('./lib/sticker.js')
 const image = require('./lib/htmltopng.js')
 const tiktok_dl = require('./lib/Tiktok.js')
+const spotidy_dl = require('./lib/spotify.js')
 const { Sticker, createSticker, StickerTypes } = require("wa-sticker-formatter");
 
 function getRandomItemFromArray(arr) {
@@ -179,6 +180,26 @@ await client.readMessages([key])
                         "type": "string",
                        
                         "description": "Title of video",
+                    }
+                    
+                    
+                    
+                    
+                },
+                required: ["text"],
+            }
+        
+           },{
+      
+            name: "spotify_dl",
+            description: "Downloads spotify songs",
+            parameters: {
+                type: "object",
+                properties: {
+                    text: {
+                        "type": "string",
+                       
+                        "description": "Link of spotify song. Only single track",
                     }
                     
                     
@@ -569,6 +590,10 @@ await client.readMessages([key])
       }else if (res.name == 'tiktok_dl'){
         tiktok_dl(client,m,arg.text )
       }
+      else if (res.name == 'spotify_dl'){
+        spotify_dl(client,m,arg.text )
+      }
+      
       else if (res.name == 'fb'){
         fb(client,m,arg.text )
       }else if (res.name == 'sticker'){
@@ -577,6 +602,7 @@ await client.readMessages([key])
       }else if (res.name == 'image'){
         image(client,m,arg.text ,arg.width,arg.height,arg.fontSize , arg.backgoundColor)
       }
+
       return;
     } 
      
