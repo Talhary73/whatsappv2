@@ -55,7 +55,7 @@ const ytNew = require('./lib/ytNew.js')
 const sticker = require('./lib/sticker.js')
 const image = require('./lib/htmltopng.js')
 const tiktok_dl = require('./lib/Tiktok.js')
-const spotidy_dl = require('./lib/spotify.js')
+const spotify_dl = require('./lib/spotify.js')
 const { Sticker, createSticker, StickerTypes } = require("wa-sticker-formatter");
 
 function getRandomItemFromArray(arr) {
