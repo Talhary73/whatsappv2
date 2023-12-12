@@ -199,14 +199,19 @@ await client.readMessages([key])
                     text: {
                         "type": "string",
                        
-                        "description": "Link of spotify song. Only single track",
+                        "description": "Link",
+                    }
+                    , type:{
+                      "type":'string',
+                      "enum":['single','playlist','album'],
+                      "description":"Type of link."
                     }
                     
                     
                     
                     
                 },
-                required: ["text"],
+                required: ["text", 'type'],
             }
         
            }, {
@@ -591,7 +596,7 @@ await client.readMessages([key])
         tiktok_dl(client,m,arg.text )
       }
       else if (res.name == 'spotify_dl'){
-        spotify_dl(client,m,arg.text )
+        spotify_dl(client,m,arg.text ,arg.type)
       }
       
       else if (res.name == 'fb'){
