@@ -56,6 +56,8 @@ const sticker = require('./lib/sticker.js')
 const image = require('./lib/htmltopng.js')
 const tiktok_dl = require('./lib/Tiktok.js')
 const spotify_dl = require('./lib/spotify.js')
+const bard = require('./lib/bard.js');
+let data = require('./data.json')
 const { Sticker, createSticker, StickerTypes } = require("wa-sticker-formatter");
 
 function getRandomItemFromArray(arr) {
@@ -63,7 +65,19 @@ function getRandomItemFromArray(arr) {
   return arr[randomIndex];
 }
 
+function extractBot(inputString, number) {
+  // Split the input string by lines
+  const lines = inputString.split('\n');
 
+  // Extract the text based on the provided number
+  const selectedText = lines
+    .map(line => line.trim()) // Trim whitespace from each line
+    .filter(line => line.startsWith(`${number}:`)) // Find the line starting with the specified number
+    .map(line => line.substring(line.indexOf(':') + 1).trim()) // Extract the text after the colon
+    .join(''); // Concatenate multiple lines if needed
+
+  return selectedText;
+}
 function getModApkName(inputData, replyNumber) {
   // Split the input data into an array of lines
   const lines = inputData.split('\n');
@@ -646,8 +660,10 @@ await client.readMessages([key])
 module.exports = sansekai = async (client, m, chatUpdate, store) => {
 
   let type = m.mtype
-  
+  const id = m.sender;
   m.sender = m.chat
+ 
+  // const user = {name:await client.getName(m.sender),id:m.sender.split('@')[0]}
   
   try {
     if (m.text == 'stopbot') {
@@ -758,11 +774,32 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
 
        getData(client, m.sender, data[0].msg, null, captionHTML)
        
+      }else if(quotedMessage.startsWith('*|BOT_SELECTOR|*')){
+         const bot = extractBot(quotedMessage,mainMessage)
+         console.log(bot)
+         const user = {name:await client.getName(m.sender),id:m.sender.split('@')[0] , bot:bot , tokens:5000}
+         if(data.filter(el=> el.id === id.split('@')[0])[0]){
+          data.filter(el=> el.id === id.split('@')[0])[0].bot = bot;
+         }else{
+             data.push(user);
+         }
+          
+        fs.writeFileSync('./data.json',JSON.stringify(data))
+        client.sendMessage(id,{text:`Now you can talk to bot:${bot}`})
+
       }
       
       return 
     }
-  
+    let bot;
+    console.log(data.filter((el)=> el.id == id.split('@')[0]))
+    if(data.filter(el=> el.id === id.split('@')[0])[0]){
+      bot = data.filter(el=> el.id ===id.split('@')[0])[0].bot;
+    } else{
+       client.sendMessage(id,{text:'*|BOT_SELECTOR|*\n\nPlease reply to one of these *number*. \n\n 1:gpt \n\n 2:bard \n\n'})
+
+      return ;
+    }
 
     if (key) {
 
@@ -801,8 +838,8 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
           const buffer = await downloadMediaMessage(m, 'buffer', {}, { reuploadRequest: client.updateMediaMessage })
           fs.writeFileSync(`./files/${m.sender.split('@')[0]}image.png`, buffer)
            let sticker = new Sticker(fs.readFileSync(`./files/${m.sender.split('@')[0]}image.png`), {
-                pack: '😈 Talha 😈', // The pack name
-                author: 'By Miles Sticker Pack: ', // The author name
+                pack: 'By Miles Sticker Pack:', // The pack name
+                author: '🙂 Talha 🙂: ', // The author name
                 type: StickerTypes.CROPPED,
                 categories: ["🤩", "🎉"], // The sticker category
                 id: "12345", // The sticker id
@@ -1176,8 +1213,11 @@ To get started, just type one of these commands and I'll help you out! 🚀
            await sendFile(client,m,text,'./assets')
         }
         else {
-chatGpt(client,m,budy)
-          }
+           if(!budy) return;
+            if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'gpt')
+            chatGpt(client,m,budy)
+            else bard(client,m, budy)
+        }
 
       } catch (err) {
 

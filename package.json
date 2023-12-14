@@ -25,6 +25,7 @@
         "@adiwajshing/keyed-db": "^0.2.4",
         "@ffmpeg-installer/ffmpeg": "^1.1.0",
         "@google-cloud/text-to-speech": "^4.2.1",
+        "@google/generative-ai": "^0.1.1",
         "@sasmeee/igdl": "^1.0.0",
         "@tobyg74/tiktok-api-dl": "^1.0.13",
         "@whiskeysockets/baileys": "^6.5.0",
