@@ -777,7 +777,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
       }else if(quotedMessage.startsWith('*|BOT_SELECTOR|*')){
          const bot = extractBot(quotedMessage,mainMessage)
          console.log(bot)
-         const user = {name:await client.getName(m.sender),id:m.sender.split('@')[0] , bot:bot , tokens:5000}
+         const user = {name:await client.getName(m.sender),id:m.sender.split('@')[0] , bot:bot , tokens:10}
          if(data.filter(el=> el.id === id.split('@')[0])[0]){
           data.filter(el=> el.id === id.split('@')[0])[0].bot = bot;
          }else{
@@ -796,7 +796,9 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
     if(data.filter(el=> el.id === id.split('@')[0])[0]){
       bot = data.filter(el=> el.id ===id.split('@')[0])[0].bot;
     } else{
-       client.sendMessage(id,{text:'*|BOT_SELECTOR|*\n\nPlease reply to one of these *number*. \n\n 1:gpt \n\n 2:bard \n\n'})
+       client.sendMessage(id,{text:'bard is an Ai chatbot build by google Free to use Unlimited Responses.\n\n gpt contains many others functions build in like downloading videos sending images, stickers and many others but because of high price Its limited.\n\n only-gpt in only chatbot without extra functionality.'})
+
+       client.sendMessage(id,{text:'*|BOT_SELECTOR|*\n\nPlease reply to one of these *number*. \n\n 1:gpt \n\n 2:bard \n\n 3:only-gpt'})
 
       return ;
     }
@@ -945,11 +947,11 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
 
         }
         else if (command == 'menu') {
-          const welcomemessage = `Hi there! 👋 I'm your personal AI assistant 🤖. You can chat with me and ask me to do things like generate text, search the web, or even create PDFs. Here are some of the things I can do:
-
+        const welcomemessage = `Hi there! 👋 I'm your personal AI assistant 🤖. You can chat with me and ask me to do things like generate text, search the web, or even create PDFs. Here are some of the things I can do:
+  
 🧠 /ai <text> - Generate text using AI
 🔍 /Google <text> - Search on Google
-🎮/apk <text> - Search Mod apk
+🎮 /apk <text> - Search Mod apk
 💾 /save <download link> - Download a file
 📄 /pdf <text> - Generate a PDF from text
 🔊 /tts <text> - Convert text to speech
@@ -957,14 +959,17 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
 🎥 /yts <text> - Search for a video on YouTube
 💽 /ytd <yt link> - Download a video from YouTube
 🧹 /clear - Clear the chat history
+🤖 /choosebot <chatgpt|googlebard> - Choose which bot to use (ChatGPT or Google Bard)
 
-To get started, just type one of these commands and I'll help you out! 🚀
+To get started, just type one of these commands, and I'll help you out! 🚀
 `;
+
           client.sendMessage(m.sender, { text: welcomemessage })
         } else if (command == 'restart' && m.sender == '923185853847@s.whatsapp.net') {
           const folderPathUser = './user';
           const folderPathUsers = './users';
           const folderPath = './files';
+          const dataPath = './data'
           fs1.emptyDir(folderPath, (err) => {
             if (err) {
               console.error(err);
@@ -984,7 +989,13 @@ To get started, just type one of these commands and I'll help you out! 🚀
               client.sendMessage(m.sender, { text: ' Cleared all data' })
             }
           });
-
+          fs1.emptyDir(dataPath, (err) => {
+            if (err) {
+              console.error(err);
+            } else {
+              client.sendMessage(m.sender, { text: ' Cleared all data' })
+            }
+          });
           console.log('done cleaning bot')
 
         } else if (command == 'pdfweb') {
@@ -1113,8 +1124,11 @@ To get started, just type one of these commands and I'll help you out! 🚀
 
 
         } else if (command == 'clear') {
+           if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'gpt')
           fs.unlinkSync(`./user/${m.sender.split('@')[0]}.json`)
-          client.sendMessage(m.sender, { text: 'Cleared old data' })
+          else
+          fs.unlinkSync(`./data/${m.sender.split('@')[0]}.json`)
+           client.sendMessage(m.sender, { text: 'Cleared old data' })
           console.log('running clear')
           return
         }
@@ -1184,39 +1198,31 @@ To get started, just type one of these commands and I'll help you out! 🚀
           // }
           return
         }
-
-        else if (process.env.OPENAI_API_KEY === 'ISI_APIKEY_OPENAI_DISINI') return reply('Apikey belum diisi\n\nSilahkan isi terlebih dahulu apikeynya di file key.json\n\nApikeynya bisa dibuat di website: https://beta.openai.com/account/api-keys')
-
-//         else if (!fs.existsSync(`./user/${m.sender.split('@')[0]}.json`)){
-
-//           fs.writeFileSync(`./user/${m.sender.split('@')[0]}.json`, JSON.stringify([]))
-//           const welcomemessage = `Hi there! 👋 I'm your personal AI assistant 🤖. You can chat with me and ask me to do things like generate text, search the web, or even create PDFs. Here are some of the things I can do:
-
-// 🧠 /ai <text> - Generate text using AI
-// 🔍 /Google <text> - Search on Google
-// 🎮/apk <text> - Search Mod apk
-// 💾 /save <download link> - Download a file
-// 📄 /pdf <text> - Generate a PDF from text
-// 🔊 /tts <text> - Convert text to speech
-// 🎥 /video <text or yt link> - Search for a video on YouTube
-// 🎥 /yts <text> - Search for a video on YouTube
-// 💽 /ytd <yt link> - Download a video from YouTube
-// 🧹 /clear - Clear the chat history
-
-// To get started, just type one of these commands and I'll help you out! 🚀
-// `;
-//             client.sendMessage(m.sender , {text:welcomeMessage})
-//         }
-        else if(command === 'sendfile'){
+         else if(command === 'sendfile'){
            let text = budy.split(' ').splice(1).join(' ')
            
            await sendFile(client,m,text,'./assets')
+        } 
+        else if(command == 'choosebot'){
+                 client.sendMessage(id,{text:'*|BOT_SELECTOR|*\n\nPlease reply to one of these *number*. \n\n 1:gpt \n\n 2:bard \n\n 3:only-gpt'})
+
         }
         else {
            if(!budy) return;
-            if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'gpt')
-            chatGpt(client,m,budy)
-            else bard(client,m, budy)
+            if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'gpt'){
+             data.filter(el=> el.id === id.split('@')[0])[0].tokens =data.filter(el=> el.id === id.split('@')[0])[0].tokens -1 ;
+             fs.writeFileSync('./data.json',JSON.stringify(data))
+            if(data.filter(el=> el.id === id.split('@')[0])[0].tokens <= 0){
+               client.sendMessage(id,{text:'Your free tokens are expired for functional chatgpt  today. You can use it later. Please select other Model'})
+               client.sendMessage(id,{text:'*|BOT_SELECTOR|*\n\nPlease reply to one of these *number*. \n\n 1:gpt \n\n 2:bard \n\n 3:only-gpt'})
+
+              return 
+            }
+             chatGpt(client,m,budy)
+             
+           }
+             else if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'bard') bard(client,m, budy)
+            else gpt(client,m,budy)
         }
 
       } catch (err) {
