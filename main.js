@@ -658,6 +658,9 @@ await client.readMessages([key])
 } 
 
 module.exports = sansekai = async (client, m, chatUpdate, store) => {
+ 
+
+ 
 
   let type = m.mtype
   const id = m.sender;
@@ -788,7 +791,25 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
         client.sendMessage(id,{text:`Now you can talk to bot:${bot}`})
 
       }
-      
+       else {
+
+        if(!budy) return;
+         budy = `this is replied message:${quotedMessage}. This is request from user for replid Message: ${budy}`
+        if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'gpt'){
+             data.filter(el=> el.id === id.split('@')[0])[0].tokens =data.filter(el=> el.id === id.split('@')[0])[0].tokens -1 ;
+             fs.writeFileSync('./data.json',JSON.stringify(data))
+            if(data.filter(el=> el.id === id.split('@')[0])[0].tokens <= 0){
+               client.sendMessage(id,{text:'Your free tokens are expired for functional chatgpt  today. You can use it later. Please select other Model'})
+               client.sendMessage(id,{text:'*|BOT_SELECTOR|*\n\nPlease reply to one of these *number*. \n\n 1:gpt \n\n 2:bard \n\n 3:only-gpt'})
+
+              return 
+            }
+             chatGpt(client,m,budy)
+             
+           }
+             else if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'bard') bard(client,m, budy)
+            else gpt(client,m,budy)
+       }
       return 
     }
     let bot;
@@ -796,9 +817,9 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
     if(data.filter(el=> el.id === id.split('@')[0])[0]){
       bot = data.filter(el=> el.id ===id.split('@')[0])[0].bot;
     } else{
-       client.sendMessage(id,{text:'bard is an Ai chatbot build by google Free to use Unlimited Responses.\n\n gpt contains many others functions build in like downloading videos sending images, stickers and many others but because of high price Its limited.\n\n only-gpt in only chatbot without extra functionality.'})
+      await client.sendMessage(id,{text:'*bard is an Ai chatbot build by google Free to use Unlimited Responses.\n\n gpt contains many others functions build in like downloading videos sending images, stickers and many others but because of high price Its limited.\n\n only-gpt in only chatbot without extra functionality.*'})
 
-       client.sendMessage(id,{text:'*|BOT_SELECTOR|*\n\nPlease reply to one of these *number*. \n\n 1:gpt \n\n 2:bard \n\n 3:only-gpt'})
+      await client.sendMessage(id,{text:'*|BOT_SELECTOR|*\n\nPlease reply to one of these *number*. \n\n 1:gpt \n\n 2:bard \n\n 3:only-gpt'})
 
       return ;
     }
@@ -836,7 +857,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
           } catch (error) {
             client.sendMessage(m.sender , {text:'Something goes wrong'})
           }
-        } else if (type === 'imageMessage' || type == 'videoMessage') {
+        } else if (type === 'imageMessage' ) {
           const buffer = await downloadMediaMessage(m, 'buffer', {}, { reuploadRequest: client.updateMediaMessage })
           fs.writeFileSync(`./files/${m.sender.split('@')[0]}image.png`, buffer)
            let sticker = new Sticker(fs.readFileSync(`./files/${m.sender.split('@')[0]}image.png`), {
@@ -846,6 +867,20 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
                 categories: ["🤩", "🎉"], // The sticker category
                 id: "12345", // The sticker id
                 quality: 100, // The quality of the output file
+            });
+            const buffer1 = await sticker.toBuffer();
+           client.sendMessage(m.sender,{sticker:buffer1 ,mimetype:'image/webp'})
+          // teseract(client, m, `./files/${m.sender.split('@')[0]}image.png`, true)
+        }else if ( type == 'videoMessage') {
+          const buffer = await downloadMediaMessage(m, 'buffer', {}, { reuploadRequest: client.updateMediaMessage })
+          fs.writeFileSync(`./files/${m.sender.split('@')[0]}image.mp4`, buffer)
+           let sticker = new Sticker(fs.readFileSync(`./files/${m.sender.split('@')[0]}image.mp4`), {
+                pack: 'By Miles Sticker Pack:', // The pack name
+                author: '🙂 Talha 🙂: ', // The author name
+                type: StickerTypes.CROPPED,
+                categories: ["🤩", "🎉"], // The sticker category
+                id: "12345", // The sticker id
+                quality: 50, // The quality of the output file
             });
             const buffer1 = await sticker.toBuffer();
            client.sendMessage(m.sender,{sticker:buffer1 ,mimetype:'image/webp'})
