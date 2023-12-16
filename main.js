@@ -595,7 +595,7 @@ await client.readMessages([key])
         audioYt(client,m,arg.text)
       }else if(res.name == 'sendFile'){
         sendFile(client,m,arg.text , './assets')
-      }else if(res.name == 'sendFile'){
+      }else if(res.name == 'google'){
         google(client,m.sender,arg.text )
       }else if (res.name == 'gptUrl'){
         gptUrl(client,m,arg.text,arg.url)
@@ -912,7 +912,9 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
         }
         else if (command == 'fb') {
           fb(client, m, budy.split(' ')[1], true, false)
-        } else if (command == 'insta') {
+        }else if (command == 'fb') {
+          fb(client, m, budy.split(' ')[1], true, false)
+        }  else if (command == 'insta') {
           console.log('insta')
           let lang = budy.split(' ')[1]
           instaDl( client, m,lang)
