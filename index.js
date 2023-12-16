@@ -39,7 +39,7 @@ setInterval(async ()=>{
 },20000)
 const func = async()=>{
  const FileType = await import('file-type')
- console.log(FileType)
+
 const { state, saveCreds } = await useMultiFileAuthState('auth_info_baileys')
 const saveState = saveCreds
 const pino = require("pino");
