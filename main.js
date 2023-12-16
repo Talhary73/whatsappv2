@@ -822,15 +822,23 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
       return 
     }
     let bot;
-    console.log(data.filter((el)=> el.id == id.split('@')[0]))
+    
     if(data.filter(el=> el.id === id.split('@')[0])[0]){
       bot = data.filter(el=> el.id ===id.split('@')[0])[0].bot;
     } else{
-      await client.sendMessage(id,{text:'*bard is an Ai chatbot build by google Free to use Unlimited Responses.\n\n gpt contains many others functions build in like downloading videos sending images, stickers and many others but because of high price Its limited.\n\n only-gpt in only chatbot without extra functionality.*'})
+      // await client.sendMessage(id,{text:'*bard is an Ai chatbot build by google Free to use Unlimited Responses.\n\n gpt contains many others functions build in like downloading videos sending images, stickers and many others but because of high price Its limited.\n\n only-gpt in only chatbot without extra functionality.*'})
 
-      await client.sendMessage(id,{text:'*|BOT_SELECTOR|*\n\nPlease reply to one of these *number*. \n\n 1:gpt \n\n 2:bard \n\n 3:only-gpt'})
-
-      return ;
+      // await client.sendMessage(id,{text:'*|BOT_SELECTOR|*\n\nPlease reply to one of these *number*. \n\n 1:gpt \n\n 2:bard \n\n 3:only-gpt'})
+       const bot = 'bard'
+       const user = {name:await client.getName(m.sender),id:m.sender.split('@')[0] , bot:bot , tokens:200}
+         if(data.filter(el=> el.id === id.split('@')[0])[0]){
+          data.filter(el=> el.id === id.split('@')[0])[0].bot = bot;
+         }else{
+             data.push(user);
+         }
+          
+        fs.writeFileSync('./data.json',JSON.stringify(data))
+        client.sendMessage(id,{text:`You are talking to default bot. You can change it using */bot* command.:${bot}`})
     }
 
     if (key) {
