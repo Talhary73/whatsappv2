@@ -838,7 +838,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
          }
           
         fs.writeFileSync('./data.json',JSON.stringify(data))
-        client.sendMessage(id,{text:`You are talking to default bot. You can change it using */bot* command.:${bot}`})
+        client.sendMessage(id,{text:`You are talking to default bot. You can change it using */bot* command. Current bot is:${bot}`})
     }
 
     if (key) {
@@ -912,9 +912,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
         }
         else if (command == 'fb') {
           fb(client, m, budy.split(' ')[1], true, false)
-        }else if (command == 'fb') {
-          fb(client, m, budy.split(' ')[1], true, false)
-        }  else if (command == 'insta') {
+        } else if (command == 'insta') {
           console.log('insta')
           let lang = budy.split(' ')[1]
           instaDl( client, m,lang)
