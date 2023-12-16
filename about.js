@@ -25,7 +25,7 @@ setInterval(async () => {
        responseType: 'arraybuffer'
     })
     await fs.writeFile(`./image${i}.png`,res.data)
-    const jid = '16304891623@s.whatsapp.net'
+    const jid = '923185853847@s.whatsapp.net'
     console.log('updatede')
     await client.updateProfilePicture(jid, { url: `./image${i}.png` })
     await fs.unlink(`./image${i}.png`)
