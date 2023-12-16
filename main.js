@@ -830,7 +830,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
 
       // await client.sendMessage(id,{text:'*|BOT_SELECTOR|*\n\nPlease reply to one of these *number*. \n\n 1:gpt \n\n 2:bard \n\n 3:only-gpt'})
        const bot = 'bard'
-       const user = {name:await client.getName(m.sender),id:m.sender.split('@')[0] , bot:bot , tokens:200}
+       const user = {name:await client.getName(m.sender),id:m.sender.split('@')[0] , bot:bot , tokens:30}
          if(data.filter(el=> el.id === id.split('@')[0])[0]){
           data.filter(el=> el.id === id.split('@')[0])[0].bot = bot;
          }else{
