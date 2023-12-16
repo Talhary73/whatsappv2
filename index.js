@@ -18,6 +18,7 @@ const {
   , makeCacheableSignalKeyStore
 } = require("@whiskeysockets/baileys");
 const express = require('express')
+
 const app = express()
 
 app.get('/',(req,res)=>{
@@ -37,7 +38,8 @@ setInterval(async ()=>{
    }
 },20000)
 const func = async()=>{
-
+ const FileType = await import('file-type')
+ console.log(FileType)
 const { state, saveCreds } = await useMultiFileAuthState('auth_info_baileys')
 const saveState = saveCreds
 const pino = require("pino");
@@ -431,7 +433,33 @@ async function startHisoka() {
       { quoted }
     );
   };
+client.downloadAndSaveMediaMessage = async(message, filename, attachExtension = true) => {
+                let quoted = message.msg ? message.msg : message
+                let mime = (message.msg || message).mimetype || ''
+                let messageType = message.mtype ? message.mtype.replace(/Message/gi, '') : mime.split('/')[0]
+                const stream = await downloadContentFromMessage(quoted, messageType)
+                let buffer = Buffer.from([])
+                for await (const chunk of stream) {
+                    buffer = Buffer.concat([buffer, chunk])
+                }
+                let type = await FileType.fileTypeFromBuffer(buffer)
+                trueFileName = attachExtension ? (filename + '.' + type.ext) : filename
+                    // save to file
+                await fs.writeFileSync(trueFileName, buffer)
+                return trueFileName
+            }
+            //========================================================================================================================================
+    client.downloadMediaMessage = async(message) => {
+            let mime = (message.msg || message).mimetype || ''
+            let messageType = message.mtype ? message.mtype.replace(/Message/gi, '') : mime.split('/')[0]
+            const stream = await downloadContentFromMessage(message, messageType)
+            let buffer = Buffer.from([])
+            for await (const chunk of stream) {
+                buffer = Buffer.concat([buffer, chunk])
+            }
 
+            return buffer
+        }
   client.sendText = (jid, text, quoted = "", options) =>
     client.sendMessage(jid, { text: text, ...options }, { quoted });
 

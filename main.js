@@ -757,6 +757,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
           return match ? match[1] : null;
        }
     if(m.quoted){
+      console.log(m.quoted)
       const mainMessage = m.body
       const quotedMessage = m.quoted.text
       
@@ -791,6 +792,13 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
         fs.writeFileSync('./data.json',JSON.stringify(data))
         client.sendMessage(id,{text:`Now you can talk to bot:${bot}`})
 
+      }else if(m.quoted.mtype == 'imageMessage'){
+        client.sendMessage(m.sender,{text:'heheh'})
+        const path =await client.downloadAndSaveMediaMessage(m.quoted, 'filename')
+       
+        const buffer = fs.readFileSync(path);
+        console.log(m.quoted)
+        gemini_vision(client,m,mainMessage , buffer,m.quoted.mimetype)
       }
        else {
 
@@ -860,7 +868,8 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
           }
         } else if (type === 'imageMessage' && budy) {
           const buffer = await downloadMediaMessage(m, 'buffer', {}, { reuploadRequest: client.updateMediaMessage })
-          gemini_vision(client,m,budy,buffer)
+          const Mimetype = m.message.imageMessage.mimetype
+          gemini_vision(client,m,budy,buffer, Mimetype)
           // teseract(client, m, `./files/${m.sender.split('@')[0]}image.png`, true)
         }else if (type === 'imageMessage' ) {
           const buffer = await downloadMediaMessage(m, 'buffer', {}, { reuploadRequest: client.updateMediaMessage })
