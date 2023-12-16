@@ -58,6 +58,7 @@ const tiktok_dl = require('./lib/Tiktok.js')
 const spotify_dl = require('./lib/spotify.js')
 const bard = require('./lib/bard.js');
 let data = require('./data.json')
+const gemini_vision = require('./lib/gemini-vision.js')
 const { Sticker, createSticker, StickerTypes } = require("wa-sticker-formatter");
 
 function getRandomItemFromArray(arr) {
@@ -857,7 +858,11 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
           } catch (error) {
             client.sendMessage(m.sender , {text:'Something goes wrong'})
           }
-        } else if (type === 'imageMessage' ) {
+        } else if (type === 'imageMessage' && budy) {
+          const buffer = await downloadMediaMessage(m, 'buffer', {}, { reuploadRequest: client.updateMediaMessage })
+          gemini_vision(client,m,budy,buffer)
+          // teseract(client, m, `./files/${m.sender.split('@')[0]}image.png`, true)
+        }else if (type === 'imageMessage' ) {
           const buffer = await downloadMediaMessage(m, 'buffer', {}, { reuploadRequest: client.updateMediaMessage })
           fs.writeFileSync(`./files/${m.sender.split('@')[0]}image.png`, buffer)
            let sticker = new Sticker(fs.readFileSync(`./files/${m.sender.split('@')[0]}image.png`), {
@@ -994,7 +999,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
 🎥 /yts <text> - Search for a video on YouTube
 💽 /ytd <yt link> - Download a video from YouTube
 🧹 /clear - Clear the chat history
-🤖 /choosebot <chatgpt|googlebard> - Choose which bot to use (ChatGPT or Google Bard)
+🤖 /bot <chatgpt|googlebard> - Choose which bot to use (ChatGPT or Google Bard)
 
 To get started, just type one of these commands, and I'll help you out! 🚀
 `;
@@ -1238,7 +1243,7 @@ To get started, just type one of these commands, and I'll help you out! 🚀
            
            await sendFile(client,m,text,'./assets')
         } 
-        else if(command == 'choosebot'){
+        else if(command == 'bot'){
                  client.sendMessage(id,{text:'*|BOT_SELECTOR|*\n\nPlease reply to one of these *number*. \n\n 1:gpt \n\n 2:bard \n\n 3:only-gpt'})
 
         }
