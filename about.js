@@ -6,6 +6,7 @@ const about = async (client)=>{
    
 
 setInterval(async () => {
+  console.log('am runnig')
   try {
     const { data } = await axios.get('https://tribune.com.pk/weather-updates/islamabad');
     const $ = cheerio.load(data);
