@@ -793,7 +793,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
         client.sendMessage(id,{text:`Now you can talk to bot:${bot}`})
 
       }else if(m.quoted.mtype == 'imageMessage'){
-        client.sendMessage(m.sender,{text:'heheh'})
+        
         const path =await client.downloadAndSaveMediaMessage(m.quoted, 'filename')
        
         const buffer = fs.readFileSync(path);
