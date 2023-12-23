@@ -651,18 +651,7 @@ const bardTools = async (client, m, budy) => {
   console.log(m.sender);
   const API_KEY = "AIzaSyAz4YCKV7YhqLaw0oZW-xQZrKGC91xacqc"; // Replace with your actual API key
   let data = [];
-
-  if (!fs.existsSync(`./data/${m.sender.split("@")[0]}.json`)) {
-    fs.writeFileSync(
-      `./data/${m.sender.split("@")[0]}.json`,
-      JSON.stringify([]),
-    );
-  } else {
-    data = fs.readFileSync(`./data/${m.sender.split("@")[0]}.json`, {
-      encoding: "utf-8",
-    });
-  }
-  data = JSON.parse(data);
+  let content ;
   const user = {
     role: "user",
     parts: [
@@ -671,6 +660,22 @@ const bardTools = async (client, m, budy) => {
       },
     ],
   };
+  if (!fs.existsSync(`./data/${m.sender.split("@")[0]}.json`)) {
+    fs.writeFileSync(
+      `./data/${m.sender.split("@")[0]}.json`,
+      JSON.stringify([]),
+    );
+    
+    content = [user]
+  } else {
+    data = fs.readFileSync(`./data/${m.sender.split("@")[0]}.json`, {
+      encoding: "utf-8",
+    });
+    data = JSON.parse(data);
+    content = [...data, user]
+  }
+  
+  
   // console.log([...data, user]);
 
   // return;
@@ -1044,24 +1049,10 @@ const bardTools = async (client, m, budy) => {
         required: ["text"],
       },
     },
-    {
-      name: "clear",
-      description: "This will clear previous response with chatBot",
-      parameters: {
-        type: "object",
-        properties: {
-          text: {
-            type: "boolean",
-
-            description: "This will tell weather clear data or not.",
-          },
-        },
-        required: ["text"],
-      },
-    },
+   
   ];
   const data1 = {
-    contents: [...data, user], // Include the new user data in the contents array
+    contents: content, // Include the new user data in the contents array
     tools: [
       {
         functionDeclarations: tools,
@@ -1180,6 +1171,8 @@ const bardTools = async (client, m, budy) => {
     }
   } catch (error) {
     console.error(error);
+    fs.unlinkSync( `./data/${m.sender.split("@")[0]}.json`)
+    
     client.sendMessage(m.sender, {text:'error.message'})
   }
 
