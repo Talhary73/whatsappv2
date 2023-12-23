@@ -649,7 +649,8 @@ const chatGpt = async (client,m,budy)=>{
 
 const bardTools = async (client, m, budy) => {
   console.log(m.sender);
-  const API_KEY = "AIzaSyAz4YCKV7YhqLaw0oZW-xQZrKGC91xacqc"; // Replace with your actual API key
+  const apis = [process.env.BARD_API_1, process.env.BARD_API_2]
+  const API_KEY = getRandomItemFromArray(apis); // Replace with your actual API key
   let data = [];
   let content ;
   const user = {
