@@ -1102,7 +1102,7 @@ const bardTools = async (client, m, budy) => {
     ); // Write the updated history to the file
 
     if (msg.text) {
-      client.sendMessage(m.chat, { text: msg.text }, { quoted: m });
+    client.sendMessage(m.sender, {text:msg.text})
     } else if (msg.functionCall) {
        const res = msg.functionCall;
       const arg = msg.functionCall.args;
@@ -1180,6 +1180,7 @@ const bardTools = async (client, m, budy) => {
     }
   } catch (error) {
     console.error(error);
+    client.sendMessage(m.sender, {text:'error.message'})
   }
 
   // Call the function
