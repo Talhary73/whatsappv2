@@ -20,6 +20,7 @@ let key = true
 let getData = require('./lib/downloadv2.js')
 const ytd = require('./lib/ytTest.js')
 let ssv2 = require('./lib/ssv2.js')
+const ss = require('./lib/ss.js')
 // const instadownloader = require('./lib/insta.js')
 const yts = require('./lib/yts.js')
 const sendfromlink = require('./lib/sendfromlink.js')
@@ -869,22 +870,22 @@ const bardTools = async (client, m, budy) => {
         required: ["text"],
       },
     },
-    {
-      name: "google",
-      description: "This will google anything and send urls to user.",
-      parameters: {
-        type: "object",
-        properties: {
-          text: {
-            type: "string",
+    // {
+    //   name: "google",
+    //   description: "This will google anything and send urls to user.",
+    //   parameters: {
+    //     type: "object",
+    //     properties: {
+    //       text: {
+    //         type: "string",
 
-            description:
-              "This will return Title for google search that best describe the user request",
-          },
-        },
-        required: ["text"],
-      },
-    },
+    //         description:
+    //           "This will return Title for google search that best describe the user request",
+    //       },
+    //     },
+    //     required: ["text"],
+    //   },
+    // },
     {
       name: "audioYt",
       description: "This downloads audio and sends it.",
@@ -1434,6 +1435,9 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
           // teseract(client, m, `./files/${m.sender.split('@')[0]}image.png`, true)
         } else if (command == 'ss') {
           ssv2(client, m.sender, budy.split(' ')[1])
+        }
+        else if (command == 'ssv1') {
+          ss(client, m.sender, budy.split(' ')[1])
         }
         else if (command == 'fb') {
           fb(client, m, budy.split(' ')[1], true, false)
