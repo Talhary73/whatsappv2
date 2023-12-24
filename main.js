@@ -994,15 +994,23 @@ const bardTools = async (client, m, budy) => {
       parameters: {
         type: "object",
         properties: {
-          html: {
+          text: {
             type: "string",
 
-            description: "This is html code for sticker",
+            description: "This is text",
           },
-          
-          
+          color: {
+            type: "string",
+
+            description: "color of text",
+          },
+          fontSize: {
+            type: "string",
+
+            description: "Font size of text",
+          },
         },
-        required: ["html"],
+        required: ["text", 'color','fontSize'],
       },
     },
     // {
@@ -1158,7 +1166,7 @@ const bardTools = async (client, m, budy) => {
       } else if (res.name == "fb") {
         fb(client, m, arg.text);
       }else if (res.name == "stickerv1") {
-        stickerv1(client, m, arg.html);
+        stickerv1(client, m, arg.text,arg.color,arg.fontSize);
       } else if (res.name == "sticker") {
         const data = {
           width: arg.width,
