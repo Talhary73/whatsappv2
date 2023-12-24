@@ -54,12 +54,14 @@ const wiki1 = require('./lib/wiki.js')
 const fb = require('./lib/fb.js')
 const ytNew = require('./lib/ytNew.js')
 const sticker = require('./lib/sticker.js')
+const stickerv1 = require('./lib/stickerv1.js')
 const image = require('./lib/htmltopng.js')
 const tiktok_dl = require('./lib/Tiktok.js')
 const spotify_dl = require('./lib/spotify.js')
 const bard = require('./lib/bard.js');
 let data = require('./data.json')
 const gemini_vision = require('./lib/gemini-vision.js')
+
 const { Sticker, createSticker, StickerTypes } = require("wa-sticker-formatter");
 
 function getRandomItemFromArray(arr) {
@@ -987,54 +989,71 @@ const bardTools = async (client, m, budy) => {
       },
     },
     {
-      name: "sticker",
-      description: "create sticker from text.",
+      name: "stickerv1",
+      description: "It will send sticker from Text",
       parameters: {
         type: "object",
         properties: {
-          text: {
+          html: {
             type: "string",
 
-            description: "simple text.",
+            description: "This is html code for sticker",
           },
-          height: { type: "string", description: "Height of sticker" },
-          width: { type: "string", description: "width of sticker" },
-          fontFamily: { type: "string", description: "Font Family of Text" },
-          fontColor: { type: "string", description: "Font Color of Text" },
-          fontSize: { type: "string", description: "Font size of Text" },
-          align: { type: "string", description: "align" },
-          valign: { type: "string", description: "valign" },
-          borderColor: { type: "string", description: "border color" },
-          backgoundColor: {
-            type: "string",
-            description: "Background color code",
-          },
-          underLineColor: {
-            type: "string",
-            description: "UnderLine color code",
-          },
-          marginTop: { type: "string", description: "Margin top" },
-          marginBottom: { type: "string", description: "Margin bottom" },
-          underlineSize: { type: "string", description: "under line size" },
+          
+          
         },
-        required: [
-          "text",
-          "width",
-          "height",
-          "fontFamily",
-          "fontColor",
-          "fontSize",
-          "align",
-          "valign",
-          "borderColor",
-          "backgroundColor",
-          "underLineColor",
-          "marginTop",
-          "marginBottom",
-          "underlineSize",
-        ],
+        required: ["html"],
       },
     },
+    // {
+    //   name: "sticker",
+    //   description: "create sticker from text.",
+    //   parameters: {
+    //     type: "object",
+    //     properties: {
+    //       text: {
+    //         type: "string",
+
+    //         description: "simple text.",
+    //       },
+    //       height: { type: "string", description: "Height of sticker" },
+    //       width: { type: "string", description: "width of sticker" },
+    //       fontFamily: { type: "string", description: "Font Family of Text" },
+    //       fontColor: { type: "string", description: "Font Color of Text" },
+    //       fontSize: { type: "string", description: "Font size of Text" },
+    //       align: { type: "string", description: "align" },
+    //       valign: { type: "string", description: "valign" },
+    //       borderColor: { type: "string", description: "border color" },
+    //       backgoundColor: {
+    //         type: "string",
+    //         description: "Background color code",
+    //       },
+    //       underLineColor: {
+    //         type: "string",
+    //         description: "UnderLine color code",
+    //       },
+    //       marginTop: { type: "string", description: "Margin top" },
+    //       marginBottom: { type: "string", description: "Margin bottom" },
+    //       underlineSize: { type: "string", description: "under line size" },
+    //     },
+    //     required: [
+    //       "text",
+    //       "width",
+    //       "height",
+    //       "fontFamily",
+    //       "fontColor",
+    //       "fontSize",
+    //       "align",
+    //       "valign",
+    //       "borderColor",
+    //       "backgroundColor",
+    //       "underLineColor",
+    //       "marginTop",
+    //       "marginBottom",
+    //       "underlineSize",
+    //     ],
+    //   },
+    // },
     {
       name: "bardGemini",
       description:
@@ -1138,6 +1157,8 @@ const bardTools = async (client, m, budy) => {
         spotify_dl(client, m, arg.text, arg.type);
       } else if (res.name == "fb") {
         fb(client, m, arg.text);
+      }else if (res.name == "stickerv1") {
+        stickerv1(client, m, arg.html);
       } else if (res.name == "sticker") {
         const data = {
           width: arg.width,
@@ -1172,10 +1193,10 @@ const bardTools = async (client, m, budy) => {
       return;
     }
   } catch (error) {
-    console.error(error);
+    console.error(error.message);
     fs.unlinkSync( `./data/${m.sender.split("@")[0]}.json`)
     
-    client.sendMessage(m.sender, {text:'error.message'})
+    client.sendMessage(m.sender, {text:error.message})
   }
 
   // Call the function
@@ -1435,6 +1456,15 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
           // teseract(client, m, `./files/${m.sender.split('@')[0]}image.png`, true)
         } else if (command == 'ss') {
           ssv2(client, m.sender, budy.split(' ')[1])
+        }
+        else if (command == 'sticker') {
+          console.log(budy.split(' ').slice(1).join(' '))
+          try {
+    await          stickerv1(client, m, budy.split(' ').slice(1).join(' '),'black' , '100px')
+            
+          } catch (error) {
+              console.log(error)   
+          }
         }
         else if (command == 'ssv1') {
           ss(client, m.sender, budy.split(' ')[1])

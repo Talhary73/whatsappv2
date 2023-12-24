@@ -20,8 +20,8 @@ const {
 const express = require('express')
 
 const app = express()
-
-app.get('/',(req,res)=>{
+app.use(express.static('./public'))
+app.get('/check',(req,res)=>{
   res.json({res:'hi i am bot'}).status(200)
 })
 require('dotenv').config()
