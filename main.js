@@ -1011,7 +1011,7 @@ const bardTools = async (client, m, budy) => {
           fontSize: {
             type: "string",
 
-            description: "Font size of text in px unit",
+            description: "Font size of text in px unit it should be larger for smaller length of text and smaller for larger length of text. like for 2 words it should be 30px and similarly for larger lengths like 10 words it should be 23 and so on.",
           },
         },
         required: ["html", 'bgcolorofbody','bgcolorofelementcontainer','fontSize'],
