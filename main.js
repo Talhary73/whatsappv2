@@ -888,21 +888,21 @@ const bardTools = async (client, m, budy) => {
     //     required: ["text"],
     //   },
     // },
-    {
-      name: "audioYt",
-      description: "This downloads audio and sends it.",
-      parameters: {
-        type: "object",
-        properties: {
-          text: {
-            type: "string",
+    // {
+    //   name: "audioYt",
+    //   description: "This downloads audio and sends it.",
+    //   parameters: {
+    //     type: "object",
+    //     properties: {
+    //       text: {
+    //         type: "string",
 
-            description: " Direct link of Youtube video.",
-          },
-        },
-        required: ["text"],
-      },
-    },
+    //         description: " Direct link of Youtube video.",
+    //       },
+    //     },
+    //     required: ["text"],
+    //   },
+    // },
     {
       name: "ytaFromText",
       description: "Send audio songs and audio form of youtube video",
@@ -936,7 +936,7 @@ const bardTools = async (client, m, budy) => {
     {
       name: "ttsv2",
       description:
-        "This will take text as input and convert into audio and send to the user",
+        "This will take text as input and convert into audio / voice and send to the user",
       parameters: {
         type: "object",
         properties: {
