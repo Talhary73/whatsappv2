@@ -994,23 +994,27 @@ const bardTools = async (client, m, budy) => {
       parameters: {
         type: "object",
         properties: {
-          text: {
+          html: {
             type: "string",
 
-            description: "This is text",
+            description: "This is html with inline css",
           },
-          color: {
+          bgcolorofbody: {
             type: "string",
 
-            description: "color of text",
+            description: "background color of body",
+          },bgcolorofelementcontainer: {
+            type: "string",
+
+            description: "background color of element container",
           },
           fontSize: {
             type: "string",
 
-            description: "Font size of text",
+            description: "Font size of text in px unit",
           },
         },
-        required: ["text", 'color','fontSize'],
+        required: ["html", 'bgcolorofbody','bgcolorofelementcontainer','fontSize'],
       },
     },
     // {
@@ -1166,7 +1170,7 @@ const bardTools = async (client, m, budy) => {
       } else if (res.name == "fb") {
         fb(client, m, arg.text);
       }else if (res.name == "stickerv1") {
-        stickerv1(client, m, arg.text,arg.color,arg.fontSize);
+        stickerv1(client, m, arg.html,arg.bgcolorofbody,arg.fontSize , arg.bgcolorofelementcontainer);
       } else if (res.name == "sticker") {
         const data = {
           width: arg.width,
