@@ -966,28 +966,28 @@ const bardTools = async (client, m, budy) => {
         required: ["text"],
       },
     },
-    {
-      name: "image",
-      description: "It will send Image from Text",
-      parameters: {
-        type: "object",
-        properties: {
-          text: {
-            type: "string",
+    // {
+    //   name: "image",
+    //   description: "It will send Image from Text",
+    //   parameters: {
+    //     type: "object",
+    //     properties: {
+    //       text: {
+    //         type: "string",
 
-            description: "This is text",
-          },
-          width: { type: "string", description: "Width of Image" },
-          height: { type: "string", description: "height of Image" },
-          fontSize: { type: "string", description: "font size of Image" },
-          backgoundColor: {
-            type: "string",
-            description: "font color of Image",
-          },
-        },
-        required: ["text", "width", "height", "fontSize", "backgoundColor"],
-      },
-    },
+    //         description: "This is text",
+    //       },
+    //       width: { type: "string", description: "Width of Image" },
+    //       height: { type: "string", description: "height of Image" },
+    //       fontSize: { type: "string", description: "font size of Image" },
+    //       backgoundColor: {
+    //         type: "string",
+    //         description: "font color of Image",
+    //       },
+    //     },
+    //     required: ["text", "width", "height", "fontSize", "backgoundColor"],
+    //   },
+    // },
     {
       name: "stickerv1",
       description: "It will send sticker from Text",
