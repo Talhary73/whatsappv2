@@ -32,7 +32,7 @@ app.listen(port,()=>{
 const axios = require('axios')
 setInterval(async ()=>{
    try {
-    await axios.get('https://whatsapp-bot023-f8d04f752ab3.herokuapp.com/')
+    await axios.get('https://whatsapp-bot-new-bot-65c6e4e95b06.herokuapp.com/')
    } catch (error) {
     console.log(' error ')
    }
