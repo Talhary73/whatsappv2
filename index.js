@@ -46,9 +46,15 @@ const wss = new WebSocket.Server({server:server})
 server.listen(port,()=>{
     console.log('server is running')
 })
-// wss.on('message',function incoming(message) {
-//   console.log(message)
-// })
+
+const axios = require('axios')
+setInterval(async ()=>{
+   try {
+    await axios.get('https://whatsapp-bot-new-bot-65c6e4e95b06.herokuapp.com/')
+   } catch (error) {
+    console.log(' error ')
+   }
+},20000)
 
 const func = async()=>{
  const FileType = await import('file-type')
@@ -576,12 +582,6 @@ fs.watchFile(file, () => {
   require(file);
 });
 }
-const axios = require('axios')
-setInterval(async ()=>{
-   try {
-    await axios.get('https://whatsapp-bot023-f8d04f752ab3.herokuapp.com/')
-   } catch (error) {
-    console.log(' error ')
-   }
-},20000)
+
 func()
+
