@@ -1,5 +1,6 @@
 const sessionName = "Talha";
 const owner = ["923101502365"];
+const QRCode = require('qrcode')
 const {
   default: sansekaiConnect,
   useMultiFileAuthState,
@@ -17,26 +18,38 @@ const {
   makeWASocket
   , makeCacheableSignalKeyStore
 } = require("@whiskeysockets/baileys");
+
+
+
 const express = require('express')
 
 const app = express()
-app.use(express.static('./public'))
+
+
+
 app.get('/check',(req,res)=>{
   res.json({res:'hi i am bot'}).status(200)
 })
+
 require('dotenv').config()
-const port = process.env.PORT || 5000;
-app.listen(port,()=>{
-  console.log(`server started on port : ${port}`)
+const port = process.env.PORT || 3000;
+
+
+const WebSocket= require('ws')
+
+app.use(express.static('./public'))
+const server = require('http').createServer(app)
+const wss = new WebSocket.Server({server:server})
+
+
+
+server.listen(port,()=>{
+    console.log('server is running')
 })
-const axios = require('axios')
-setInterval(async ()=>{
-   try {
-    await axios.get('https://whatsapp-bot023-f8d04f752ab3.herokuapp.com/')
-   } catch (error) {
-    console.log(' error ')
-   }
-},20000)
+// wss.on('message',function incoming(message) {
+//   console.log(message)
+// })
+
 const func = async()=>{
  const FileType = await import('file-type')
 
@@ -353,36 +366,84 @@ async function startHisoka() {
   client.public = true;
 
   client.serializeM = (m) => smsg(client, m, store);
+ let user = ''
+  wss.once('connection', function connection(ws) {
+    console.log('got user`')
+    user = ws;
+    ws.send('Please Wait. You are connected to backend.')
+    
+  })
+
   client.ev.on("connection.update", async (update) => {
+  
+ 
+
+
+
+    if(!user) return;
+    if(update?.qr)
+    QRCode.toDataURL(update?.qr, { errorCorrectionLevel: 'H' }, function (err, url) {
+         user.send(url);
+    })
+     else {
+      console.log(update)
+    }
+    
+
+  
+
+
+
+
+   
+   
     const { connection, lastDisconnect } = update;
     if (connection === "close") {
       let reason = new Boom(lastDisconnect?.error)?.output.statusCode;
       if (reason === DisconnectReason.badSession) {
+        if(user)
+        user.send(`Bad Session File, Please Delete Session and Scan Again`)
         console.log(`Bad Session File, Please Delete Session and Scan Again`);
         process.exit();
       } else if (reason === DisconnectReason.connectionClosed) {
+        if(user)
+        user.send(`Connection closed, reconnecting....`)
         console.log("Connection closed, reconnecting....");
         startHisoka();
       } else if (reason === DisconnectReason.connectionLost) {
+        if(user)
+        user.send('Connection Lost from Server, reconnecting...')
         console.log("Connection Lost from Server, reconnecting...");
         startHisoka();
       } else if (reason === DisconnectReason.connectionReplaced) {
+        if(user)
+        user.send('Connection Replaced, Another New Session Opened, Please Close Current Session First')
         console.log(
           "Connection Replaced, Another New Session Opened, Please Close Current Session First"
         );
         process.exit();
       } else if (reason === DisconnectReason.loggedOut) {
+        if(user){
+          user.send('Device Logged Out, Please Delete Session file Talha.json and Scan Again.')
+        }
         console.log(
           `Device Logged Out, Please Delete Session file Talha.json and Scan Again.`
         );
         process.exit();
       } else if (reason === DisconnectReason.restartRequired) {
+        if(user){
+          user.send('Restart Required, Restarting...')
+        }
         console.log("Restart Required, Restarting...");
         startHisoka();
       } else if (reason === DisconnectReason.timedOut) {
+        if(user)
+        user.send('Connection TimedOut, Reconnecting...')
         console.log("Connection TimedOut, Reconnecting...");
         startHisoka();
       } else {
+        if(user)
+        user.send(`Unknown DisconnectReason: ${reason}|${connection}`)
         console.log(`Unknown DisconnectReason: ${reason}|${connection}`);
         startHisoka();
       }
@@ -515,4 +576,12 @@ fs.watchFile(file, () => {
   require(file);
 });
 }
+const axios = require('axios')
+setInterval(async ()=>{
+   try {
+    await axios.get('https://whatsapp-bot023-f8d04f752ab3.herokuapp.com/')
+   } catch (error) {
+    console.log(' error ')
+   }
+},20000)
 func()
