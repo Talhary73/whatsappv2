@@ -38,14 +38,8 @@ const port = process.env.PORT || 3000;
 const WebSocket= require('ws')
 
 app.use(express.static('./public'))
-const server = require('http').createServer(app)
-const wss = new WebSocket.Server({server:server})
+app.listen(port)
 
-
-
-server.listen(port,()=>{
-    console.log('server is running')
-})
 
 const axios = require('axios')
 setInterval(async ()=>{
@@ -373,12 +367,6 @@ async function startHisoka() {
 
   client.serializeM = (m) => smsg(client, m, store);
  let user = ''
-  wss.once('connection', function connection(ws) {
-    console.log('got user`')
-    user = ws;
-    ws.send('Please Wait. You are connected to backend.')
-    
-  })
 
   client.ev.on("connection.update", async (update) => {
   
@@ -386,17 +374,6 @@ async function startHisoka() {
 
 
 
-    if(!user) return;
-    if(update?.qr)
-    QRCode.toDataURL(update?.qr, { errorCorrectionLevel: 'H' }, function (err, url) {
-         user.send(url);
-    })
-     else {
-      console.log(update)
-    }
-    
-
-  
 
 
 
