@@ -816,7 +816,7 @@ const bardTools = async (client, m, budy) => {
       return;
     } else bardTools(client,m,budy)
   } catch (error) {
-    console.error(error.message);
+    console.error(error);
     fs.unlinkSync( `./data/${m.sender.split("@")[0]}.json`)
     
     client.sendMessage(m.sender, {text:error.message})
