@@ -259,7 +259,7 @@ async function startHisoka() {
 
   const client = sansekaiConnect({
     logger: pino({ level: "silent" }),
-    printQRInTerminal: false,
+    printQRInTerminal: true,
     browser: ["Wa-OpenAI - Talha", "Safari", "3.0"],
     auth: state,
   });
