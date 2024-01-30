@@ -1034,7 +1034,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
           fs.writeFileSync(`./files/${m.sender.split('@')[0]}image.png`, buffer)
           teseract(client, m, `./files/${m.sender.split('@')[0]}image.png`, false)
 
-        }else if (budy.length<2) {
+        }else if (budy.length<=2) {
           return client.sendMessage(m.sender, {text:'Response too short'})
         }else if (budy ==='2') {
           const bot = 'bard'
