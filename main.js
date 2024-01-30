@@ -1027,6 +1027,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
           fs.writeFileSync('./my-download.ogg', buffer)
           voice(client, m.sender, './my-download.ogg', (res) => {
             console.log(res)
+            client.sendMessage(m.sender, {text:`*Transcription*:${res}`})
             bardTools(client,m,res)
             // gptaudio(client, m, res)
           })
