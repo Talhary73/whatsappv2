@@ -728,7 +728,7 @@ const bardTools = async (client, m, budy) => {
       `./data/${m.sender.split("@")[0]}.json`,
       JSON.stringify(data),
     ); // Write the updated history to the file
-
+    
     if (msg.text) {
     client.sendMessage(m.sender, {text:msg.text})
     } else if (msg.functionCall) {
@@ -814,7 +814,7 @@ const bardTools = async (client, m, budy) => {
       }
         
       return;
-    }
+    } else bardTools(client,m,budy)
   } catch (error) {
     console.error(error.message);
     fs.unlinkSync( `./data/${m.sender.split("@")[0]}.json`)
