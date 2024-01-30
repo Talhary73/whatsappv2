@@ -31,6 +31,7 @@
         "@tobyg74/tiktok-api-dl": "^1.0.13",
         "@whiskeysockets/baileys": "^6.5.0",
         "ansi-styles": "^6.2.1",
+        "assemblyai": "^4.2.2",
         "awesome-phonenumber": "^2.64.0",
         "axios": "^1.4.0",
         "bard-ai": "^1.2.0",
