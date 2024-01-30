@@ -28,20 +28,27 @@ require('dotenv').config();
 const port = process.env.PORT || 3002;
 
 // Middleware to calculate and log the current URL
-app.use((req, res, next) => {
-  const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
-  console.log('Current URL:', fullUrl);
-  setTimeout(async ()=>{
+// app.use((req, res, next) => {
+//   const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
+//   console.log('Current URL:', fullUrl);
+//   setTimeout(async ()=>{
+//    try {
+//     await axios.get(`${req.protocol}://${req.get('host')}`)
+//    } catch (error) {
+//     console.log(' error ')
+//    }
+//   console.log('sended')
+// },20000)
+//   next(); // Move to the next middleware or route handler
+// });
+ setInterval(async ()=>{
    try {
-    await axios.get(`${req.protocol}://${req.get('host')}`)
+    await axios.get(`https://whatsapp-bot-new-bot-65c6e4e95b06.herokuapp.com/`)
    } catch (error) {
     console.log(' error ')
    }
-  console.log('sended')
-},20000)
-  next(); // Move to the next middleware or route handler
-});
 
+},20000)
 // Static file middleware
 app.use(express.static('./public'));
 
