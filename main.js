@@ -690,8 +690,11 @@ const bardTools = async (client, m, budy) => {
     tools: [
       {
         functionDeclarations: tools,
-      },
+      }
+
     ],
+    
+    
   };
 
   try {
@@ -806,6 +809,8 @@ const bardTools = async (client, m, budy) => {
           client.sendMessage(m.sender, { text: 'Cleared old data' })
           console.log('running clear')
           return
+      } else{
+         bard(client, m, budy);
       }
         
       return;
@@ -1029,6 +1034,30 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
           fs.writeFileSync(`./files/${m.sender.split('@')[0]}image.png`, buffer)
           teseract(client, m, `./files/${m.sender.split('@')[0]}image.png`, false)
 
+        }else if (budy.length<2) {
+          return client.sendMessage(m.sender, {text:'Response too short'})
+        }else if (budy ==='2') {
+          const bot = 'bard'
+          const user = {name:await client.getName(m.sender),id:m.sender.split('@')[0] , bot:bot , tokens:10}
+         if(data.filter(el=> el.id === id.split('@')[0])[0]){
+          data.filter(el=> el.id === id.split('@')[0])[0].bot = bot;
+         }else{
+             data.push(user);
+         }
+          
+        fs.writeFileSync('./data.json',JSON.stringify(data))
+        client.sendMessage(id,{text:`Now you can talk to bot:${bot}`})
+        }else if (budy ==='4') {
+          const bot = 'bard-only'
+          const user = {name:await client.getName(m.sender),id:m.sender.split('@')[0] , bot:bot , tokens:10}
+         if(data.filter(el=> el.id === id.split('@')[0])[0]){
+          data.filter(el=> el.id === id.split('@')[0])[0].bot = bot;
+         }else{
+             data.push(user);
+         }
+          
+        fs.writeFileSync('./data.json',JSON.stringify(data))
+        client.sendMessage(id,{text:`Now you can talk to bot:${bot}`})
         }else if (command === 'yts') {
           let text = budy.split(' ').splice(1).join(' ')
           yts(client,m.sender,text);
@@ -1078,7 +1107,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
         else if (command == 'sticker') {
           console.log(budy.split(' ').slice(1).join(' '))
           try {
-    await          stickerv1(client, m, budy.split(' ').slice(1).join(' '),'black' , '100px')
+           await stickerv1(client, m, budy.split(' ').slice(1).join(' '),'black' , '100px')
             
           } catch (error) {
               console.log(error)   
@@ -1438,7 +1467,7 @@ To get started, just type one of these commands, and I'll help you out! 🚀
            await sendFile(client,m,text,'./assets')
         } 
         else if(command == 'bot'){
-                 client.sendMessage(id,{text:'*|BOT_SELECTOR|*\n\nPlease reply to one of these *number*. \n\n 1:gpt \n\n 2:bard \n\n 3:only-gpt \n\n 4:bard-only'})
+                 client.sendMessage(id,{text:'*|BOT_SELECTOR|*\n\nPlease reply to one of these *number*.  \n\n 2:bard \n\n 4:bard-only'})
 
         }
         else {
@@ -1456,8 +1485,9 @@ To get started, just type one of these commands, and I'll help you out! 🚀
              
            }
              else if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'bard') bardTools(client,m, budy)
-            else if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'bard-only')  bard(client,m,budy)
-          else bard(client,m,budy)
+             else if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'bard-only')  bard(client,m,budy)
+             else  client.sendMessage(id,{text:'*|BOT_SELECTOR|*\n\nPlease reply to one of these *number*.  \n\n 2:bard \n\n 4:bard-only'})
+
         }
 
       } catch (err) {
