@@ -13,38 +13,11 @@
   
   <div class="sticker">
     <h2>Whatsapp bot </h2>
-     
+     <img src="./image.png">
   </div>
   <div class="status"></div>
   <script>
- const socket = new WebSocket('ws://whatsapp-bot-new-bot-65c6e4e95b06.herokuapp.com')
-  socket.addEventListener('open',(event)=>{
-    socket.send('Connected succesfully')
-    
-  })
-  socket.addEventListener('message',(event)=>{
-     console.log(event.data)
 
-   if (event.data.startsWith('data')) {
-    const stickerContainer = document.querySelector('.sticker');
-    
-    // Check if .sticker container already contains an image
-    const existingImage = stickerContainer.querySelector('img');
-
-    if (existingImage) {
-        // If an image exists, remove it
-        existingImage.remove();
-    }
-
-    // Create a new image and append it to .sticker container
-    const img = document.createElement('img');
-    img.src = event.data;
-    stickerContainer.appendChild(img);
-}else{
-     document.querySelector('.status').textContent = event.data
-}
-
-  })
   </script>
 </body>
 </html>

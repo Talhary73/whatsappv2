@@ -21,34 +21,47 @@ const {
 
 
 
-const express = require('express')
+const express = require('express');
+const app = express();
 
-const app = express()
+require('dotenv').config();
+const port = process.env.PORT || 3002;
 
-
-
-app.get('/check',(req,res)=>{
-  res.json({res:'hi i am bot'}).status(200)
-})
-
-require('dotenv').config()
-const port = process.env.PORT || 3000;
-
-
-const WebSocket= require('ws')
-
-app.use(express.static('./public'))
-app.listen(port)
-
-
-const axios = require('axios')
-setInterval(async ()=>{
+// Middleware to calculate and log the current URL
+app.use((req, res, next) => {
+  const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
+  console.log('Current URL:', fullUrl);
+  setTimeout(async ()=>{
    try {
-    await axios.get('https://whatsapp-bot-new-bot-65c6e4e95b06.herokuapp.com/')
+    await axios.get(`${req.protocol}://${req.get('host')}`)
    } catch (error) {
     console.log(' error ')
    }
+  console.log('sended')
 },20000)
+  next(); // Move to the next middleware or route handler
+});
+
+// Static file middleware
+app.use(express.static('./public'));
+
+app.get('/check', (req, res) => {
+  res.json({ res: 'hi, I am a bot' }).status(200);
+});
+
+app.listen(port, () => {
+  console.log(`Server is running on port: ${port}`);
+});
+
+const axios = require('axios')
+// setInterval(async ()=>{
+//    try {
+//     await axios.get('https://whatsapp-bot-new-bot-65c6e4e95b06.herokuapp.com/')
+//    } catch (error) {
+//     console.log(' error ')
+//    }
+//    return console.log('done')
+// },5000)
 
 const func = async()=>{
  const FileType = await import('file-type')
@@ -246,7 +259,7 @@ async function startHisoka() {
 
   const client = sansekaiConnect({
     logger: pino({ level: "silent" }),
-    printQRInTerminal: true,
+    printQRInTerminal: false,
     browser: ["Wa-OpenAI - Talha", "Safari", "3.0"],
     auth: state,
   });
@@ -371,18 +384,18 @@ async function startHisoka() {
   client.ev.on("connection.update", async (update) => {
   
  
-
-
-
-
-
-
-
-   
-   
+  if(update.qr) {
+    const image = await QRCode.toDataURL(update.qr)
+    const base64Image = image.replace(/^data:image\/png;base64,/, '');
+   fs.writeFileSync('./public/image.png', base64Image, 'base64');
+  }
+ 
     const { connection, lastDisconnect } = update;
+
+    
+
     if (connection === "close") {
-      let reason = new Boom(lastDisconnect?.error)?.output.statusCode;
+     let reason = new Boom(lastDisconnect?.error)?.output.statusCode;
       if (reason === DisconnectReason.badSession) {
         if(user)
         user.send(`Bad Session File, Please Delete Session and Scan Again`)
