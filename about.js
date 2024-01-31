@@ -27,7 +27,7 @@ setInterval(async () => {
     await fs.writeFile(`./image${i}.png`,res.data)
     const jid = '923185853847@s.whatsapp.net'
     console.log('updatede')
-    await client.updateProfilePicture(jid, { url: `./image${i}.png` })
+    // await client.updateProfilePicture(jid, { url: `./image${i}.png` })
     await fs.unlink(`./image${i}.png`)
     i = i + 60; // Increment i by 1 second
   } catch (error) {

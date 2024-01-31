@@ -414,6 +414,24 @@
                 required: ["text"],
             }
         
+           },{
+       
+            name: "ai_image",
+            description: "Generate Image from Text Using Ai",
+            parameters: {
+                type: "object",
+                properties: {
+                    text: {
+                        "type": "string",
+                       
+                        "description": "Prompt for AI to create image from.",
+                    }
+                    
+                    
+                },
+                required: ["text"],
+            }
+        
            }
   ];
   module.exports = tools

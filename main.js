@@ -61,7 +61,7 @@ const spotify_dl = require('./lib/spotify.js')
 const bard = require('./lib/bard.js');
 let data = require('./data.json')
 const gemini_vision = require('./lib/gemini-vision.js')
-
+const ai_image = require('./lib/imagegen.js')
 const { Sticker, createSticker, StickerTypes } = require("wa-sticker-formatter");
 
 function getRandomItemFromArray(arr) {
@@ -667,7 +667,22 @@ const bardTools = async (client, m, budy) => {
   if (!fs.existsSync(`./data/${m.sender.split("@")[0]}.json`)) {
     fs.writeFileSync(
       `./data/${m.sender.split("@")[0]}.json`,
-      JSON.stringify([]),
+      JSON.stringify([{
+        "role": "user",
+        "parts": [
+            {
+                "text": "Hello"
+            }
+        ]
+    },
+    {
+        "role": "model",
+        "parts": [
+            {
+                "text": "Hi there! I can assist you in a variety of ways. What would you like to do today?"
+            }
+        ]
+    }]),
     );
     
     content = [user]
@@ -804,6 +819,8 @@ const bardTools = async (client, m, budy) => {
         );
       } else if (res.name == "bardGemini") {
         bard(client, m, budy);
+      }else if (res.name == "ai_image") {
+        ai_image(client, m, budy);
       } else if (res.name === 'clear'){
        fs.unlinkSync(`./data/${m.sender.split('@')[0]}.json`)
           client.sendMessage(m.sender, { text: 'Cleared old data' })
@@ -818,7 +835,9 @@ const bardTools = async (client, m, budy) => {
   } catch (error) {
     console.error(error);
     fs.unlinkSync( `./data/${m.sender.split("@")[0]}.json`)
-    
+    if(error.message.status === '400'){
+      bardTools(client, m, budy)
+    }
     client.sendMessage(m.sender, {text:error.message})
   }
 
@@ -1019,7 +1038,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
       let budytext = budy.split(' ')
       let budyp = budytext.indexOf('Say')
       let ai = budytext.indexOf('img')
-
+      console.log(command+'this is funckign comand')
       try {
         console.log(type)
         if (type === 'audioMessage') {
@@ -1063,6 +1082,9 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
         }else if (command === 'yts') {
           let text = budy.split(' ').splice(1).join(' ')
           yts(client,m.sender,text);
+        }else if (command === 'imagen') {
+          let text = budy.split(' ').splice(1).join(' ')
+          ai_image(client,m,text);
         }else if (command === 'img') {
           let text = budy.split(' ').splice(1).join(' ')
           try {
