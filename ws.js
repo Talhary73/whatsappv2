@@ -1,10 +1,6 @@
-const { RsnChat } = require("rsnchat");
-const fs = require('fs')
-const rsnchat = new RsnChat("chatgpt_Nh7MpKsQrdh6lqjsq9Ir4M");
+const { Tiktok } = require('@xct007/tiktok-scraper');
 
-const prompt = "beautiful girl";
-
-rsnchat.icon(prompt).then((response) => {
-  console.log(response.success);
-  fs.writeFileSync('./image.png',Buffer.from(response.image,'base64'))
+const url = 'https://vt.tiktok.com/ZGJBtcsDq/';
+Tiktok(url).then((json) => {
+  console.log(json['download'].nowm);
 });

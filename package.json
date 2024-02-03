@@ -31,6 +31,8 @@
         "@sparticuz/chromium": "^119.0.2",
         "@tobyg74/tiktok-api-dl": "^1.0.13",
         "@whiskeysockets/baileys": "^6.5.0",
+        "@xct007/frieren-scraper": "^0.0.2",
+        "@xct007/tiktok-scraper": "^0.0.3",
         "ansi-styles": "^6.2.1",
         "assemblyai": "^4.2.2",
         "awesome-phonenumber": "^2.64.0",
