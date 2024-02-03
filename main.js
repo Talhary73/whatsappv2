@@ -1009,8 +1009,8 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
              chatGpt(client,m,budy)
              
            }
-             else if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'bard') bard(client,m, budy)
-            else gpt(client,m,budy)
+             else if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'bard') bardTools(client,m, budy)
+            else bard(client,m,budy)
        }
       return 
     }
