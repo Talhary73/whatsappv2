@@ -1081,8 +1081,6 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
           
         fs.writeFileSync('./data.json',JSON.stringify(data))
         client.sendMessage(id,{text:`Now you can talk to bot:${bot}`})
-        }else if (budy.length<=2) {
-          return client.sendMessage(m.sender, {text:'Response too short'})
         }else if (command === 'yts') {
           let text = budy.split(' ').splice(1).join(' ')
           yts(client,m.sender,text);
@@ -1439,12 +1437,32 @@ To get started, just type one of these commands, and I'll help you out! 🚀
             }
 
 
-          } else {
+          }
+          else if (fs.existsSync(`./data/${m.sender.split('@')[0]}.json`)) {
+            console.log('i am running exirs')
+            let user = fs.readFileSync(`./data/${m.sender.split('@')[0]}.json`, { encoding: 'utf-8' })
+
+            user = JSON.parse(user)
+            console.log(user.length)
+
+            for (let i = 0; i <= user.length - 1; i++) {
+              console.log(user[i].role);
+              await client.sendMessage(m.sender, { text: `\n${user[i].role} \n${user[i].content}\n` })
+                .then(() => { })
+                .catch(e => console.log(e));
+            }
+
+
+          }
+          
+          else {
             await client.sendMessage(m.sender, { text: 'No data' })
           }
 
           return
-        } else if (command == 'owner') {
+        } else if (budy.length<=2) {
+          return client.sendMessage(m.sender, {text:'Response too short'})
+        }else if (command == 'owner') {
           m.reply('Talha')
 
 
