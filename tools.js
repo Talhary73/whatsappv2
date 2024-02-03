@@ -114,6 +114,20 @@
         },
         required: ["text"],
       },
+    },{
+      name: "Gpt",
+      description: "Answer complex question.",
+      parameters: {
+        type: "object",
+        properties: {
+          text: {
+            type: "string",
+
+            description: "question",
+          },
+        },
+        required: ["text"],
+      },
     },
     // {
     //   name: "gptUrl",
@@ -186,22 +200,22 @@
         required: ["text"],
       },
     },
-    // {
-    //   name: "google",
-    //   description: "This will google anything and send urls to user.",
-    //   parameters: {
-    //     type: "object",
-    //     properties: {
-    //       text: {
-    //         type: "string",
+    {
+      name: "google",
+      description: "This will google anything and send urls to user.",
+      parameters: {
+        type: "object",
+        properties: {
+          text: {
+            type: "string",
 
-    //         description:
-    //           "This will return Title for google search that best describe the user request",
-    //       },
-    //     },
-    //     required: ["text"],
-    //   },
-    // },
+            description:
+              "This will return Title for google search that best describe the user request",
+          },
+        },
+        required: ["text"],
+      },
+    },
     {
       name: "audioYt",
       description: "This downloads audio version of Youtube Video. . Only works if get's input direct link provided from user",

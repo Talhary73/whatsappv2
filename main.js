@@ -63,7 +63,7 @@ let data = require('./data.json')
 const gemini_vision = require('./lib/gemini-vision.js')
 const ai_image = require('./lib/imagegen.js')
 const { Sticker, createSticker, StickerTypes } = require("wa-sticker-formatter");
-
+const {Gpt} = require('./lib/rsn.js')
 function getRandomItemFromArray(arr) {
   const randomIndex = Math.floor(Math.random() * arr.length);
   return arr[randomIndex];
@@ -788,6 +788,10 @@ const bardTools = async (client, m, budy) => {
         spotify_dl(client, m, arg.text, arg.type);
       } else if (res.name == "fb") {
         fb(client, m, arg.text);
+      } else if (res.name == "Gpt") {
+        const res = await Gpt(arg.text)
+        if (res.success) client.sendMessage(m.sender,{text:res.message})
+        else client.sendMessage(m.sender,{text:'Something gone wrong'})
       }else if (res.name == "stickerv1") {
         stickerv1(client, m, arg.html,arg.bgcolorofbody,arg.fontSize , arg.bgcolorofelementcontainer);
       } else if (res.name == "sticker") {
