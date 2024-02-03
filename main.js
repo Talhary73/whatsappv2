@@ -1420,6 +1420,12 @@ To get started, just type one of these commands, and I'll help you out! 🚀
            client.sendMessage(m.sender, { text: 'Cleared old data' })
           console.log('running clear')
           return
+        }else if (command == 'gpt') {
+          const text = budy.split(' ').splice(1).join(' ')
+          const res = await Gpt(text)
+          if (res.success) client.sendMessage(m.sender,{text:res.message})
+          else client.sendMessage(m.sender,{text:'Something gone wrong'})
+          return
         }
         else if (command == 'data') {
           if (fs.existsSync(`./user/${m.sender.split('@')[0]}.json`)) {
