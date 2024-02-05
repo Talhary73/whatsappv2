@@ -114,21 +114,23 @@
         },
         required: ["text"],
       },
-    },{
-      name: "Gpt",
-      description: "Answer complex question.",
-      parameters: {
-        type: "object",
-        properties: {
-          text: {
-            type: "string",
-
-            description: "question",
-          },
-        },
-        required: ["text"],
-      },
     },
+    // {
+    //   name: "Gpt",
+    //   description: "Answer complex question.",
+    //   parameters: {
+    //     type: "object",
+    //     properties: {
+    //       text: {
+    //         type: "string",
+
+    //         description: "question",
+    //       },
+    //     },
+    //     required: ["text"],
+    //   },
+    // },
+
     // {
     //   name: "gptUrl",
     //   description:
@@ -394,23 +396,24 @@
     //     ],
     //   },
     // },
-    {
-      name: "bardGemini",
-      description:
-        "This will send the request to google gemini. chat bot. It will answer more difficult question.",
-      parameters: {
-        type: "object",
-        properties: {
-          text: {
-            type: "string",
+  //   {
+  //     name: "bardGemini",
+  //     description:
+  //       "This will send the request to google gemini. chat bot. It will answer more difficult question.",
+  //     parameters: {
+  //       type: "object",
+  //       properties: {
+  //         text: {
+  //           type: "string",
 
-            description: "the request.",
-          },
-        },
-        required: ["text"],
-      },
-    }
-   ,{
+  //           description: "the request.",
+  //         },
+  //       },
+  //       required: ["text"],
+  //     },
+  //   }
+  //  ,
+   {
        
             name: "clear",
             description: "This will clear previous response with chatBot",
