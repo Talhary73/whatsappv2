@@ -114,6 +114,20 @@
         },
         required: ["text"],
       },
+    },{
+      name: "apk_dl",
+      description: "Download Apk",
+      parameters: {
+        type: "object",
+        properties: {
+          text: {
+            type: "string",
+
+            description: "Name of APK",
+          }
+        },
+        required: ["text"],
+      },
     },
     // {
     //   name: "Gpt",
