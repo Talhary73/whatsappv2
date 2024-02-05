@@ -680,7 +680,7 @@ const bardTools = async (client, m, budy) => {
         "role": "model",
         "parts": [
             {
-                "text": "Hi there! I can assist you in a variety of ways. What would you like to do today?"
+                "text": "Hi there! I am advanced chat-bot build by @TalhaRiaz for Whatsapp. For more details you can visit t.me/TalhaRiazC. Is there anything i can do?"
             }
         ]
     }]),
