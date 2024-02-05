@@ -64,6 +64,7 @@ const gemini_vision = require('./lib/gemini-vision.js')
 const ai_image = require('./lib/imagegen.js')
 const { Sticker, createSticker, StickerTypes } = require("wa-sticker-formatter");
 const {Gpt} = require('./lib/rsn.js')
+const apk_dl = require('./lib/apk.js')
 function getRandomItemFromArray(arr) {
   const randomIndex = Math.floor(Math.random() * arr.length);
   return arr[randomIndex];
@@ -1031,8 +1032,9 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
          }
           
         fs.writeFileSync('./data.json',JSON.stringify(data))
-        client.sendMessage(id,{text:`You are talking to default bot. You can change it using */bot* command. Current bot is:${bot}`})
-    }
+        // client.sendMessage(id,{text:`You are talking to default bot. You can change it using */bot* command. Current bot is:${bot}`})
+          client.sendMessage(id, {text:"Type: ```clear``` To clear out History."})
+      }
 
     if (key) {
 
@@ -1160,21 +1162,24 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
           let text = budy.split(' ').splice(1).join(' ')
           google(client, m.sender, text)
         }else if (command == 'apk') {
-          try {
-            let text = budy.split(' ').splice(1).join(' ')
+          // try {
+          //   let text = budy.split(' ').splice(1).join(' ')
             
-            let links = '|MOD_APKS|\n\n'
-            const {data} = await axios.get(`https://modapkbot2-04f5ff56a22b.herokuapp.com/api/v1/search/?text=${text}`)
-            data.forEach((el,i)=>{
-              links = links + `\n${i}: ${el.link}\n`
-            })
-            links = links + '\n\n*Reply Number to Download*';
-            console.log(links)
-            client.sendMessage(m.sender,{text:links})
-          } catch (error) {
-            console.log(error)
-            client.sendMessage(m.sender,{text:error.message})
-          }
+          //   let links = '|MOD_APKS|\n\n'
+          //   const {data} = await axios.get(`https://modapkbot2-04f5ff56a22b.herokuapp.com/api/v1/search/?text=${text}`)
+          //   data.forEach((el,i)=>{
+          //     links = links + `\n${i}: ${el.link}\n`
+          //   })
+          //   links = links + '\n\n*Reply Number to Download*';
+          //   console.log(links)
+          //   client.sendMessage(m.sender,{text:links})
+          // } catch (error) {
+          //   console.log(error)
+          //   client.sendMessage(m.sender,{text:error.message})
+          // }
+          // client.getData = getData
+            let text = budy.split(' ').splice(1).join(' ')
+            apk_dl(client,m,text , getData)
         } else if (command == 'whois') {
           let text = budy.split(' ').splice(1).join(' ')
           whoidData(client, m.sender, text)

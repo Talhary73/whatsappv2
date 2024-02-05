@@ -1,0 +1,1 @@
+[{"role":"user","parts":[{"text":"https://www.facebook.com/reel/373322825403410/?mibextid=rS40aB7S9Ucbxw6v"}]},{"role":"model","parts":[{"functionCall":{"name":"fb","args":{"text":"https://www.facebook.com/reel/373322825403410/?mibextid=rS40aB7S9Ucbxw6v"}}}]}]

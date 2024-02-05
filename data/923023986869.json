@@ -1,0 +1,1 @@
+[{"role":"user","parts":[{"text":"Today weather"}]},{"role":"model","parts":[{"functionCall":{"name":"google","args":{"text":"Weather in my area"}}}]},{"role":"user","parts":[{"text":"Weather Mandibahauddin"}]},{"role":"model","parts":[{"functionCall":{"name":"google","args":{"text":"Weather in Mandibahauddin"}}}]}]
