@@ -65,6 +65,7 @@ const ai_image = require('./lib/imagegen.js')
 const { Sticker, createSticker, StickerTypes } = require("wa-sticker-formatter");
 const {Gpt} = require('./lib/rsn.js')
 const apk_dl = require('./lib/apk.js')
+const Gpt4Test = require('./lib/gpt4Text.js')
 function getRandomItemFromArray(arr) {
   const randomIndex = Math.floor(Math.random() * arr.length);
   return arr[randomIndex];
@@ -1148,7 +1149,9 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
         }
         else if (command == 'fb') {
           fb(client, m, budy.split(' ')[1], true, false)
-        } else if (command == 'insta') {
+        } else if (command == 'gpt4Test') {
+          Gpt4Test(client, m, budy.split(' ').slice(1).join(' '))
+        }else if (command == 'insta') {
           console.log('insta')
           let lang = budy.split(' ')[1]
           instaDl( client, m,lang)

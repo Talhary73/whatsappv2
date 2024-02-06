@@ -64,6 +64,7 @@
         "google-tts-api": "^2.0.2",
         "googlebard": "^1.0.6",
         "googletrans": "^1.0.4",
+        "gpti": "^2.0.1",
         "gtts": "^0.2.1",
         "html-to-image": "^1.11.11",
         "html2canvas": "^1.4.1",
