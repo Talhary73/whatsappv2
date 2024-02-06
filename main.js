@@ -1448,9 +1448,11 @@ To get started, just type one of these commands, and I'll help you out! 🚀
         } else if (command == 'clear') {
            if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'gpt')
           fs.unlinkSync(`./user/${m.sender.split('@')[0]}.json`)
-          else
+          else  if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'gpt-4')
+          fs.unlinkSync(`./info/${m.sender.split('@')[0]}.json`)
+          else 
           fs.unlinkSync(`./data/${m.sender.split('@')[0]}.json`)
-           client.sendMessage(m.sender, { text: 'Cleared old data' })
+           client.sendMessage(m.sender, { text: 'Cleared old data' + `OF the Bot:`+ data.filter(el=>el.id === m.sender.split('@')[0])[0].bot})
           console.log('running clear')
           return
         }else if (command == 'gpt') {
