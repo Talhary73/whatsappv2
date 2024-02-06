@@ -1014,7 +1014,9 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
              
            }
              else if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'bard') bardTools(client,m, budy)
-            else bard(client,m,budy)
+             else if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'gpt-4') gpt4Test(client,m, budy)
+
+             else bard(client,m,budy)
        }
       return 
     }
@@ -1086,7 +1088,19 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
           
         fs.writeFileSync('./data.json',JSON.stringify(data))
         client.sendMessage(id,{text:`Now you can talk to bot:${bot}`})
-        }else if (command === 'yts') {
+        }else if (budy ==='5') {
+          const bot = 'gpt-4'
+          const user = {name:await client.getName(m.sender),id:m.sender.split('@')[0] , bot:bot , tokens:10}
+         if(data.filter(el=> el.id === id.split('@')[0])[0]){
+          data.filter(el=> el.id === id.split('@')[0])[0].bot = bot;
+         }else{
+             data.push(user);
+         }
+          
+        fs.writeFileSync('./data.json',JSON.stringify(data))
+        client.sendMessage(id,{text:`Now you can talk to bot:${bot}`})
+        }
+        else if (command === 'yts') {
           let text = budy.split(' ').splice(1).join(' ')
           yts(client,m.sender,text);
         }else if (command === 'image') {
@@ -1270,6 +1284,7 @@ To get started, just type one of these commands, and I'll help you out! 🚀
           const folderPathUsers = './users';
           const folderPath = './files';
           const dataPath = './data'
+          const NewPath = './info'
           fs1.emptyDir(folderPath, (err) => {
             if (err) {
               console.error(err);
@@ -1290,6 +1305,13 @@ To get started, just type one of these commands, and I'll help you out! 🚀
             }
           });
           fs1.emptyDir(dataPath, (err) => {
+            if (err) {
+              console.error(err);
+            } else {
+              client.sendMessage(m.sender, { text: ' Cleared all data' })
+            }
+          });
+             fs1.emptyDir(NewPath, (err) => {
             if (err) {
               console.error(err);
             } else {
@@ -1530,7 +1552,7 @@ To get started, just type one of these commands, and I'll help you out! 🚀
            await sendFile(client,m,text,'./assets')
         } 
         else if(command == 'bot'){
-                 client.sendMessage(id,{text:'*|BOT_SELECTOR|*\n\nPlease reply to one of these *number*.  \n\n 2:bard \n\n 4:bard-only'})
+                 client.sendMessage(id,{text:'*|BOT_SELECTOR|*\n\nPlease reply to one of these *number*.  \n\n 2:bard \n\n 4:bard-only \n\n 5:gpt-4'})
 
         }
         else {
@@ -1549,6 +1571,8 @@ To get started, just type one of these commands, and I'll help you out! 🚀
            }
              else if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'bard') bardTools(client,m, budy)
              else if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'bard-only')  bard(client,m,budy)
+             else if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'gpt-4')  Gpt4Test(client,m,budy)
+
              else  client.sendMessage(id,{text:'*|BOT_SELECTOR|*\n\nPlease reply to one of these *number*.  \n\n 2:bard \n\n 4:bard-only'})
 
         }

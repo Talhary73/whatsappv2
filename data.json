@@ -1,1 +1,8 @@
-[{"name":"Talha","id":"923101502365","bot":"bard","tokens":30}]
+[
+    {
+        "name": "Talha",
+        "id": "923101502365",
+        "bot": "gpt-4",
+        "tokens": 30
+    },
+]
