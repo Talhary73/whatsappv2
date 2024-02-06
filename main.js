@@ -1133,7 +1133,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
            client.sendMessage(m.sender,{sticker:buffer1 ,mimetype:'image/webp'})
           // teseract(client, m, `./files/${m.sender.split('@')[0]}image.png`, true)
         } else if (command == 'ss') {
-          ssv2(client, m.sender, budy.split(' ')[1])
+          ss(client, m.sender, budy.split(' ')[1])
         }
         else if (command == 'sticker') {
           console.log(budy.split(' ').slice(1).join(' '))
@@ -1145,13 +1145,13 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
           }
         }
         else if (command == 'ssv1') {
-          ss(client, m.sender, budy.split(' ')[1])
+          ssv2(client, m.sender, budy.split(' ')[1])
         }
         else if (command == 'fb') {
           fb(client, m, budy.split(' ')[1], true, false)
         } else if (command == 'el') {
           client.sendMessage(m.sender,{text:"hey you are using test version of chatgpt4"})
-          Gpt4Test(client, m, budy.split(' ').slice(1).join(' '))
+          Gpt4Test(client, m, budy.split(' ').splice(1).join(' '))
         }else if (command == 'insta') {
           console.log('insta')
           let lang = budy.split(' ')[1]
