@@ -1149,7 +1149,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
         }
         else if (command == 'fb') {
           fb(client, m, budy.split(' ')[1], true, false)
-        } else if (command == 'gpt4Test') {
+        } else if (command == 'el') {
           Gpt4Test(client, m, budy.split(' ').slice(1).join(' '))
         }else if (command == 'insta') {
           console.log('insta')
