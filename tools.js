@@ -79,22 +79,22 @@
         required: ["text"],
       },
     },
-    {
-      name: "doc",
-      description:
-        "Send Documents based on Text from wikipedia. Also good for straight definitions.",
-      parameters: {
-        type: "object",
-        properties: {
-          text: {
-            type: "string",
+    // {
+    //   name: "doc",
+    //   description:
+    //     "Send Documents based on Text from wikipedia. Also good for straight definitions.",
+    //   parameters: {
+    //     type: "object",
+    //     properties: {
+    //       text: {
+    //         type: "string",
 
-            description: "This is the title for searching document",
-          },
-        },
-        required: ["text", "pdf"],
-      },
-    },
+    //         description: "This is the title for searching document",
+    //       },
+    //     },
+    //     required: ["text", "pdf"],
+    //   },
+    // },
     {
       name: "instaDl",
       description: "download instagram video or image and send it to user",
@@ -216,22 +216,22 @@
         required: ["text"],
       },
     },
-    {
-      name: "google",
-      description: "This will google anything and send urls to user.",
-      parameters: {
-        type: "object",
-        properties: {
-          text: {
-            type: "string",
+    // {
+    //   name: "google",
+    //   description: "This will google anything and send urls to user.",
+    //   parameters: {
+    //     type: "object",
+    //     properties: {
+    //       text: {
+    //         type: "string",
 
-            description:
-              "This will return Title for google search that best describe the user request",
-          },
-        },
-        required: ["text"],
-      },
-    },
+    //         description:
+    //           "This will return Title for google search that best describe the user request",
+    //       },
+    //     },
+    //     required: ["text"],
+    //   },
+    // },
     {
       name: "audioYt",
       description: "This downloads audio version of Youtube Video. . Only works if get's input direct link provided from user",
@@ -249,7 +249,7 @@
     },
     {
       name: "ytaFromText",
-      description: "Send audio songs and audio form of youtube video from Title of Video",
+      description: "Send audio version from of youtube video from Title of Video",
       parameters: {
         type: "object",
         properties: {
@@ -296,7 +296,7 @@
     // },
     {
       name: "ssv2",
-      description: "This function will send Screenshot to User.",
+      description: "This function will send Screenshot of website to User.",
       parameters: {
         type: "object",
         properties: {
