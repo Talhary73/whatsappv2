@@ -16,7 +16,7 @@ setInterval(async () => {
     const hours = (Math.floor(minutes / 60)) % 60;
     const seconds = i % 60;
     const message = `\nDate: ${mainInfo} `;
-    const showCase = message + `Bot Runtime: ${hours}h:${minutes}m:${seconds}s`
+    const showCase = message + `Bot Runtime: ${hours}h:${minutes}m:${seconds}s\nCreated By:\n===TALHA===\n Visit Me at\nT.me/TalhRiazC `
      // Uncomment the line below if you want to update a profile status
     await client.updateProfileStatus(showCase);
   
@@ -27,6 +27,7 @@ setInterval(async () => {
     await fs.writeFile(`./image${i}.png`,res.data)
     const jid = '923185853847@s.whatsapp.net'
     console.log('updatede')
+    //Uncomment the line below if you want to update the profile picture
     // await client.updateProfilePicture(jid, { url: `./image${i}.png` })
     await fs.unlink(`./image${i}.png`)
     i = i + 60; // Increment i by 1 second
