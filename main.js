@@ -779,7 +779,7 @@ const bardTools = async (client, m, budy) => {
       } else if (res.name == "instaDl") {
         instaDl(client, m, arg.text, arg.thumbnail);
       } else if (res.name == "ssv2") {
-        ssv2(client, m, arg.text);
+        ss(client, m, arg.text);
       } else if (res.name == "google") {
         google(client, m.sender, arg.text);
       } else if (res.name == "doc") {
@@ -1150,6 +1150,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
         else if (command == 'fb') {
           fb(client, m, budy.split(' ')[1], true, false)
         } else if (command == 'el') {
+          client.sendMessage(m.sender,{text:"hey you are using test version of chatgpt4"})
           Gpt4Test(client, m, budy.split(' ').slice(1).join(' '))
         }else if (command == 'insta') {
           console.log('insta')
