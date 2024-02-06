@@ -1141,7 +1141,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
                 type: StickerTypes.CROPPED,
                 categories: ["🤩", "🎉"], // The sticker category
                 id: "12345", // The sticker id
-                quality: 50, // The quality of the output file
+                quality: 10, // The quality of the output file
             });
             const buffer1 = await sticker.toBuffer();
            client.sendMessage(m.sender,{sticker:buffer1 ,mimetype:'image/webp'})
