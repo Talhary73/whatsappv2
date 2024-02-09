@@ -271,7 +271,7 @@ async function startHisoka() {
     auth: state,
   });
 
-  store.bind(client.ev);
+  store.bind(client.ev); 
   
   client.ev.on("messages.upsert", async (chatUpdate) => {
     //console.log(JSON.stringify(chatUpdate, undefined, 2))
