@@ -1457,6 +1457,7 @@ To get started, just type one of these commands, and I'll help you out! 🚀
             if(!fs.existsSync(`./info/${m.sender.split('@')[0]}.json`)) return client.sendMessage(m.sender,{text:"`CLEARED`"})
           fs.unlinkSync(`./info/${m.sender.split('@')[0]}.json`)
             } 
+            client.sendMessage(m.sender,{text:"`Cleared`"})
           return
         }else if (command == 'gpt') {
           const text = budy.split(' ').splice(1).join(' ')
@@ -1482,7 +1483,22 @@ To get started, just type one of these commands, and I'll help you out! 🚀
 
 
           }
-          else if (fs.existsSync(`./data/${m.sender.split('@')[0]}.json`)) {
+          else if (fs.existsSync(`./info/${m.sender.split('@')[0]}.json`)) {
+            console.log('i am running exirs')
+            let user = fs.readFileSync(`./user/${m.sender.split('@')[0]}.json`, { encoding: 'utf-8' })
+
+            user = JSON.parse(user)
+            console.log(user.length)
+
+            for (let i = 0; i <= user.length - 1; i++) {
+              console.log(user[i].role);
+              await client.sendMessage(m.sender, { text: `\n${user[i].role} \n${user[i].content}\n` })
+                .then(() => { })
+                .catch(e => console.log(e));
+            }
+
+
+          } else if (fs.existsSync(`./data/${m.sender.split('@')[0]}.json`)) {
             console.log('i am running exirs')
             let user = fs.readFileSync(`./data/${m.sender.split('@')[0]}.json`, { encoding: 'utf-8' })
 
@@ -1491,7 +1507,7 @@ To get started, just type one of these commands, and I'll help you out! 🚀
 
             for (let i = 0; i <= user.length - 1; i++) {
               console.log(user[i].role);
-              await client.sendMessage(m.sender, { text: `\n${user[i].role} \n${user[i].content}\n` })
+              await client.sendMessage(m.sender, { text: `\n${user[i].role} \n${user[i].parts[0].text}\n` })
                 .then(() => { })
                 .catch(e => console.log(e));
             }
