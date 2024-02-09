@@ -272,7 +272,7 @@ async function startHisoka() {
   });
 
   store.bind(client.ev);
-   require('./about')(client)
+  
   client.ev.on("messages.upsert", async (chatUpdate) => {
     //console.log(JSON.stringify(chatUpdate, undefined, 2))
     try {

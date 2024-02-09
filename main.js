@@ -1446,14 +1446,17 @@ To get started, just type one of these commands, and I'll help you out! 🚀
 
 
         } else if (command == 'clear') {
-           if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'gpt')
+           if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'gpt'){
+            if(!fs.existsSync(`./user/${m.sender.split('@')[0]}.json`)) return client.sendMessage(m.sender,{text:"`CLEARED`"})
           fs.unlinkSync(`./user/${m.sender.split('@')[0]}.json`)
-          else  if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'gpt-4')
-          fs.unlinkSync(`./info/${m.sender.split('@')[0]}.json`)
-          else 
+            } 
+          else  if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'bard' || data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'bard-only'){
+            if(!fs.existsSync(`./data/${m.sender.split('@')[0]}.json`)) return client.sendMessage(m.sender,{text:"`CLEARED`"})
           fs.unlinkSync(`./data/${m.sender.split('@')[0]}.json`)
-           client.sendMessage(m.sender, { text: 'Cleared old data' + `OF the Bot:`+ data.filter(el=>el.id === m.sender.split('@')[0])[0].bot})
-          console.log('running clear')
+            } else  if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'gpt-4'){
+            if(!fs.existsSync(`./info/${m.sender.split('@')[0]}.json`)) return client.sendMessage(m.sender,{text:"`CLEARED`"})
+          fs.unlinkSync(`./info/${m.sender.split('@')[0]}.json`)
+            } 
           return
         }else if (command == 'gpt') {
           const text = budy.split(' ').splice(1).join(' ')
