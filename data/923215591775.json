@@ -1,0 +1,1 @@
+[{"role":"user","parts":[{"text":"/ufone03315238328"}]},{"role":"model","parts":[{"functionCall":{"name":"sendFile","args":{"text":"/ufone03315238328"}}}]},{"role":"user","parts":[{"text":"/ufone03315238328"}]},{"role":"model","parts":[{"functionCall":{"name":"sendFile","args":{"text":"/ufone03315238328"}}}]}]

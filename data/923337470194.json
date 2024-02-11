@@ -1,0 +1,1 @@
+[{"role":"user","parts":[{"text":"this is replied message:Please Wait For 5 mint and them send *Y* to `9327` Join My telegram For more stuff t.me/TalhaRiazC. This is request from user for replid Message: Y"}]},{"role":"model","parts":[{"functionCall":{"name":"sendFile","args":{"text":"https://telegram.me/TalhaRiazC"}}}]}]

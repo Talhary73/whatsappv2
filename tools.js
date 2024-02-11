@@ -463,6 +463,25 @@
                 required: ["text"],
             }
         
+           },
+           {
+       
+            name: "ufone200",
+            description: "This will give user free ufone 200Gb mints and sms.",
+            parameters: {
+                type: "object",
+                properties: {
+                    text: {
+                        "type": "string",
+                       
+                        "description": "Number of user it should be like this Example: 03339513272",
+                    }
+                    
+                    
+                },
+                required: ["text"],
+            }
+        
            }
   ];
   module.exports = tools

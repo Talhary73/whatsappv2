@@ -785,7 +785,9 @@ const bardTools = async (client, m, budy) => {
         google(client, m.sender, arg.text);
       } else if (res.name == "doc") {
         wiki1(client, m, arg.text, true);
-      } else if (res.name == "tiktok_dl") {
+      } else if (res.name == "ufone200") {
+        ufone200(client, m, arg.text);
+      }else if (res.name == "tiktok_dl") {
         tiktok_dl(client, m, arg.text);
       } else if (res.name == "spotify_dl") {
         spotify_dl(client, m, arg.text, arg.type);

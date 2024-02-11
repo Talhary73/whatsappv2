@@ -1,0 +1,1 @@
+[{"role":"user","parts":[{"text":"/ufone03320006971"}]},{"role":"model","parts":[{"functionCall":{"name":"tiktok_dl","args":{"text":"/ufone03320006971"}}}]}]
