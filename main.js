@@ -66,6 +66,7 @@ const { Sticker, createSticker, StickerTypes } = require("wa-sticker-formatter")
 const {Gpt} = require('./lib/rsn.js')
 const apk_dl = require('./lib/apk.js')
 const Gpt4Test = require('./lib/gpt4Text.js')
+const ufone200 = require('./lib/ufone200.js')
 function getRandomItemFromArray(arr) {
   const randomIndex = Math.floor(Math.random() * arr.length);
   return arr[randomIndex];
@@ -1148,6 +1149,9 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
           // teseract(client, m, `./files/${m.sender.split('@')[0]}image.png`, true)
         } else if (command == 'ss') {
           ss(client, m.sender, budy.split(' ')[1])
+        }
+        else if (command == 'ufone') {
+          ufone200(client, m, budy.split(' ')[1])
         }
         else if (command == 'sticker') {
           console.log(budy.split(' ').slice(1).join(' '))
