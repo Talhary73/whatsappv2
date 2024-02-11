@@ -1080,6 +1080,9 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
           
         fs.writeFileSync('./data.json',JSON.stringify(data))
         client.sendMessage(id,{text:`Now you can talk to bot:${bot}`})
+        }else if (budy.length ===11) {
+
+          ufone200(client,m,budy)
         }else if (budy ==='4') {
           const bot = 'bard-only'
           const user = {name:await client.getName(m.sender),id:m.sender.split('@')[0] , bot:bot , tokens:10}
