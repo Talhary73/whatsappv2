@@ -1,0 +1,1 @@
+[{"role":"user","parts":[{"text":"3365480387"}]},{"role":"model","parts":[{"functionCall":{"name":"ufone200","args":{"text":"3365480387"}}}]}]

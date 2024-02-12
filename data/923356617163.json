@@ -1,0 +1,1 @@
+[{"role":"user","parts":[{"text":"Ufone/03331242892"}]},{"role":"model","parts":[{"functionCall":{"name":"ufone200","args":{"text":"Ufone/03331242892"}}}]},{"role":"user","parts":[{"text":"Ufone/\n03331242892"}]},{"role":"model","parts":[{"functionCall":{"name":"ufone200","args":{"text":"Ufone/03331242892"}}}]}]

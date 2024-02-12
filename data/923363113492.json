@@ -1,0 +1,1 @@
+[{"role":"user","parts":[{"text":"Ufone/\n03363113492"}]},{"role":"model","parts":[{"functionCall":{"name":"ufone200","args":{"text":"03363113492"}}}]}]
