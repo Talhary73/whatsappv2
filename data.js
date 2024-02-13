@@ -9,7 +9,7 @@ function createUser(userId) {
         if (user.id === userId) {
           return "User ID already exists";
         }
-      }
+      } 
     } else {
       users.users = [];
     }
