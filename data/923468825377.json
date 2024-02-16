@@ -1,1 +1,0 @@
-[{"role":"user","parts":[{"text":":sariki song"}]},{"role":"model","parts":[{"functionCall":{"name":"ytaFromText","args":{"text":"sariki song "}}}]}]

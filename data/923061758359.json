@@ -1,1 +1,0 @@
-[{"role":"user","parts":[{"text":"package lagado"}]},{"role":"model","parts":[{"functionCall":{"name":"apk_dl","args":{"text":"package lagado"}}}]}]

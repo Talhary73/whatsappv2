@@ -1,1 +1,0 @@
-[{"role":"user","parts":[{"text":"/user/923318998163.json'"}]},{"role":"model","parts":[{"functionCall":{"name":"sendFile","args":{"text":"/user/923318998163.json"}}}]}]

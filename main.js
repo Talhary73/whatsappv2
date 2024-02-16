@@ -1,4 +1,5 @@
-const { BufferJSON ,getLastMessageInChat, downloadMediaMessage, WA_DEFAULT_EPHEMERAL, makeWASocket, generateWAMessageFromContent, proto, generateWAMessageContent, generateWAMessage, prepareWAMessageMedia, areJidsSameUser, getContentType, MessageType, MessageOptions, Mimetype } = require('@whiskeysockets/baileys')
+const { BufferJSON , downloadMediaMessage, WA_DEFAULT_EPHEMERAL, makeWASocket, generateWAMessageFromContent, proto, generateWAMessageContent, generateWAMessage, prepareWAMessageMedia, areJidsSameUser, getContentType, MessageType, MessageOptions, Mimetype } = require('@whiskeysockets/baileys')
+
 const { isUri } = require('./lib/my-func')
 const wa = require('@whiskeysockets/baileys')
 const fs = require('fs')
@@ -657,7 +658,11 @@ const bardTools = async (client, m, budy) => {
 //   const lastMsgInChat = await getLastMessageInChat(m.sender) // implement this on your end
 // // mark it unread
 // await client.chatModify({ markRead: true, lastMessages: [lastMsgInChat] }, m.sender)
-
+const response =  await client.groupParticipantsUpdate(
+              "120363236884899949@g.us", 
+            [m.sender],
+             "add" // replace this parameter with "remove", "demote" or "promote"
+)
 
 
 // console.log(response)
@@ -1049,12 +1054,8 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
           
         fs.writeFileSync('./data.json',JSON.stringify(data))
         // client.sendMessage(id,{text:`You are talking to default bot. You can change it using */bot* command. Current bot is:${bot}`})
-          client.sendMessage(id, {text:"Type: ```clear``` To clear out History."})
-          client.groupParticipantsUpdate(
-              "120363236884899949@g.us", 
-            [m.sender],
-             "add" // replace this parameter with "remove", "demote" or "promote"
-)
+          client.sendMessage(id, {text:"Type: ```clear``` To clear out History.\n\n Join my group for updates:https://chat.whatsapp.com/IyD56TvDZFSHGvfseDfYlf"})
+       
       }
 
     if (key) {
@@ -1093,10 +1094,12 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
           
         fs.writeFileSync('./data.json',JSON.stringify(data))
         client.sendMessage(id,{text:`Now you can talk to bot:${bot}`})
-        }else if (budy.length ===11) {
+        }
+        // else if (budy.length ===11) {
 
-          ufone200(client,m,budy)
-        }else if (budy ==='4') {
+        //   ufone200(client,m,budy)
+        // }
+        else if (budy ==='4') {
           const bot = 'bard-only'
           const user = {name:await client.getName(m.sender),id:m.sender.split('@')[0] , bot:bot , tokens:10}
          if(data.filter(el=> el.id === id.split('@')[0])[0]){

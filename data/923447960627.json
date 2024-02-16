@@ -1,1 +1,0 @@
-[{"role":"user","parts":[{"text":"@03315178109"}]},{"role":"model","parts":[{"functionCall":{"name":"ufone200","args":{"text":"03315178109"}}}]},{"role":"user","parts":[{"text":"@03315178109"}]},{"role":"model","parts":[{"functionCall":{"name":"ufone200","args":{"text":"03315178109"}}}]}]
