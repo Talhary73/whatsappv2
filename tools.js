@@ -31,7 +31,7 @@
     },
     {
       name: "getYtAudio",
-      description: "send youtube video from Title of Video",
+      description: "Download youtube video. It requires only Title of Video",
       parameters: {
         type: "object",
         properties: {
