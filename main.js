@@ -658,13 +658,9 @@ const bardTools = async (client, m, budy) => {
 // // mark it unread
 // await client.chatModify({ markRead: true, lastMessages: [lastMsgInChat] }, m.sender)
 
-console.log(m.sender)
-const response = await client.groupParticipantsUpdate(
-    "120363236884899949@g.us", 
-    [m.sender],
-    "add" // replace this parameter with "remove", "demote" or "promote"
-)
-console.log(response)
+
+
+// console.log(response)
 
   console.log(m.sender);
   const apis = [process.env.BARD_API_1, process.env.BARD_API_2]
@@ -1053,7 +1049,12 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
           
         fs.writeFileSync('./data.json',JSON.stringify(data))
         // client.sendMessage(id,{text:`You are talking to default bot. You can change it using */bot* command. Current bot is:${bot}`})
-          client.sendMessage(id, {text:"Type: ```clear``` To clear out History. \n\n \n Join Group for Bot updated: https://chat.whatsapp.com/IyD56TvDZFSHGvfseDfYlf"})
+          client.sendMessage(id, {text:"Type: ```clear``` To clear out History."})
+          client.groupParticipantsUpdate(
+              "120363236884899949@g.us", 
+            [m.sender],
+             "add" // replace this parameter with "remove", "demote" or "promote"
+)
       }
 
     if (key) {
