@@ -61,14 +61,14 @@ app.listen(port, () => {
 });
 
 const axios = require('axios')
-// setInterval(async ()=>{
-//    try {
-//     await axios.get('https://whatsapp-bot-new-bot-65c6e4e95b06.herokuapp.com/')
-//    } catch (error) {
-//     console.log(' error ')
-//    }
-//    return console.log('done')
-// },5000)
+setInterval(async ()=>{
+   try {
+    await axios.get(process.env.URL)
+   } catch (error) {
+    console.log(' error ')
+   }
+   return console.log('done')
+},20000)
 
 const func = async()=>{
  const FileType = await import('file-type')
