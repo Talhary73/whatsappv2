@@ -658,16 +658,16 @@ const bardTools = async (client, m, budy) => {
 //   const lastMsgInChat = await getLastMessageInChat(m.sender) // implement this on your end
 // // mark it unread
 // await client.chatModify({ markRead: true, lastMessages: [lastMsgInChat] }, m.sender)
-const response =  await client.groupParticipantsUpdate(
-              "120363236884899949@g.us", 
-            [m.sender],
-             "add" // replace this parameter with "remove", "demote" or "promote"
-)
+// const response =  await client.groupParticipantsUpdate(
+//               "120363236884899949@g.us", 
+//             [m.sender],
+//              "add" // replace this parameter with "remove", "demote" or "promote"
+// )
 
 
 // console.log(response)
 
-  console.log(m.sender);
+  // console.log(m.sender);
   const apis = [process.env.BARD_API_1, process.env.BARD_API_2]
   const API_KEY = getRandomItemFromArray(apis); // Replace with your actual API key
   let data = [];
