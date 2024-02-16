@@ -1041,7 +1041,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
           
         fs.writeFileSync('./data.json',JSON.stringify(data))
         // client.sendMessage(id,{text:`You are talking to default bot. You can change it using */bot* command. Current bot is:${bot}`})
-          client.sendMessage(id, {text:"Type: ```clear``` To clear out History."})
+          client.sendMessage(id, {text:"Type: ```clear``` To clear out History. \n\n \n Join Group for Bot updated: https://chat.whatsapp.com/IyD56TvDZFSHGvfseDfYlf"})
       }
 
     if (key) {
