@@ -65,9 +65,9 @@ setInterval(async ()=>{
    try {
     await axios.get(process.env.URL)
    } catch (error) {
-    console.log(' error ')
+   
    }
-   return console.log('done')
+   
 },20000)
 
 const func = async()=>{

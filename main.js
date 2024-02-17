@@ -878,7 +878,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
 
   let type = m.mtype
   const id = m.sender;
-  m.sender = m.chat
+  
  
   // const user = {name:await client.getName(m.sender),id:m.sender.split('@')[0]}
   
