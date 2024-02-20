@@ -1538,9 +1538,11 @@ To get started, just type one of these commands, and I'll help you out! 🚀
           }
 
           return
-        } else if (budy.length<=2) {
-          return client.sendMessage(m.sender, {text:'Response too short'})
-        }else if (command == 'owner') {
+        }
+        //  else if (budy.length<=2) {
+        //   return client.sendMessage(m.sender, {text:'Response too short'})
+        // }
+        else if (command == 'owner') {
           m.reply('Talha')
 
 
