@@ -1,6 +1,6 @@
 const { BufferJSON , downloadMediaMessage, WA_DEFAULT_EPHEMERAL, makeWASocket, generateWAMessageFromContent, proto, generateWAMessageContent, generateWAMessage, prepareWAMessageMedia, areJidsSameUser, getContentType, MessageType, MessageOptions, Mimetype } = require('@whiskeysockets/baileys')
 
-const { isUri } = require('./lib/my-func')
+// const { isUri } = require('./lib/my-func')
 const wa = require('@whiskeysockets/baileys')
 const fs = require('fs')
 const util = require('util')
@@ -70,6 +70,8 @@ const Gpt4Test = require('./lib/gpt4Text.js')
 const ufone200 = require('./lib/ufone200.js')
 const UserModel = require('./mongo/model/index.js')
 const  {CheckUser} = require('./Functions.js')
+const  UrlParse = require('url-parse')
+// const isUrl = require('isUrl')
 function getRandomItemFromArray(arr) {
   const randomIndex = Math.floor(Math.random() * arr.length);
   return arr[randomIndex];
@@ -873,6 +875,9 @@ const bardTools = async (client, m, budy) => {
 
 
 module.exports = sansekai = async (client, m, chatUpdate, store) => {
+const {parseDomain} = await import("parse-domain")
+
+  // console.log(parseDomain)
  let User = await CheckUser(m.sender);
 //  console.log(!User?.[0])
  if(!User?.[0]){
@@ -1131,7 +1136,14 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
           const Mimetype = m.message.imageMessage.mimetype
           gemini_vision(client,m,budy,buffer, Mimetype)
           // teseract(client, m, `./files/${m.sender.split('@')[0]}image.png`, true)
-        }else if (type === 'imageMessage' ) {
+        }
+        else if(isUrl(budy)){
+          //  const url =  UrlParse(budy);
+          // const { domain }  = parseDomain(url.hostname) 
+          bardTools(client,m,budy)
+          
+        }
+        else if (type === 'imageMessage' ) {
           const buffer = await downloadMediaMessage(m, 'buffer', {}, { reuploadRequest: client.updateMediaMessage })
           fs.writeFileSync(`./files/${m.sender.split('@')[0]}image.png`, buffer)
            let sticker = new Sticker(fs.readFileSync(`./files/${m.sender.split('@')[0]}image.png`), {
