@@ -876,7 +876,8 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
  let User = await CheckUser(m.sender);
 //  console.log(!User?.[0])
  if(!User?.[0]){
-  User.push(await UserModel.create({name:await client.getName(m.sender), id:m.sender, bot:'gpt-4',audio:true}))
+  await UserModel.create({name:await client.getName(m.sender), id:m.sender, bot:'gpt-4',audio:true})
+  User.push({name:await client.getName(m.sender), id:m.sender, bot:'gpt-4',audio:true})
   client.sendMessage(id,{text:'*|BOT_SELECTOR|*\n\nPlease reply to one of these *number*. \n\n 1:gpt \n\n 2:bard \n\n 4:bard-only \n\n 5:gpt-4'})
   client.sendMessage(id,{text:'Send /audio To Turn off/on sending Audio'})
 }
