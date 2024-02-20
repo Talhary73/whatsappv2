@@ -1030,7 +1030,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
              
            }
              else if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'bard') bardTools(client,m, budy)
-             else if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'gpt-4') gpt4Test(client,m, budy)
+             else if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'gpt-4') Gpt4Test(client,m, budy)
 
              else bard(client,m,budy)
        }
@@ -1044,7 +1044,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
       // await client.sendMessage(id,{text:'*bard is an Ai chatbot build by google Free to use Unlimited Responses.\n\n gpt contains many others functions build in like downloading videos sending images, stickers and many others but because of high price Its limited.\n\n only-gpt in only chatbot without extra functionality.*'})
 
       // await client.sendMessage(id,{text:'*|BOT_SELECTOR|*\n\nPlease reply to one of these *number*. \n\n 1:gpt \n\n 2:bard \n\n 3:only-gpt'})
-       const bot = 'bard'
+       const bot = 'gpt-4'
        const user = {name:await client.getName(m.sender),id:m.sender.split('@')[0] , bot:bot , tokens:30}
          if(data.filter(el=> el.id === id.split('@')[0])[0]){
           data.filter(el=> el.id === id.split('@')[0])[0].bot = bot;
