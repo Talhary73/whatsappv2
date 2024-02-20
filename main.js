@@ -1473,7 +1473,7 @@ To get started, just type one of these commands, and I'll help you out! 🚀
         
          
         await UserModel.updateOne({id:m.sender},{audio:!User[0].audio})
-        client.sendMessage(id,{text:'Audio is set to:'+User[0].audio})
+        client.sendMessage(id,{text:'Audio is set to:'+!User[0].audio})
         } else if (command == 'clear') {
            console.log(User[0].bot)
            if(User[0].bot === 'gpt'){
