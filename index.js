@@ -19,7 +19,7 @@ const {
   , makeCacheableSignalKeyStore
 } = require("@whiskeysockets/baileys");
 
-
+const connect = require('./mongo/index')
 
 const express = require('express');
 const app = express();
@@ -579,6 +579,14 @@ fs.watchFile(file, () => {
   require(file);
 });
 }
-
-func()
+const start = async ()=>{
+  try{
+    await connect()
+    console.log('conencted to DB')
+     func()
+  }catch(err){
+    console.log(err)
+  }
+}
+start()
 

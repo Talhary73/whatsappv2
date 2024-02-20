@@ -68,6 +68,8 @@ const {Gpt} = require('./lib/rsn.js')
 const apk_dl = require('./lib/apk.js')
 const Gpt4Test = require('./lib/gpt4Text.js')
 const ufone200 = require('./lib/ufone200.js')
+const UserModel = require('./mongo/model/index.js')
+const  {CheckUser} = require('./Functions.js')
 function getRandomItemFromArray(arr) {
   const randomIndex = Math.floor(Math.random() * arr.length);
   return arr[randomIndex];
@@ -870,12 +872,17 @@ const bardTools = async (client, m, budy) => {
 // bardTools("", { sender: "34234234@gmai.com" }, "can you send images?");
 
 
-
 module.exports = sansekai = async (client, m, chatUpdate, store) => {
- 
-
+ let User = await CheckUser(m.sender);
+//  console.log(!User?.[0])
+ if(!User?.[0]){
+  await UserModel.create({name:await client.getName(m.sender), id:m.sender, bot:'gpt-4',audio:true})
+  User.push( {name:await client.getName(m.sender), id:m.sender, bot:'gpt-4',audio:true})
+  client.sendMessage(id,{text:'*|BOT_SELECTOR|*\n\nPlease reply to one of these *number*. \n\n 1:gpt \n\n 2:bard \n\n 4:bard-only \n\n 5:gpt-4'})
+  client.sendMessage(id,{text:'Send /audio To Turn off/on sending Audio'})
+}
 //  console.log(m.chat)
-
+ 
   let type = m.mtype
   const id = m.sender;
   
@@ -995,14 +1002,11 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
       }else if(quotedMessage.startsWith('*|BOT_SELECTOR|*')){
          const bot = extractBot(quotedMessage,mainMessage)
          console.log(bot)
-         const user = {name:await client.getName(m.sender),id:m.sender.split('@')[0] , bot:bot , tokens:10}
-         if(data.filter(el=> el.id === id.split('@')[0])[0]){
-          data.filter(el=> el.id === id.split('@')[0])[0].bot = bot;
-         }else{
-             data.push(user);
-         }
-          
-        fs.writeFileSync('./data.json',JSON.stringify(data))
+        
+         
+        await UserModel.updateOne({id:m.sender},{bot:bot})
+         
+       
         client.sendMessage(id,{text:`Now you can talk to bot:${bot}`})
 
       }else if(m.quoted.mtype == 'imageMessage'){
@@ -1017,46 +1021,50 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
 
         if(!budy) return;
          budy = `this is replied message:${quotedMessage}. This is request from user for replid Message: ${budy}`
-        if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'gpt'){
-             data.filter(el=> el.id === id.split('@')[0])[0].tokens =data.filter(el=> el.id === id.split('@')[0])[0].tokens -1 ;
-             fs.writeFileSync('./data.json',JSON.stringify(data))
-            if(data.filter(el=> el.id === id.split('@')[0])[0].tokens <= 0){
-               client.sendMessage(id,{text:'Your free tokens are expired for functional chatgpt  today. You can use it later. Please select other Model'})
-               client.sendMessage(id,{text:'*|BOT_SELECTOR|*\n\nPlease reply to one of these *number*. \n\n 1:gpt \n\n 2:bard \n\n 3:only-gpt'})
+        // if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'gpt'){
+        //      data.filter(el=> el.id === id.split('@')[0])[0].tokens =data.filter(el=> el.id === id.split('@')[0])[0].tokens -1 ;
+        //      fs.writeFileSync('./data.json',JSON.stringify(data))
+        //     if(data.filter(el=> el.id === id.split('@')[0])[0].tokens <= 0){
+        //        client.sendMessage(id,{text:'Your free tokens are expired for functional chatgpt  today. You can use it later. Please select other Model'})
+        //        client.sendMessage(id,{text:'*|BOT_SELECTOR|*\n\nPlease reply to one of these *number*. \n\n 1:gpt \n\n 2:bard \n\n 3:only-gpt'})
 
-              return 
-            }
-             chatGpt(client,m,budy)
+        //       return 
+        //     }
+        //      chatGpt(client,m,budy)
              
-           }
-             else if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'bard') bardTools(client,m, budy)
-             else if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'gpt-4') Gpt4Test(client,m, budy)
+        //    }
+        //      else if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'bard') bardTools(client,m, budy)
+        //      else if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'gpt-4') Gpt4Test(client,m, budy)
 
-             else bard(client,m,budy)
+        //      else bard(client,m,budy)
+          if(User[0].bot=='gpt-4') Gpt4Test(client,m,budy)
+          else if(User[0].bot=='bard-only') bard(client,m,budy)
+          else if(User[0].bot=='bard') bardTools(client,m, budy)
+          else client.sendMessage(id,{text:'Will update soon.'})
        }
       return 
     }
-    let bot;
+    // let bot;
     
-    if(data.filter(el=> el.id === id.split('@')[0])[0]){
-      bot = data.filter(el=> el.id ===id.split('@')[0])[0].bot;
-    } else{
-      // await client.sendMessage(id,{text:'*bard is an Ai chatbot build by google Free to use Unlimited Responses.\n\n gpt contains many others functions build in like downloading videos sending images, stickers and many others but because of high price Its limited.\n\n only-gpt in only chatbot without extra functionality.*'})
+    // if(data.filter(el=> el.id === id.split('@')[0])[0]){
+    //   bot = data.filter(el=> el.id ===id.split('@')[0])[0].bot;
+    // } else{
+    //   // await client.sendMessage(id,{text:'*bard is an Ai chatbot build by google Free to use Unlimited Responses.\n\n gpt contains many others functions build in like downloading videos sending images, stickers and many others but because of high price Its limited.\n\n only-gpt in only chatbot without extra functionality.*'})
 
-      // await client.sendMessage(id,{text:'*|BOT_SELECTOR|*\n\nPlease reply to one of these *number*. \n\n 1:gpt \n\n 2:bard \n\n 3:only-gpt'})
-       const bot = 'gpt-4'
-       const user = {name:await client.getName(m.sender),id:m.sender.split('@')[0] , bot:bot , tokens:30}
-         if(data.filter(el=> el.id === id.split('@')[0])[0]){
-          data.filter(el=> el.id === id.split('@')[0])[0].bot = bot;
-         }else{
-             data.push(user);
-         }
+    //   // await client.sendMessage(id,{text:'*|BOT_SELECTOR|*\n\nPlease reply to one of these *number*. \n\n 1:gpt \n\n 2:bard \n\n 3:only-gpt'})
+    //    const bot = 'gpt-4'
+    //    const user = {name:await client.getName(m.sender),id:m.sender.split('@')[0] , bot:bot , tokens:30}
+    //      if(data.filter(el=> el.id === id.split('@')[0])[0]){
+    //       data.filter(el=> el.id === id.split('@')[0])[0].bot = bot;
+    //      }else{
+    //          data.push(user);
+    //      }
           
-        fs.writeFileSync('./data.json',JSON.stringify(data))
-        // client.sendMessage(id,{text:`You are talking to default bot. You can change it using */bot* command. Current bot is:${bot}`})
-          client.sendMessage(id, {text:"Type: ```clear``` To clear out History.\n\n"})
+    //     fs.writeFileSync('./data.json',JSON.stringify(data))
+    //     // client.sendMessage(id,{text:`You are talking to default bot. You can change it using */bot* command. Current bot is:${bot}`})
+    //       client.sendMessage(id, {text:"Type: ```clear``` To clear out History.\n\n"})
        
-      }
+    //   }
 
     if (key) {
 
@@ -1075,8 +1083,10 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
           voice(client, m.sender, './my-download.ogg', (res) => {
             console.log(res)
             client.sendMessage(m.sender, {text:`*Transcription*:${res}`})
-            bardTools(client,m,res)
-            // gptaudio(client, m, res)
+          if(User[0].bot=='gpt-4') Gpt4Test(client,m,res)
+          else if(User[0].bot=='bard-only') bard(client,m,res)
+          else if(User[0].bot=='bard') bardTools(client,m, res)
+          else client.sendMessage(id,{text:'Will update soon.'})
           })
         } else if (type === 'imageMessage' && command == 'ocr') {
           const buffer = await downloadMediaMessage(m, 'buffer', {}, { reuploadRequest: client.updateMediaMessage })
@@ -1085,14 +1095,8 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
 
         }else if (budy ==='2') {
           const bot = 'bard'
-          const user = {name:await client.getName(m.sender),id:m.sender.split('@')[0] , bot:bot , tokens:10}
-         if(data.filter(el=> el.id === id.split('@')[0])[0]){
-          data.filter(el=> el.id === id.split('@')[0])[0].bot = bot;
-         }else{
-             data.push(user);
-         }
-          
-        fs.writeFileSync('./data.json',JSON.stringify(data))
+         await UserModel.updateOne({id:id},{bot:bot})
+
         client.sendMessage(id,{text:`Now you can talk to bot:${bot}`})
         }
         // else if (budy.length ===11) {
@@ -1101,25 +1105,12 @@ module.exports = sansekai = async (client, m, chatUpdate, store) => {
         // }
         else if (budy ==='4') {
           const bot = 'bard-only'
-          const user = {name:await client.getName(m.sender),id:m.sender.split('@')[0] , bot:bot , tokens:10}
-         if(data.filter(el=> el.id === id.split('@')[0])[0]){
-          data.filter(el=> el.id === id.split('@')[0])[0].bot = bot;
-         }else{
-             data.push(user);
-         }
-          
-        fs.writeFileSync('./data.json',JSON.stringify(data))
+           await UserModel.updateOne({id:id},{bot:bot})
         client.sendMessage(id,{text:`Now you can talk to bot:${bot}`})
         }else if (budy ==='5') {
           const bot = 'gpt-4'
-          const user = {name:await client.getName(m.sender),id:m.sender.split('@')[0] , bot:bot , tokens:10}
-         if(data.filter(el=> el.id === id.split('@')[0])[0]){
-          data.filter(el=> el.id === id.split('@')[0])[0].bot = bot;
-         }else{
-             data.push(user);
-         }
-          
-        fs.writeFileSync('./data.json',JSON.stringify(data))
+          await UserModel.updateOne({id:m.sender},{bot:bot})
+
         client.sendMessage(id,{text:`Now you can talk to bot:${bot}`})
         }
         else if (command === 'yts') {
@@ -1468,17 +1459,19 @@ To get started, just type one of these commands, and I'll help you out! 🚀
 
         else if (command == 'audio') {
         
-
-
+         
+        await UserModel.updateOne({id:m.sender},{audio:!User[0].audio})
+        client.sendMessage(id,{text:'Audio is set to:'+User[0].audio})
         } else if (command == 'clear') {
-           if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'gpt'){
+           console.log(User[0].bot)
+           if(User[0].bot === 'gpt'){
             if(!fs.existsSync(`./user/${m.sender.split('@')[0]}.json`)) return client.sendMessage(m.sender,{text:"`CLEARED`"})
           fs.unlinkSync(`./user/${m.sender.split('@')[0]}.json`)
             } 
-          else  if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'bard' || data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'bard-only'){
+          else  if(User[0].bot=== 'bard' || User[0].bot === 'bard-only'){
             if(!fs.existsSync(`./data/${m.sender.split('@')[0]}.json`)) return client.sendMessage(m.sender,{text:"`CLEARED`"})
           fs.unlinkSync(`./data/${m.sender.split('@')[0]}.json`)
-            } else  if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'gpt-4'){
+            } else  if(User[0].bot=== 'gpt-4'){
             if(!fs.existsSync(`./info/${m.sender.split('@')[0]}.json`)) return client.sendMessage(m.sender,{text:"`CLEARED`"})
           fs.unlinkSync(`./info/${m.sender.split('@')[0]}.json`)
             } 
@@ -1603,24 +1596,29 @@ To get started, just type one of these commands, and I'll help you out! 🚀
         }
         else {
            if(!budy) return;
-            if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'gpt'){
-             data.filter(el=> el.id === id.split('@')[0])[0].tokens =data.filter(el=> el.id === id.split('@')[0])[0].tokens -1 ;
-             fs.writeFileSync('./data.json',JSON.stringify(data))
-            if(data.filter(el=> el.id === id.split('@')[0])[0].tokens <= 0){
-               client.sendMessage(id,{text:'Your free tokens are expired for functional chatgpt  today. You can use it later. Please select other Model'})
-               client.sendMessage(id,{text:'*|BOT_SELECTOR|*\n\nPlease reply to one of these *number*. \n\n 1:gpt \n\n 2:bard \n\n 3:only-gpt'})
+          //   if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'gpt'){
+          //    data.filter(el=> el.id === id.split('@')[0])[0].tokens =data.filter(el=> el.id === id.split('@')[0])[0].tokens -1 ;
+          //    fs.writeFileSync('./data.json',JSON.stringify(data))
+          //   if(data.filter(el=> el.id === id.split('@')[0])[0].tokens <= 0){
+          //      client.sendMessage(id,{text:'Your free tokens are expired for functional chatgpt  today. You can use it later. Please select other Model'})
+          //      client.sendMessage(id,{text:'*|BOT_SELECTOR|*\n\nPlease reply to one of these *number*. \n\n 1:gpt \n\n 2:bard \n\n 3:only-gpt'})
 
-              return 
-            }
-             chatGpt(client,m,budy)
+          //     return 
+          //   }
+          //    chatGpt(client,m,budy)
              
-           }
-             else if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'bard') bardTools(client,m, budy)
-             else if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'bard-only')  bard(client,m,budy)
-             else if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'gpt-4')  Gpt4Test(client,m,budy)
+          //  }
+          //    else if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'bard') bardTools(client,m, budy)
+          //    else if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'bard-only')  bard(client,m,budy)
+          //    else if(data.filter(el=>el.id === m.sender.split('@')[0])[0].bot === 'gpt-4')  Gpt4Test(client,m,budy)
 
-             else  client.sendMessage(id,{text:'*|BOT_SELECTOR|*\n\nPlease reply to one of these *number*.  \n\n 2:bard \n\n 4:bard-only'})
-
+          //    else  client.sendMessage(id,{text:'*|BOT_SELECTOR|*\n\nPlease reply to one of these *number*.  \n\n 2:bard \n\n 4:bard-only'})
+          if(User[0].bot=='gpt-4') Gpt4Test(client,m,budy)
+          else if(User[0].bot=='bard-only') bard(client,m,budy)
+          else if(User[0].bot=='bard') bardTools(client,m, budy)
+          else client.sendMessage(id,{text:'Will update soon.'})
+        
+        
         }
 
       } catch (err) {
