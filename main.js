@@ -1138,9 +1138,24 @@ const id = m.sender;
           // teseract(client, m, `./files/${m.sender.split('@')[0]}image.png`, true)
         }
         else if(isUrl(budy)){
-          //  const url =  UrlParse(budy);
-          // const { domain }  = parseDomain(url.hostname) 
-          bardTools(client,m,budy)
+           const url =  UrlParse(budy);
+          const { domain }  = parseDomain(url.hostname)
+          if(domain == 'youtube'|| domain === 'youtu'){
+             ytNew(client,m,budy)
+            return
+          } 
+          else if(domain === 'facebook'|| domain ==='fb' ){
+            fb(client,m,budy)
+            return
+          }
+          else if (domain ==='tiktok'){
+            tiktok_dl(client,m,budy)
+            return
+          }
+          else{
+             bardTools(client,m,budy)
+          }
+          
           
         }
         else if (type === 'imageMessage' ) {
