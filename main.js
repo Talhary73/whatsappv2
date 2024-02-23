@@ -876,7 +876,7 @@ const bardTools = async (client, m, budy) => {
 
 module.exports = sansekai = async (client, m, chatUpdate, store) => {
 const {parseDomain} = await import("parse-domain")
-
+const id = m.sender;
   // console.log(parseDomain)
  let User = await CheckUser(m.sender);
 //  console.log(!User?.[0])
@@ -889,7 +889,7 @@ const {parseDomain} = await import("parse-domain")
 //  console.log(m.chat)
  
   let type = m.mtype
-  const id = m.sender;
+  
   
  
   // const user = {name:await client.getName(m.sender),id:m.sender.split('@')[0]}
