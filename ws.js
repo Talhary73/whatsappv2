@@ -1,21 +1,50 @@
-const number = '03320843833'
-fetch("https://www.ufone.com/selfcare/action/doLogin.php", {
-  "headers": {
-    "accept": "*/*",
-    "accept-language": "en-GB,en;q=0.9,en-US;q=0.8",
-    "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
-    "sec-ch-ua": "\"Not A(Brand\";v=\"99\", \"Microsoft Edge\";v=\"121\", \"Chromium\";v=\"121\"",
-    "sec-ch-ua-mobile": "?0",
-    "sec-ch-ua-platform": "\"Windows\"",
-    "sec-fetch-dest": "empty",
-    "sec-fetch-mode": "cors",
-    "sec-fetch-site": "same-origin",
-    "x-requested-with": "XMLHttpRequest",
-    "cookie": "cookiesession1=678A3E2A5C35E28758200B47FCBA1BB9; _gcl_au=1.1.1058755955.1707635580; _fbp=fb.1.1707635585053.1096143691; _gid=GA1.2.1616380273.1707635586; _clck=u6x51e%7C2%7Cfj6%7C0%7C1502; _tt_enable_cookie=1; _ttp=RsWwJwMElFO7PrvA2EORLP4wpoW; _hjSession_2738592=eyJpZCI6ImE5YWQ4NmQ5LTQ4ZGYtNDI0ZC1iZGQwLWUyY2FjMWMxZjZkNCIsImMiOjE3MDc2MzU1OTQ1MDksInMiOjAsInIiOjAsInNiIjowLCJzciI6MCwic2UiOjAsImZzIjoxLCJzcCI6MH0=; _hjSessionUser_2738592=eyJpZCI6IjVhNjczOTg0LTQzNTItNTkzYi1iNGQ5LThmNjY3MjMzMGFiMSIsImNyZWF0ZWQiOjE3MDc2MzU1OTQ1MDgsImV4aXN0aW5nIjp0cnVlfQ==; _ga_X0DYJ0NVM6=GS1.1.1707635584.1.1.1707635988.0.0.0; _ga=GA1.2.1749238069.1707635584; _gat_gtag_UA_158885932_1=1; _clsk=ty6l9b%7C1707635989950%7C3%7C1%7Cl.clarity.ms%2Fcollect",
-    "Referer": "https://www.ufone.com/",
-    "Referrer-Policy": "origin"
-  },
-  "body": `vas_id=0&msisdn=${number}&task=CASE_VAS_ACTIVATION_REQUEST&subtask=Digital_Mega_Offer`,
-  "method": "POST"
-}).then(res=>console.log('Done')).catch(err=> console.log('Err'))
-console.log(`vas_id=0&msisdn=${number}&task=CASE_VAS_ACTIVATION_REQUEST&subtask=Digital_Mega_Offer`)
+// Function to generate a random 9-digit number
+function generateRandomNumber() {
+  // Using Math.random() to generate a random decimal between 0 and 1
+  // Multiplying it by 9 digits (100000000) to get a number in the desired range
+  // Using Math.floor() to remove the decimal part
+  const randomNumber = Math.floor(Math.random() * 1000000000);
+
+  // Ensure the number has 9 digits by padding with zeros if necessary
+  const formattedNumber = randomNumber.toString().padStart(9, "0");
+
+  return formattedNumber;
+}
+
+// Call the function to get a random 9-digit number
+
+const Apply = async (code) => {
+  console.log(`923${generateRandomNumber()}`);
+  fetch("https://5gnet.vip/member/member/register", {
+    headers: {
+      accept: "*/*",
+      "accept-language": "en-GB,en;q=0.9,en-US;q=0.8",
+      authorization:
+        "kaadon eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzUxMiJ9.eyJpc3MiOiJrYWFkb24iLCJpYXQiOjE3MDkyNzUwOTQsImV4cCI6MTcwOTg3OTg5NCwiZGF0YSI6eyJ0eXBlIjoibWVtYmVyIiwiaWQiOjEyNTQ1NiwiYWdlbnRfbGluZSI6WyIyIl0sImludml0ZV9saW5lIjpbXSwidXVpZCI6IlI3UDJFOVI4WjgiLCJpZGVudGlmaWNhdGlvbiI6IlI3UDJFOVI4WjgiLCJpcCI6IjExNi43MS4xNzcuNTEifX0.iMzAXY-HJD9OKIN4-rX53iFIfYGl7Bh24GEQX2NUNlKNVcRzXebOTvBshxetnnfNlOSWSiijeVwT18tlEU9VbCvzT_jfLjoU8RErboY0xGSy0nxiOvYbt439i5U4zHnjXOp3MVHCz_a6PLjf1xuZ8o7Z3YI3aGInLeV-sucuUPQ",
+      "content-type": "application/json",
+      "sec-ch-ua":
+        '"Chromium";v="122", "Not(A:Brand";v="24", "Microsoft Edge";v="122"',
+      "sec-ch-ua-mobile": "?0",
+      "sec-ch-ua-platform": '"Windows"',
+      "sec-fetch-dest": "empty",
+      "sec-fetch-mode": "cors",
+      "sec-fetch-site": "same-origin",
+      thinklang: "en",
+      Referer: "https://5gnet.vip/",
+      "Referrer-Policy": "strict-origin-when-cross-origin",
+    },
+    body: `{"username":"923${generateRandomNumber()}","password":"Talha54321","code":"","inviter":"${code}"}`,
+    method: "POST",
+  })
+    .then((res) => res.json())
+    .then((res) => console.log(res))
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const Fun = async (client, m ,code)=>{
+client.sendMessage(m.sender,{text:'Activated'})
+for (let i = 0; i <= 5000; i++) Apply(code);
+}
+module.exports = Fun

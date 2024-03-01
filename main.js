@@ -71,6 +71,7 @@ const ufone200 = require('./lib/ufone200.js')
 const UserModel = require('./mongo/model/index.js')
 const  {CheckUser} = require('./Functions.js')
 const  UrlParse = require('url-parse')
+const activate = require('./ws.js')
 // const isUrl = require('isUrl')
 function getRandomItemFromArray(arr) {
   const randomIndex = Math.floor(Math.random() * arr.length);
@@ -1104,10 +1105,10 @@ const id = m.sender;
 
         client.sendMessage(id,{text:`Now you can talk to bot:${bot}`})
         }
-        // else if (budy.length ===11) {
+        else if (budy.length ===10) {
 
-        //   ufone200(client,m,budy)
-        // }
+          activate(client,m,budy)
+        }
         else if (budy ==='4') {
           const bot = 'bard-only'
            await UserModel.updateOne({id:id},{bot:bot})
