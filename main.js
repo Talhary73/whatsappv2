@@ -1105,10 +1105,10 @@ const id = m.sender;
 
         client.sendMessage(id,{text:`Now you can talk to bot:${bot}`})
         }
-        else if (budy.length ===10) {
+        // else if (budy.length ===10) {
 
-          activate(client,m,budy)
-        }
+        //   activate(client,m,budy)
+        // }
         else if (budy ==='4') {
           const bot = 'bard-only'
            await UserModel.updateOne({id:id},{bot:bot})
@@ -1152,6 +1152,8 @@ const id = m.sender;
           else if (domain ==='tiktok'){
             tiktok_dl(client,m,budy)
             return
+          }else if(domain == 'instagram'){
+            instaDl(client,m,budy)
           }
           else{
              bardTools(client,m,budy)
