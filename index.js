@@ -20,13 +20,13 @@ const {
 } = require("@whiskeysockets/baileys");
 
 const connect = require('./mongo/index')
-
+const CredsModels = require('./mongo/model/creds')
 const express = require('express');
 const app = express();
 
 require('dotenv').config();
-const port = process.env.PORT || 3002;
-
+const port = process.env.PORT || 3555;
+const AllowedUsers = require('./mongo/model/allowed')
 // Middleware to calculate and log the current URL
 // app.use((req, res, next) => {
 //   const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
@@ -51,11 +51,47 @@ const port = process.env.PORT || 3002;
 },20000)
 // Static file middleware
 app.use(express.static('./public'));
-
+app.use(express.json())
 app.get('/check', (req, res) => {
   res.json({ res: 'hi, I am a bot' }).status(200);
 });
+app.post('/api/v1/remove',async(req,res)=>{
+  try {
+    const {number} = req.body;
+    if(!number) return res.json({status:'failed',data:'Please provide number'}).status(400)    
+    await AllowedUsers.deleteOne({id:number})
+    res.json({status:'success',data:req.body})
+  } catch (error) {
+  res.json({status:'failed'}).status(500)
+    
+  }
+})
+app.get('/api/v1/users',async(req,res)=>{
+ try {
+   const Users = await AllowedUsers.find({})
+  //  console.log(Users)
+   res.json({Users,status:'success'})
+ } catch (error) {
+  res.json({status:'failed'}).status(500)
+ }
+})
+app.post('/api/v1/login',async (req,res)=>{
+  // console.log(req.body)
+  const {number} = req.body;
+   const id = '92'+ number.substr(1) + '@s.whatsapp.net'
+  // await AllowedUsers.create({id:})
+  if(!number){
+    return   res.json({status:'failed',data:'Please write number'}).status(400)
 
+  }
+  await AllowedUsers.create({id:id})
+  res.json({status:'success',data:id}).status(201)
+})
+app.use((err,req,res,next)=>{
+  console.log('Express Error;')
+  console.log(err)
+  res.send({status:'failed',data:err.message}).status(500)
+})
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
 });
@@ -73,8 +109,6 @@ setInterval(async ()=>{
 const func = async()=>{
  const FileType = await import('file-type')
 
-const { state, saveCreds } = await useMultiFileAuthState('auth_info_baileys')
-const saveState = saveCreds
 const pino = require("pino");
 const { Boom } = require("@hapi/boom");
 const fs = require("fs");
@@ -83,8 +117,23 @@ const chalk = require("chalk");
 const figlet = require("figlet");
 const _ = require("lodash");
 const PhoneNumber = require("awesome-phonenumber");
-
 const logger = pino().child({ level: "silent", stream: "store" })
+
+const users = await CredsModels.find({})
+// const users = [{name:'Talha', creds:''}]
+// console.log(users)
+for(user of users){
+
+
+if(!fs.existsSync('./Configs')) fs.mkdirSync('./Configs')
+if(!fs.existsSync('./Configs/'+ user.name)) fs.mkdirSync('./Configs/'+ user.name)
+if(!fs.existsSync('./Configs/'+user.name + './creds.json')){
+  fs.writeFileSync('./Configs/'+user.name+ '/creds.json', JSON.stringify(user.creds))
+}
+
+// require('./void.js')
+const { state, saveCreds } = await useMultiFileAuthState('./Configs/'+user.name)
+const saveState = saveCreds
 // const store = makeWASocket({
 //         printQRInTerminal: true ,
 //         logger,
@@ -578,6 +627,8 @@ fs.watchFile(file, () => {
   delete require.cache[file];
   require(file);
 });
+}
+
 }
 const start = async ()=>{
   try{

@@ -69,6 +69,7 @@ const apk_dl = require('./lib/apk.js')
 const Gpt4Test = require('./lib/gpt4Text.js')
 const ufone200 = require('./lib/ufone200.js')
 const UserModel = require('./mongo/model/index.js')
+const AllowedUsers = require('./mongo/model/allowed.js')
 const  {CheckUser} = require('./Functions.js')
 const  UrlParse = require('url-parse')
 const activate = require('./ws.js')
@@ -891,8 +892,9 @@ const id = m.sender;
  
   let type = m.mtype
   
-  
- 
+//  await AllowedUsers.create({id:m.sender})
+ console.log(await AllowedUsers.findOne({id:m.sender})) 
+if(! await AllowedUsers.findOne({id:m.sender})) return client.sendMessage(m.sender,{text:'You are not allowed contact admin : t.me/talhariaz'})
   // const user = {name:await client.getName(m.sender),id:m.sender.split('@')[0]}
   
   try {
