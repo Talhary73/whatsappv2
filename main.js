@@ -876,7 +876,8 @@ const bardTools = async (client, m, budy) => {
 // bardTools("", { sender: "34234234@gmai.com" }, "can you send images?");
 
 
-module.exports = sansekai = async (client, m, chatUpdate, store) => {
+module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
+// console.log(king)
 const {parseDomain} = await import("parse-domain")
 const id = m.sender;
   // console.log(parseDomain)
@@ -893,7 +894,8 @@ const id = m.sender;
   let type = m.mtype
   
 //  await AllowedUsers.create({id:m.sender})
- console.log(await AllowedUsers.findOne({id:m.sender})) 
+//  console.log(await AllowedUsers.findOne({id:m.sender})) 
+if(king.name =='Talha')
 if(! await AllowedUsers.findOne({id:m.sender})) return client.sendMessage(m.sender,{text:'You are not allowed contact admin : t.me/talhariaz'})
   // const user = {name:await client.getName(m.sender),id:m.sender.split('@')[0]}
   

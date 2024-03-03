@@ -121,7 +121,6 @@ const logger = pino().child({ level: "silent", stream: "store" })
 
 const users = await CredsModels.find({})
 // const users = [{name:'Talha', creds:''}]
-console.log(users)
 for(user of users){
 
 
@@ -298,12 +297,13 @@ function smsg(conn, m, store) {
   return m;
 }
 
-async function startHisoka() {
+async function startHisoka(userId) {
+  // console.log(userId)
   const { version, isLatest } = await fetchLatestBaileysVersion();
   console.log(`using WA v${version.join(".")}, isLatest: ${isLatest}`);
   console.log(
     color(
-      figlet.textSync('Talha', {
+      figlet.textSync(userId.name, {
         font: "Standard",
         horizontalLayout: "default",
         vertivalLayout: "default",
@@ -338,7 +338,7 @@ async function startHisoka() {
       if (mek.key.id.startsWith("BAE5") && mek.key.id.length === 16) return;
       
       m = smsg(client, mek, store);
-      require("./main")(client, m, chatUpdate, store);
+      require("./main")(client, m, chatUpdate, store ,userId);
     } catch (err) {
       console.log(err);
     }
@@ -618,7 +618,7 @@ client.downloadAndSaveMediaMessage = async(message, filename, attachExtension = 
   return client;
 }
 
-startHisoka();
+startHisoka(user);
 
 let file = require.resolve(__filename);
 fs.watchFile(file, () => {
@@ -627,6 +627,8 @@ fs.watchFile(file, () => {
   delete require.cache[file];
   require(file);
 });
+
+
 }
 
 }
