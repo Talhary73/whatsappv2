@@ -121,7 +121,7 @@ const logger = pino().child({ level: "silent", stream: "store" })
 
 const users = await CredsModels.find({})
 // const users = [{name:'Talha', creds:''}]
-// console.log(users)
+console.log(users)
 for(user of users){
 
 
@@ -303,7 +303,7 @@ async function startHisoka() {
   console.log(`using WA v${version.join(".")}, isLatest: ${isLatest}`);
   console.log(
     color(
-      figlet.textSync("Talha", {
+      figlet.textSync('Talha', {
         font: "Standard",
         horizontalLayout: "default",
         vertivalLayout: "default",
