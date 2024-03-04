@@ -1,21 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Connect</title>
-</head>
-<body>
+    <style>
+      .status {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div>Whatsapp Bot add method</div>
+    <input type="text" class="input-name" />
+    <button class="connect-btn hide">Click to Connect</button>
+    <div class="status">Connected</div>
+    <div class="show-output"></div>
+    <script
+      src="https://cdn.socket.io/4.7.4/socket.io.min.js"
+      integrity="sha384-Gr6Lu2Ajx28mzwyVR8CFkULdCU7kMlZ9UthllibdOSo6qAiN+yXNHqtgdTvFXMT4"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      const inputBtn = document.querySelector(".input-name");
+      const UsersBlock = document.querySelector(".users");
+      function deleteChild(cls) {
+        let e = document.querySelector(cls);
 
-<div>Connect</div>
-<button class='connect-btn'>Click to Connect</button>
-<script src="https://cdn.socket.io/4.7.4/socket.io.min.js" integrity="sha384-Gr6Lu2Ajx28mzwyVR8CFkULdCU7kMlZ9UthllibdOSo6qAiN+yXNHqtgdTvFXMT4" crossorigin="anonymous"></script>
-<script>
-    const socket = io('http://localhost:5001');
-
-    document.querySelector('.connect-btn').addEventListener('click',()=>{
-        
-    })
-</script>
-</body>
+        //e.firstElementChild can be used.
+        let child = e.lastElementChild;
+        while (child) {
+          e.removeChild(child);
+          child = e.lastElementChild;
+        }
+      }
+      const socket = io("https://whatsapp-bot-latest-33321c6ad8d3.herokuapp.com");
+      socket.on("connect", () => {
+        document.querySelector(".status").style.display = "block";
+        const div = document.createElement("div");
+        div.textContent = `connected to id: ${socket.id}`;
+        document.querySelector(".status").appendChild(div);
+      });
+      socket.on("done", (data) => {
+        console.log(data);
+      });
+      socket.on("photo", async (data) => {
+        const image = document.createElement("img");
+        image.src = "data:image/png;base64," + data;
+        await deleteChild(".status");
+        document.querySelector(".status").appendChild(image);
+        // console.log("data:image/png;base64," + data);
+      });
+      socket.on("add", (data) => {
+        document.querySelector(".show-output").textContent = data;
+      });
+      document.querySelector(".connect-btn").addEventListener("click", () => {
+        socket.emit("add", { name: inputBtn.value });
+      });
+    </script>
+  </body>
 </html>
