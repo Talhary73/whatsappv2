@@ -473,7 +473,7 @@ async function startHisoka(userId) {
         console.log(
           "Connection Replaced, Another New Session Opened, Please Close Current Session First"
         );
-        process.exit();
+       
       } else if (reason === DisconnectReason.loggedOut) {
         if(user){
           user.send('Device Logged Out, Please Delete Session file Talha.json and Scan Again.')
@@ -481,7 +481,7 @@ async function startHisoka(userId) {
         console.log(
           `Device Logged Out, Please Delete Session file Talha.json and Scan Again.`
         );
-        process.exit();
+      
       } else if (reason === DisconnectReason.restartRequired) {
         if(user){
           user.send('Restart Required, Restarting...')
