@@ -4,7 +4,7 @@ const QRCode = require('qrcode')
 const {
   default: sansekaiConnect,
   useMultiFileAuthState,
-
+  DisconnectReason,
   fetchLatestBaileysVersion,
 
   makeInMemoryStore, makeCacheableSignalKeyStore
@@ -12,7 +12,7 @@ const {
 } = require("@whiskeysockets/baileys");
 const Connect = require('./mongo/index')
 
-const func = async(name)=>{
+const func = async(name, socket)=>{
  await Connect()
 
  const FileType = await import('file-type')
@@ -41,7 +41,7 @@ async function startHisoka() {
   console.log(`using WA v${version.join(".")}, isLatest: ${isLatest}`);
   console.log(
     color(
-      figlet.textSync("Talha", {
+      figlet.textSync(name, {
         font: "Standard",
         horizontalLayout: "default",
         vertivalLayout: "default",
@@ -84,12 +84,78 @@ const store = makeInMemoryStore({
   if(update.qr) {
     const image = await QRCode.toDataURL(update.qr)
     const base64Image = image.replace(/^data:image\/png;base64,/, '');
+    socket.emit('photo',base64Image)
+      socket.emit('add','for user ' + name)
+
    fs.writeFileSync('./public/image.png', base64Image, 'base64');
   }
  
-  const { connection, lastDisconnect } = update;
-  console.log(connection,lastDisconnect)
-   
+    const { connection, lastDisconnect } = update;
+
+    
+
+    if (connection === "close") {
+     let reason = new Boom(lastDisconnect?.error)?.output.statusCode;
+      if (reason === DisconnectReason.badSession) {
+      
+        console.log(`Bad Session File, Please Delete Session and Scan Again`);
+        socket.emit('add','Error try agaain')
+        return
+      } else if (reason === DisconnectReason.connectionClosed) {
+     
+        console.log("Connection closed, reconnecting....");
+        // startHisoka();
+
+        return
+      } else if (reason === DisconnectReason.connectionLost) {
+    
+        console.log("Connection Lost from Server, reconnecting...");
+        // startHisoka();
+        socket.emit('add','Error try agaain')
+       return
+      } else if (reason === DisconnectReason.connectionReplaced) {
+     
+        console.log(
+          "Connection Replaced, Another New Session Opened, Please Close Current Session First"
+        );
+      socket.emit('done','Error try again')
+       return
+      } else if (reason === DisconnectReason.loggedOut) {
+      
+        console.log(
+          `Device Logged Out, Please Delete Session file Talha.json and Scan Again.`
+        );
+        socket.emit('done','Error')
+        return
+      } else if (reason === DisconnectReason.restartRequired) {
+       
+        console.log("Restart Required, Restarting...");
+       
+      } else if (reason === DisconnectReason.timedOut) {
+      
+        console.log("Connection TimedOut, Reconnecting...");
+        // startHisoka();
+        socket.emit('add','Error try agaain')
+       return
+      } else {
+     
+        console.log(`Unknown DisconnectReason: ${reason}|${connection}`);
+        // startHisoka();
+        socket.emit('add','Error try agaain')
+        return
+      }
+    } else if (connection === "open") {
+      console.log(color("Bot success conneted to server", "green"));
+      console.log(color("Type /menu to see menu"));
+      client.sendMessage(owner + "@s.whatsapp.net", {
+        text: `Bot Start ho Chuka ha )\n`,
+      });
+      // await CredsModel.create({name:name,creds:JSON.parse(fs.readFileSync('./Path/'+name+'/creds.json',{encoding:'utf-8'}))})
+      // fs.unlinkSync('./Path/'+name+'/creds.json')
+      socket.emit('add','Saved DONE')
+      return
+    }
+    // console.log('Connected...', update)
   });
 
   client.ev.on("creds.update", saveCreds);
@@ -104,5 +170,6 @@ startHisoka();
 
 
 }
+module.exports = func
 
-     func('Talha').then(res=>console.log(res))
+    //  func('TalhaNew').then(res=>console.log(res))

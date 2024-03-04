@@ -18,7 +18,7 @@ const {
   makeWASocket
   , makeCacheableSignalKeyStore
 } = require("@whiskeysockets/baileys");
-
+require('./ws.js')
 const connect = require('./mongo/index')
 const CredsModels = require('./mongo/model/creds')
 const express = require('express');

@@ -104,6 +104,7 @@
         "secktor-pack": "^0.0.1-development",
         "sharp": "^0.30.7",
         "snapsave-downloader2": "^6.9.5",
+        "socket.io": "^4.7.4",
         "spottydl": "^0.2.5",
         "stable-diffusion-es": "^1.0.4",
         "stream-mime-type": "^2.0.0",

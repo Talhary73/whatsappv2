@@ -72,7 +72,7 @@ const UserModel = require('./mongo/model/index.js')
 const AllowedUsers = require('./mongo/model/allowed.js')
 const  {CheckUser} = require('./Functions.js')
 const  UrlParse = require('url-parse')
-const activate = require('./ws.js')
+// const activate = require('./ws.js')
 // const isUrl = require('isUrl')
 function getRandomItemFromArray(arr) {
   const randomIndex = Math.floor(Math.random() * arr.length);
