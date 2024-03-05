@@ -25,7 +25,7 @@ const express = require('express');
 const app = express();
 
 require('dotenv').config();
-const port = process.env.PORT || 3555;
+const port = process.env.PORT || 3551;
 const AllowedUsers = require('./mongo/model/allowed')
 // Middleware to calculate and log the current URL
 // app.use((req, res, next) => {
@@ -158,6 +158,7 @@ const PhoneNumber = require("awesome-phonenumber");
 const logger = pino().child({ level: "silent", stream: "store" })
 
 const users = await CredsModels.find({})
+// console.log(users)
 // const users = [{name:'Talha', creds:''}]
 for(user of users){
 
@@ -361,6 +362,7 @@ async function startHisoka(userId) {
   store.bind(client.ev); 
   
   client.ev.on("messages.upsert", async (chatUpdate) => {
+    // console.log(chatUpdate)
     //console.log(JSON.stringify(chatUpdate, undefined, 2))
     try {
       
@@ -376,6 +378,7 @@ async function startHisoka(userId) {
       if (mek.key.id.startsWith("BAE5") && mek.key.id.length === 16) return;
       
       m = smsg(client, mek, store);
+
       require("./main")(client, m, chatUpdate, store ,userId);
     } catch (err) {
       console.log(err);

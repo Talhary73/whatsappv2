@@ -153,20 +153,26 @@ const store = makeInMemoryStore({
       client.sendMessage(owner + "@s.whatsapp.net", {
         text: `Bot Start ho Chuka ha )\n`,
       });
-      await CredsModel.create({name:name,creds:JSON.parse(fs.readFileSync('./Path/'+name+'/creds.json',{encoding:'utf-8'}))})
-      fs.unlinkSync('./Path/'+name+'/creds.json')
-      
+    
+         await CredsModel.create({name:name,creds:JSON.parse(fs.readFileSync('./Path/'+name+'/creds.json',{encoding:'utf-8'}))})
+        // fs.unlinkSync('./Path/'+name+'/creds.json')
+
+         
       socket.to(id).emit('add','Saved DONE')
-      return
+      // return
     }
     // console.log('Connected...', update)
   });
 
   client.ev.on("creds.update", saveCreds);
 
+  client.ev.on("messages.upsert", async (chatUpdate) => {
+    console.log(chatUpdate)
+    //console.log(JSON.stringify(chatUpdate, undefined, 2))
 
+  });
 
-  return client;
+  // return client;
 }
 
 startHisoka();

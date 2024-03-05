@@ -878,6 +878,7 @@ const bardTools = async (client, m, budy) => {
 
 module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
 // console.log(king)
+  console.log('running main')
 const {parseDomain} = await import("parse-domain")
 const id = m.sender;
   // console.log(parseDomain)
