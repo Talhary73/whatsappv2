@@ -41,20 +41,58 @@ const AllowedUsers = require('./mongo/model/allowed')
 // },20000)
 //   next(); // Move to the next middleware or route handler
 // });
- setInterval(async ()=>{
-   try {
-    await axios.get(`https://whatsapp-bot-new-bot-65c6e4e95b06.herokuapp.com/`)
-   } catch (error) {
-    console.log(' error ')
-   }
+//  setInterval(async ()=>{
+//    try {
+//     await axios.get(`https://whatsapp-bot-new-bot-65c6e4e95b06.herokuapp.com/`)
+//    } catch (error) {
+//     console.log(' error ')
+//    }
 
-},20000)
+// },20000)
 // Static file middleware
 app.use(express.static('./public'));
 app.use(express.json())
 app.get('/check', (req, res) => {
   res.json({ res: 'hi, I am a bot' }).status(200);
 });
+
+
+
+app.post('/api/v1/creds/remove',async(req,res)=>{
+  try {
+    const {name} = req.body;
+    if(!name) return res.json({status:'failed',data:'Please provide number'}).status(400)    
+    await CredsModels.deleteOne({name:name})
+    res.json({status:'success',data:req.body})
+  } catch (error) {
+  res.json({status:'failed'}).status(500)
+    
+  }
+})
+app.get('/api/v1/creds/users',async(req,res)=>{
+ try {
+   const Users = await CredsModels.find({})
+  //  console.log(Users)
+   res.json({Users,status:'success'})
+ } catch (error) {
+  res.json({status:'failed'}).status(500)
+ }
+})
+// app.post('/api/v1/creds/login',async (req,res)=>{
+//   // console.log(req.body)
+//   const {number} = req.body;
+//    const id = '92'+ number.substr(1) + '@s.whatsapp.net'
+//   // await AllowedUsers.create({id:})
+//   if(!number){
+//     return   res.json({status:'failed',data:'Please write number'}).status(400)
+
+//   }
+//   await AllowedUsers.create({id:id})
+//   res.json({status:'success',data:id}).status(201)
+// })
+
+
+
 app.post('/api/v1/remove',async(req,res)=>{
   try {
     const {number} = req.body;
@@ -92,10 +130,10 @@ app.use((err,req,res,next)=>{
   console.log(err)
   res.send({status:'failed',data:err.message}).status(500)
 })
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
 });
-
+require('./ws.js')(server)
 const axios = require('axios')
 setInterval(async ()=>{
    try {

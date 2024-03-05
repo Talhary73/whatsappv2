@@ -8,9 +8,18 @@
       .status {
         display: none;
       }
+      .show-output{
+        display:flex;
+        justify-content: start;
+        align-items: center;
+        flex-direction: column;
+        width:80%;
+        margin:0 auto;       
+ 
+      }
     </style>
   </head>
-  <body>
+  <body class="show-output">
     <div>Whatsapp Bot add method</div>
     <input type="text" class="input-name" />
     <button class="connect-btn hide">Click to Connect</button>
@@ -34,7 +43,7 @@
           child = e.lastElementChild;
         }
       }
-      const socket = io("https://whatsapp-bot-latest-33321c6ad8d3.herokuapp.com");
+      const socket = io("http://127.0.0.1:3555");
       socket.on("connect", () => {
         document.querySelector(".status").style.display = "block";
         const div = document.createElement("div");
@@ -52,10 +61,13 @@
         // console.log("data:image/png;base64," + data);
       });
       socket.on("add", (data) => {
-        document.querySelector(".show-output").textContent = data;
+        const div = document.createElement('div')
+        div.textContent = data
+        document.querySelector(".show-output").appendChild(div);
+
       });
       document.querySelector(".connect-btn").addEventListener("click", () => {
-        socket.emit("add", { name: inputBtn.value });
+        socket.emit("add", { name: inputBtn.value }, socket.id);
       });
     </script>
   </body>
