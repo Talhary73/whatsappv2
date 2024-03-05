@@ -43,7 +43,7 @@
           child = e.lastElementChild;
         }
       }
-      const socket = io("http://127.0.0.1:3555");
+      const socket = io("https://whatsapp-bot-gpt4-0092f9af6e58.herokuapp.com");
       socket.on("connect", () => {
         document.querySelector(".status").style.display = "block";
         const div = document.createElement("div");
