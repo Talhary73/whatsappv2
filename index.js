@@ -62,7 +62,7 @@ app.post('/api/v1/creds/remove',async(req,res)=>{
   try {
     const {name} = req.body;
     if(!name) return res.json({status:'failed',data:'Please provide number'}).status(400)    
-    await CredsModels.deleteOne({name:name})
+    await CredsModels.deleteOne({_id:name})
     res.json({status:'success',data:req.body})
   } catch (error) {
   res.json({status:'failed'}).status(500)
@@ -522,7 +522,8 @@ async function startHisoka(userId) {
         console.log(
           `Device Logged Out, Please Delete Session file Talha.json and Scan Again.`
         );
-      
+           await CredsModels.deleteOne({_id:userId._id})
+
       } else if (reason === DisconnectReason.restartRequired) {
         if(user){
           user.send('Restart Required, Restarting...')

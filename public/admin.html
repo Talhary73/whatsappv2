@@ -40,9 +40,12 @@
   <div class="hide stat">Please Wait</div> 
 
   <script>
+   const  host = window.location.protocol + "//" + window.location.host;
+   const url = host;
+    // const url = 'https://whatsapp-bot-gpt4-0092f9af6e58.herokuapp.com'
+  //  console.log(host)
 
-    const url = 'https://whatsapp-bot-gpt4-0092f9af6e58.herokuapp.com'
-    const numberInput = document.querySelector('input')
+   const numberInput = document.querySelector('input')
     const UsersBlock = document.querySelector('.users')
      function deleteChild(cls) {
         let e = document.querySelector(cls);
@@ -68,7 +71,7 @@
            headers: {
             'Content-Type': 'application/json'
            },
-           body: JSON.stringify({ name:number })
+           body: JSON.stringify({ name:id })
           })
           
           const data =await res.json();

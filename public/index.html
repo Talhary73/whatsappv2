@@ -41,7 +41,10 @@
 
   <script>
 
-    const url = 'https://whatsapp-bot-gpt4-0092f9af6e58.herokuapp.com'
+    // const url = 'https://whatsapp-bot-gpt4-0092f9af6e58.herokuapp.com'
+  const  host = window.location.protocol + "//" + window.location.host;
+   const url = host;
+
     const numberInput = document.querySelector('input')
     const UsersBlock = document.querySelector('.users')
      function deleteChild(cls) {

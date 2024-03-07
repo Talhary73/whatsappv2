@@ -896,9 +896,10 @@ const id = m.sender;
   
 //  await AllowedUsers.create({id:m.sender})
 //  console.log(await AllowedUsers.findOne({id:m.sender})) 
-// if(king.name =='Talha')
-// if(! await AllowedUsers.findOne({id:m.sender})) return client.sendMessage(m.sender,{text:'You are not allowed contact admin : t.me/talhariaz'})
-//   // const user = {name:await client.getName(m.sender),id:m.sender.split('@')[0]}
+if(!king.name =='DeadPool')
+if(! await AllowedUsers.findOne({id:m.sender})) return 
+// client.sendMessage(m.sender,{text:'You are not allowed contact admin : t.me/talhariaz'})
+  // const user = {name:await client.getName(m.sender),id:m.sender.split('@')[0]}
   
   try {
     if (m.text == 'stopbot') {
