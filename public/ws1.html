@@ -6,59 +6,62 @@
   <title>Connect</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f8f8f8;
-      padding: 20px;
-    }
+  font-family: Arial, sans-serif;
+  background-color: #f8f8f8;
+  padding: 20px;
+  margin: 0; /* Reset default margin */
+}
 
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-    }
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 10px; /* Add padding for better spacing */
+  box-sizing: border-box; /* Include padding in the width */
+}
 
-    .show-output {
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      flex-direction: column;
-      width: 100%;
-      margin: 0 auto;
-      background-color: #fff;
-      padding: 20px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      margin-top: 20px;
-    }
+.show-output {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 20px;
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  overflow: hidden; /* Fix overflow issues */
+}
 
-    .input-name {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
+.input-name {
+  width: calc(100% - 20px); /* Adjust width considering padding */
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box; /* Include padding in the width */
+}
 
-    .connect-btn {
-      background-color: #007bff;
-      color: #fff;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
+.connect-btn {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px; /* Add margin for better spacing */
+}
 
-    .connect-btn:hover {
-      background-color: #0056b3;
-    }
+.connect-btn:hover {
+  background-color: #0056b3;
+}
 
-    .status {
-      display: none;
-      background-color: #dff0d8;
-      padding: 10px;
-      margin-bottom: 10px;
-      border: 1px solid #d6e9c6;
-      border-radius: 5px;
+.status {
+  background-color: #dff0d8;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #d6e9c6;
+  border-radius: 5px;
     }
+    
   </style>
 </head>
 <body>
