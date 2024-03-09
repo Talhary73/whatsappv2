@@ -362,7 +362,7 @@ client.getName = (jid, withoutContact = false) => {
         //  setTimeout(restartNodeProcess, 1000);
         // await start()
         //  return start();
-    }, 10000);
+    }, 20000);
      try {
       
       mek = chatUpdate.messages[0];
