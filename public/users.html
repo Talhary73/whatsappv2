@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Text Sticker Example</title>
+  <style>
+ 
+.hide{
+
+  display: none;
+}
+.show{
+ 
+  display:block
+}
+.users{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  column-gap: 2rem;
+  row-gap: 2rem;
+}
+  </style>
+</head>
+<body>
+  
+  <div class="sticker">
+    <h2>Whatsapp bot </h2>
+     <input type="text">
+     <button class="add-user"> Add number</button>
+
+  </div>
+  <div class="users">
+    Users
+
+  </div>
+  <div class="status"></div>
+  <div class="hide stat">Please Wait</div> 
+
+  <script>
+
+    // const url = 'https://whatsapp-bot-gpt4-0092f9af6e58.herokuapp.com'
+  const  host = window.location.protocol + "//" + window.location.host;
+   const url = host;
+
+    const numberInput = document.querySelector('input')
+    const UsersBlock = document.querySelector('.users')
+     function deleteChild(cls) {
+        let e = document.querySelector(cls);
+ 
+        //e.firstElementChild can be used. 
+        let child = e.lastElementChild;
+        while (child) {
+            e.removeChild(child);
+            child = e.lastElementChild;
+        }
+    }
+    const AddUser = async (number)=>{
+      const User = document.createElement('div');
+      User.textContent ='0'+ number.substr(2, 10);
+      const button = document.createElement('button')
+      button.textContent = 'Remove'
+      button.name= number 
+      button.addEventListener('click',async ()=>{
+        showWait()
+         const res = await  fetch(url+'/api/v1/remove',{
+             method: 'POST',
+           headers: {
+            'Content-Type': 'application/json'
+           },
+           body: JSON.stringify({ number:number })
+          })
+          
+          const data =await res.json();
+          console.log(data)
+           await FetchUsers()
+           removeWait();
+
+      })
+      
+      UsersBlock.appendChild(User)
+      UsersBlock.appendChild(button)
+
+    }
+   const showWait = ()=>{
+        document.querySelector('.stat').style.display = 'block'
+
+   }
+ const removeWait = ()=>{
+          document.querySelector('.stat').style.display= 'none'
+
+ }
+      document.querySelector('.add-user').addEventListener('click',async (e)=>{
+        // console.log('running')
+        if(!numberInput.value) return;
+        showWait()
+        const res =  await fetch(url +'/api/v1/login',{
+           method: 'POST',
+           headers: {
+            'Content-Type': 'application/json'
+           },
+           body: JSON.stringify({ number: numberInput.value })
+          })
+             
+          const data = await res.json()
+          //  console.log(data)
+          await FetchUsers()
+          removeWait() 
+        // console.log(numberInput.value)
+      })
+   
+    const FetchUsers = async ()=>{
+     try {
+      await deleteChild('.users') 
+      const res =  await fetch(url +'/api/v1/users',{
+           method: 'GET',
+      })
+      
+      const data = await res.json()
+      console.log(data)
+      for(user of data.Users){
+        AddUser(user.id)
+      }
+     } catch (error) {
+      console.log(error)
+     }
+    }
+    FetchUsers()
+ 
+ </script>
+</body>
+</html>
