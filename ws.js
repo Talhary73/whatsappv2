@@ -1,7 +1,7 @@
 // const server = require('http').createServer();
 const websocket = async (server)=>{
 
-const io = require('socket.io')(server,{cors:{origin:['https://whatsapp-bot-gpt4-0092f9af6e58.herokuapp.com']}});
+const io = require('socket.io')(server,{cors:{origin:['https://whatsapp-bot-gpt4-0092f9af6e58.herokuapp.com','https://whatsappv2-seven.vercel.app']}});
 const user  = require('./user1.js')
 require('dotenv').config();
 io.on('connection', socket => {
