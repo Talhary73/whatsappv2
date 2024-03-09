@@ -223,7 +223,41 @@ const store = makeInMemoryStore({
   store.bind(client.ev); 
 
 
-
+client.getName = (jid, withoutContact = false) => {
+    id = client.decodeJid(jid);
+    withoutContact = client.withoutContact || withoutContact;
+    let v;
+    if (id.endsWith("@g.us"))
+      return new Promise(async (resolve) => {
+        v = store.contacts[id] || {};
+        if (!(v.name || v.subject)) v = client.groupMetadata(id) || {};
+        resolve(
+          v.name ||
+            v.subject ||
+            PhoneNumber("+" + id.replace("@s.whatsapp.net", "")).getNumber(
+              "international"
+            )
+        );
+      });
+    else
+      v =
+        id === "0@s.whatsapp.net"
+          ? {
+              id,
+              name: "WhatsApp",
+            }
+          : id === client.decodeJid(client.user.id)
+          ? client.user
+          : store.contacts[id] || {};
+    return (
+      (withoutContact ? "" : v.name) ||
+      v.subject ||
+      v.verifiedName ||
+      PhoneNumber("+" + jid.replace("@s.whatsapp.net", "")).getNumber(
+        "international"
+      )
+    );
+  };
 
 
   //  console.log()
