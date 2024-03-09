@@ -1,134 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Text Sticker Example</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Connect</title>
   <style>
- 
-.hide{
+    body {
+  font-family: Arial, sans-serif;
+  background-color: #f8f8f8;
+  padding: 20px;
+  margin: 0; /* Reset default margin */
+}
 
-  display: none;
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 10px; /* Add padding for better spacing */
+  box-sizing: border-box; /* Include padding in the width */
 }
-.show{
- 
-  display:block
-}
-.users{
+
+.show-output {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  column-gap: 2rem;
-  row-gap: 2rem;
+  width: 100%;
+  margin-top: 20px;
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  overflow: hidden; /* Fix overflow issues */
 }
+
+.input-name {
+  width: calc(100% - 20px); /* Adjust width considering padding */
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box; /* Include padding in the width */
+}
+
+.connect-btn {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px; /* Add margin for better spacing */
+}
+
+.connect-btn:hover {
+  background-color: #0056b3;
+}
+
+.status {
+  background-color: #dff0d8;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #d6e9c6;
+  border-radius: 5px;
+    }
+    
   </style>
 </head>
 <body>
-  
-  <div class="sticker">
-    <h2>Whatsapp bot </h2>
-     <input type="text">
-     <button class="add-user"> Add number</button>
-
+  <div class="container">
+    <div class="status">Connected</div>
+    <div class="show-output">
+      <div>Whatsapp Bot add method</div>
+      <input type="text" class="input-name" placeholder="Enter your Phone number" />
+      <button class="connect-btn">Click to Connect</button>
+    </div>
+    <div class="status"></div>
+    <div class="show-output"></div>
   </div>
-  <div class="users">
-    Users
-
-  </div>
-  <div class="status"></div>
-  <div class="hide stat">Please Wait</div> 
-
+  <script
+    src="https://cdn.socket.io/4.7.4/socket.io.min.js"
+    integrity="sha384-Gr6Lu2Ajx28mzwyVR8CFkULdCU7kMlZ9UthllibdOSo6qAiN+yXNHqtgdTvFXMT4"
+    crossorigin="anonymous"
+  ></script>
   <script>
-
-    // const url = 'https://whatsapp-bot-gpt4-0092f9af6e58.herokuapp.com'
-  const  host = window.location.protocol + "//" + window.location.host;
-   const url = host;
-
-    const numberInput = document.querySelector('input')
-    const UsersBlock = document.querySelector('.users')
-     function deleteChild(cls) {
+      const inputBtn = document.querySelector(".input-name");
+      const UsersBlock = document.querySelector(".users");
+      function deleteChild(cls) {
         let e = document.querySelector(cls);
- 
-        //e.firstElementChild can be used. 
+
+        //e.firstElementChild can be used.
         let child = e.lastElementChild;
         while (child) {
-            e.removeChild(child);
-            child = e.lastElementChild;
+          e.removeChild(child);
+          child = e.lastElementChild;
         }
-    }
-    const AddUser = async (number)=>{
-      const User = document.createElement('div');
-      User.textContent ='0'+ number.substr(2, 10);
-      const button = document.createElement('button')
-      button.textContent = 'Remove'
-      button.name= number 
-      button.addEventListener('click',async ()=>{
-        showWait()
-         const res = await  fetch(url+'/api/v1/remove',{
-             method: 'POST',
-           headers: {
-            'Content-Type': 'application/json'
-           },
-           body: JSON.stringify({ number:number })
-          })
-          
-          const data =await res.json();
-          console.log(data)
-           await FetchUsers()
-           removeWait();
-
-      })
-      
-      UsersBlock.appendChild(User)
-      UsersBlock.appendChild(button)
-
-    }
-   const showWait = ()=>{
-        document.querySelector('.stat').style.display = 'block'
-
-   }
- const removeWait = ()=>{
-          document.querySelector('.stat').style.display= 'none'
-
- }
-      document.querySelector('.add-user').addEventListener('click',async (e)=>{
-        // console.log('running')
-        if(!numberInput.value) return;
-        showWait()
-        const res =  await fetch(url +'/api/v1/login',{
-           method: 'POST',
-           headers: {
-            'Content-Type': 'application/json'
-           },
-           body: JSON.stringify({ number: numberInput.value })
-          })
-             
-          const data = await res.json()
-          //  console.log(data)
-          await FetchUsers()
-          removeWait() 
-        // console.log(numberInput.value)
-      })
-   
-    const FetchUsers = async ()=>{
-     try {
-      await deleteChild('.users') 
-      const res =  await fetch(url +'/api/v1/users',{
-           method: 'GET',
-      })
-      
-      const data = await res.json()
-      console.log(data)
-      for(user of data.Users){
-        AddUser(user.id)
       }
-     } catch (error) {
-      console.log(error)
-     }
-    }
-    FetchUsers()
- 
- </script>
+        // const  host = window.location.protocol + "//" + window.location.host;
+      // const url = host;
+
+      const socket = io("https://whatsapp-bot-gpt4-0092f9af6e58.herokuapp.com");
+      //const socket = io(host);
+      socket.on("connect", () => {
+        document.querySelector(".status").style.display = "block";
+        const div = document.createElement("div");
+        div.textContent = `connected to id: ${socket.id}`;
+        document.querySelector(".status").appendChild(div);
+      });
+      socket.on("done", (data) => {
+        console.log(data);
+      });
+      socket.on("photo", async (data) => {
+        const image = document.createElement("img");
+        image.src = "data:image/png;base64," + data;
+        await deleteChild(".status");
+        document.querySelector(".status").appendChild(image);
+        // console.log("data:image/png;base64," + data);
+      });
+      socket.on("add", (data) => {
+        const div = document.createElement('div')
+        div.textContent = data
+        document.querySelector(".show-output").appendChild(div);
+
+      });
+      document.querySelector(".connect-btn").addEventListener("click", () => {
+        socket.emit("add", { name: inputBtn.value }, socket.id);
+      });
+  </script>
 </body>
 </html>
