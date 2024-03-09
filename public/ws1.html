@@ -1,0 +1,123 @@
+<<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Connect</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f8f8;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .status {
+        display: none;
+        background-color: #dff0d8;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #d6e9c6;
+        border-radius: 5px;
+      }
+
+      .show-output {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-direction: column;
+        width: 80%;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-top: 20px;
+      }
+
+      .input-name {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      .connect-btn {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      .connect-btn:hover {
+        background-color: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="status">Connected</div>
+      <div class="show-output">
+        <div>Whatsapp Bot add method</div>
+        <input type="text" class="input-name" placeholder="Enter your Phone number" />
+        <button class="connect-btn">Click to Connect</button>
+    <div class="status"></div>
+    <div class="show-output"></div>
+    <script
+      src="https://cdn.socket.io/4.7.4/socket.io.min.js"
+      integrity="sha384-Gr6Lu2Ajx28mzwyVR8CFkULdCU7kMlZ9UthllibdOSo6qAiN+yXNHqtgdTvFXMT4"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      const inputBtn = document.querySelector(".input-name");
+      const UsersBlock = document.querySelector(".users");
+      function deleteChild(cls) {
+        let e = document.querySelector(cls);
+
+        //e.firstElementChild can be used.
+        let child = e.lastElementChild;
+        while (child) {
+          e.removeChild(child);
+          child = e.lastElementChild;
+        }
+      }
+         const  host = window.location.protocol + "//" + window.location.host;
+       const url = host;
+
+      // const socket = io("https://whatsapp-bot-gpt4-0092f9af6e58.herokuapp.com");
+      const socket = io(host);
+      socket.on("connect", () => {
+        document.querySelector(".status").style.display = "block";
+        const div = document.createElement("div");
+        div.textContent = `connected to id: ${socket.id}`;
+        document.querySelector(".status").appendChild(div);
+      });
+      socket.on("done", (data) => {
+        console.log(data);
+      });
+      socket.on("photo", async (data) => {
+        const image = document.createElement("img");
+        image.src = "data:image/png;base64," + data;
+        await deleteChild(".status");
+        document.querySelector(".status").appendChild(image);
+        // console.log("data:image/png;base64," + data);
+      });
+      socket.on("add", (data) => {
+        const div = document.createElement('div')
+        div.textContent = data
+        document.querySelector(".show-output").appendChild(div);
+
+      });
+      document.querySelector(".connect-btn").addEventListener("click", () => {
+        socket.emit("add", { name: inputBtn.value }, socket.id);
+      });
+    </script>
+  </body>
+</html>
