@@ -232,10 +232,19 @@
       const userName = userElement.textContent.toLowerCase();
       const isMatch = userName.includes(searchInput);
 
+      const removeButton = userElement.nextElementSibling;
+      const isVisible = userElement.style.display === 'block';
+
       if (isMatch) {
         userElement.style.display = 'block';
+        if (isVisible) {
+          removeButton.style.display = 'block';
+        } else {
+          removeButton.style.display = 'none';
+        }
       } else {
         userElement.style.display = 'none';
+        removeButton.style.display = 'none';
       }
     });
   };
