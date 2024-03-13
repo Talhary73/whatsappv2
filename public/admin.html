@@ -104,6 +104,36 @@
       border-radius: 4px;
       margin-top: 10px;
     }
+
+    .search-bar {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-input {
+      padding: 8px;
+      margin-right: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+      flex-grow: 1;
+    }
+
+    .search-button {
+      padding: 8px 12px;
+      background-color: #007bff; /* Blue search button color */
+      color: white; /* White text color */
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s; /* Smooth transition on hover */
+    }
+
+    .search-button:hover {
+      background-color: #0056b3; /* Darker blue on hover */
+        }
   </style>
 </head>
 <body>
@@ -112,7 +142,10 @@
   <h2>Whatsapp Bot Admin Panel</h2>
   
 </div>
-
+<div class="search-bar">
+  <input type="text" class="search-input" id="searchInput" placeholder="Search by user name">
+  <button class="search-button" onclick="searchUser()">Search</button>
+</div>
 <div class="users">
   Users
 </div>
@@ -190,6 +223,22 @@
   };
 
   FetchUsers();
+
+  const searchUser = () => {
+    const searchInput = document.getElementById('searchInput').value.toLowerCase();
+    const userElements = document.querySelectorAll('.users div');
+
+    userElements.forEach((userElement) => {
+      const userName = userElement.textContent.toLowerCase();
+      const isMatch = userName.includes(searchInput);
+
+      if (isMatch) {
+        userElement.style.display = 'block';
+      } else {
+        userElement.style.display = 'none';
+      }
+    });
+  };
 </script>
 
 <script>
