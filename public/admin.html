@@ -3,116 +3,208 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Text Sticker Example</title>
+  <title>Whatsapp Bot Admin Panel</title>
   <style>
- 
-.hide{
+    body {
+      background-color: white; /* Set default background color */
+      color: black; /* Set default text color */
+      transition: background-color 0.5s, color 0.5s; /* Smooth transition for theme change */
+      font-family: 'Arial', sans-serif; /* Set default font */
+      margin: 0;
+    }
 
-  display: none;
-}
-.show{
- 
-  display:block
-}
-.users{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  column-gap: 2rem;
-  row-gap: 2rem;
-}
+    body.dark-mode {
+      background-color: #1a1a1a; /* Dark mode background color */
+      color: white; /* Dark mode text color */
+    }
+
+    .sticker {
+      text-align: center;
+      padding: 20px;
+      background-color: #4caf50; /* Green background color */
+      color: white; /* White text color */
+      border-bottom: 2px solid #357a38; /* Dark green border */
+    }
+
+    .sticker h2 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    input {
+      padding: 8px;
+      margin: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    .add-user {
+      padding: 10px 20px;
+      background-color: #357a38; /* Dark green button color */
+      color: white; /* White text color */
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s; /* Smooth transition on hover */
+    }
+
+    .add-user:hover {
+      background-color: #45a049; /* Lighter green on hover */
+    }
+
+    .users {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      column-gap: 2rem;
+      row-gap: 2rem;
+      color: black; /* Set text color for users block */
+      padding: 20px;
+    }
+
+    .users div {
+      background-color: #e0e0e0; /* Light gray background for user card */
+      padding: 10px;
+      border-radius: 4px;
+      margin-bottom: 10px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Shadow for user card */
+    }
+
+    .users button {
+      padding: 8px 12px;
+      background-color: #d32f2f; /* Dark red button color */
+      color: white; /* White text color */
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.3s; /* Smooth transition on hover */
+    }
+
+    .users button:hover {
+      background-color: #f44336; /* Lighter red on hover */
+    }
+
+    .status {
+      padding: 20px;
+      font-size: 18px;
+    }
+
+    .hide {
+      display: none;
+    }
+
+    .stat {
+      display: none;
+      padding: 10px;
+      background-color: #ffeb3b; /* Yellow background color for loading status */
+      border-radius: 4px;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
-  
-  <div class="sticker">
-    <h2>Whatsapp bot </h2>
-     <input type="text">
-     <button class="add-user"> Add number</button>
 
-  </div>
-  <div class="users">
-    Users
+<div class="sticker">
+  <h2>Whatsapp Bot Admin Panel</h2>
+  <input type="text">
+  <button class="add-user">Add number</button>
+</div>
 
-  </div>
-  <div class="status"></div>
-  <div class="hide stat">Please Wait</div> 
+<div class="users">
+  Users
+</div>
 
-  <script>
-   const  host = window.location.protocol + "//" + window.location.host;
-   const url = host;
-    // const url = 'https://whatsapp-bot-gpt4-0092f9af6e58.herokuapp.com'
-  //  console.log(host)
+<div class="status"></div>
+<div class="hide stat">Please Wait</div>
 
-   const numberInput = document.querySelector('input')
-    const UsersBlock = document.querySelector('.users')
-     function deleteChild(cls) {
-        let e = document.querySelector(cls);
- 
-        //e.firstElementChild can be used. 
-        let child = e.lastElementChild;
-        while (child) {
-            e.removeChild(child);
-            child = e.lastElementChild;
-        }
+<script>
+  const host = window.location.protocol + "//" + window.location.host;
+  const url = host;
+
+  const numberInput = document.querySelector('input');
+  const UsersBlock = document.querySelector('.users');
+
+  function deleteChild(cls) {
+    let e = document.querySelector(cls);
+
+    let child = e.lastElementChild;
+    while (child) {
+      e.removeChild(child);
+      child = e.lastElementChild;
     }
-    const AddUser = async (number,id)=>{
-      const User = document.createElement('div');
-      User.textContent = number
-      User.name = id
-      const button = document.createElement('button')
-      button.textContent = 'Remove'
-      button.name= number 
-      button.addEventListener('click',async ()=>{
-        showWait()
-         const res = await  fetch(url+'/api/v1/creds/remove',{
-             method: 'POST',
-           headers: {
-            'Content-Type': 'application/json'
-           },
-           body: JSON.stringify({ name:id })
-          })
-          
-          const data =await res.json();
-          console.log(data)
-           await FetchUsers()
-           removeWait();
+  }
 
-      })
-      
-      UsersBlock.appendChild(User)
-      UsersBlock.appendChild(button)
+  const AddUser = async (number, id) => {
+    const User = document.createElement('div');
+    User.textContent = number;
+    User.name = id;
+    const button = document.createElement('button');
+    button.textContent = 'Remove';
+    button.name = number;
+    button.addEventListener('click', async () => {
+      showWait();
+      const res = await fetch(url + '/api/v1/creds/remove', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({name: id})
+      });
 
-    }
-   const showWait = ()=>{
-        document.querySelector('.stat').style.display = 'block'
+      const data = await res.json();
+      console.log(data);
+      await FetchUsers();
+      removeWait();
+    });
 
-   }
- const removeWait = ()=>{
-          document.querySelector('.stat').style.display= 'none'
+    UsersBlock.appendChild(User);
+    UsersBlock.appendChild(button);
+  };
 
- }
+  const showWait = () => {
+    document.querySelector('.stat').style.display = 'block';
+  };
 
-   
-    const FetchUsers = async ()=>{
-     try {
-      await deleteChild('.users') 
-      const res =  await fetch(url +'/api/v1/creds/users',{
-           method: 'GET',
-      })
-      
-      const data = await res.json()
-      console.log(data)
-      for(user of data.Users){
-        AddUser(user.name, user._id)
+  const removeWait = () => {
+    document.querySelector('.stat').style.display = 'none';
+  };
+
+  const FetchUsers = async () => {
+    try {
+      await deleteChild('.users');
+      const res = await fetch(url + '/api/v1/creds/users', {
+        method: 'GET',
+      });
+
+      const data = await res.json();
+      console.log(data);
+      for (const user of data.Users) {
+        AddUser(user.name, user._id);
       }
-     } catch (error) {
-      console.log(error)
-     }
+    } catch (error) {
+      console.log(error);
     }
-    FetchUsers()
- 
- </script>
+  };
+
+  FetchUsers();
+</script>
+
+<script>
+  // Dark mode based on device theme
+  const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+  const toggleDarkMode = (darkMode) => {
+    document.body.classList.toggle('dark-mode', darkMode);
+  };
+
+  toggleDarkMode(darkModeMediaQuery.matches);
+
+  darkModeMediaQuery.addEventListener('change', (e) => toggleDarkMode(e.matches));
+</script>
+
 </body>
 </html>
