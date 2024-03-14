@@ -17,7 +17,7 @@
       background-color: #1a1a1a; /* Dark mode background color */
       color: white; /* Dark mode text color */
     }
-
+   
     .sticker {
       text-align: center;
       padding: 20px;
@@ -53,7 +53,9 @@
     .add-user:hover {
       background-color: #45a049; /* Lighter green on hover */
     }
-
+    .users.dark-mode{
+      color:white;
+      }
     .users {
       display: flex;
       flex-direction: column;
@@ -169,10 +171,11 @@
       child = e.lastElementChild;
     }
   }
-
+  let i= 1;
   const AddUser = async (number, id) => {
     const User = document.createElement('div');
-    User.textContent = number;
+    User.textContent = number + " " + i;
+    i= i+1;
     User.name = id;
     const button = document.createElement('button');
     button.textContent = 'Remove';
