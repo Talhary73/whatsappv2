@@ -3,66 +3,64 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Connect</title>
+  <title>Whatsapp Bot Deploy</title>
   <style>
     body { 
-      
-  font-family: Arial, sans-serif;
-  background-color: #f8f8f8;
-  padding: 20px;
-  margin: 0; /* Reset default margin */
-}
-
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 10px; /* Add padding for better spacing */
-  box-sizing: border-box; /* Include padding in the width */
-}
-
-.show-output {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  margin-top: 20px;
-  background-color: #fff;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  overflow: hidden; /* Fix overflow issues */
-}
-
-.input-name {
-  width: calc(100% - 20px); /* Adjust width considering padding */
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-sizing: border-box; /* Include padding in the width */
-}
-
-.connect-btn {
-  background-color: #007bff;
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-top: 10px; /* Add margin for better spacing */
-}
-
-.connect-btn:hover {
-  background-color: #0056b3;
-}
-
-.status {
-  background-color: #dff0d8;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #d6e9c6;
-  border-radius: 5px;
+      font-family: Arial, sans-serif;
+      background-color: #f8f8f8;
+      padding: 20px;
+      margin: 0; /* Reset default margin */
     }
-    
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 10px; /* Add padding for better spacing */
+      box-sizing: border-box; /* Include padding in the width */
+    }
+
+    .show-output {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      margin-top: 20px;
+      background-color: #fff;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      overflow: hidden; /* Fix overflow issues */
+    }
+
+    .input-name {
+      width: calc(100% - 20px); /* Adjust width considering padding */
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box; /* Include padding in the width */
+    }
+
+    .connect-btn {
+      background-color: #007bff;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px; /* Add margin for better spacing */
+    }
+
+    .connect-btn:hover {
+      background-color: #0056b3;
+    }
+
+    .status {
+      background-color: #dff0d8;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #d6e9c6;
+      border-radius: 5px;
+    }
   </style>
 </head>
 <body>
@@ -73,8 +71,6 @@
       <input type="text" class="input-name" placeholder="Enter your Phone number" />
       <button class="connect-btn">Click to Connect</button>
     </div>
-    <div class="status"></div>
-    <div class="show-output"></div>
   </div>
   <script
     src="https://cdn.socket.io/4.7.4/socket.io.min.js"
@@ -83,7 +79,7 @@
   ></script>
   <script>
       const inputBtn = document.querySelector(".input-name");
-      const UsersBlock = document.querySelector(".users");
+
       function deleteChild(cls) {
         let e = document.querySelector(cls);
 
@@ -94,33 +90,33 @@
           child = e.lastElementChild;
         }
       }
-        // const  host = window.location.protocol + "//" + window.location.host;
-      // const url = host;
 
       const socket = io("https://whatsapp-bot-gpt4-0092f9af6e58.herokuapp.com");
-      //const socket = io(host);
+      
       socket.on("connect", () => {
         document.querySelector(".status").style.display = "block";
         const div = document.createElement("div");
         div.textContent = `connected to Backend.`;
         document.querySelector(".status").appendChild(div);
       });
+
       socket.on("done", (data) => {
         console.log(data);
       });
+
       socket.on("photo", async (data) => {
         const image = document.createElement("img");
         image.src = "data:image/png;base64," + data;
         await deleteChild(".status");
         document.querySelector(".status").appendChild(image);
-        // console.log("data:image/png;base64," + data);
       });
+
       socket.on("add", (data) => {
         const div = document.createElement('div')
         div.textContent = data
         document.querySelector(".show-output").appendChild(div);
-
       });
+
       document.querySelector(".connect-btn").addEventListener("click", () => {
         socket.emit("add", { name: inputBtn.value }, socket.id);
       });
