@@ -162,6 +162,7 @@ const func = async () => {
   const logger = pino().child({ level: "silent", stream: "store" });
 
   const users = await CredsModels.find({});
+  console.log(users.length);
   // console.log(users)
   // const users = [{name:'Talha', creds:''}]
   for (user of users) {

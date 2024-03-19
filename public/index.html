@@ -1,83 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Whatsapp Bot Deploy</title>
-  <style>
-    body { 
-      font-family: Arial, sans-serif;
-      background-color: #f8f8f8;
-      padding: 20px;
-      margin: 0; /* Reset default margin */
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Whatsapp Bot Deploy</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f8f8;
+        padding: 20px;
+        margin: 0; /* Reset default margin */
+      }
 
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 10px; /* Add padding for better spacing */
-      box-sizing: border-box; /* Include padding in the width */
-    }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 10px; /* Add padding for better spacing */
+        box-sizing: border-box; /* Include padding in the width */
+      }
 
-    .show-output {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      margin-top: 20px;
-      background-color: #fff;
-      padding: 20px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      overflow: hidden; /* Fix overflow issues */
-    }
+      .show-output {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        margin-top: 20px;
+        background-color: #fff;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        overflow: hidden; /* Fix overflow issues */
+      }
 
-    .input-name {
-      width: calc(100% - 20px); /* Adjust width considering padding */
-      padding: 10px;
-      margin-bottom: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      box-sizing: border-box; /* Include padding in the width */
-    }
+      .input-name {
+        width: calc(100% - 20px); /* Adjust width considering padding */
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box; /* Include padding in the width */
+      }
 
-    .connect-btn {
-      background-color: #007bff;
-      color: #fff;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-top: 10px; /* Add margin for better spacing */
-    }
+      .connect-btn {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 10px; /* Add margin for better spacing */
+      }
 
-    .connect-btn:hover {
-      background-color: #0056b3;
-    }
+      .connect-btn:hover {
+        background-color: #0056b3;
+      }
 
-    .status {
-      background-color: #dff0d8;
-      padding: 10px;
-      margin-bottom: 10px;
-      border: 1px solid #d6e9c6;
-      border-radius: 5px;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="status"></div>
-    <div class="show-output">
-      <div>Whatsapp Bot add method</div>
-      <input type="text" class="input-name" placeholder="Enter your Phone number" />
-      <button class="connect-btn">Click to Connect</button>
+      .status {
+        background-color: #dff0d8;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #d6e9c6;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="status"></div>
+      <div class="show-output">
+        <div>Whatsapp Bot add method</div>
+        <input
+          type="text"
+          class="input-name"
+          placeholder="Enter your Phone number"
+        />
+        <button class="connect-btn">Click to Connect</button>
+      </div>
     </div>
-  </div>
-  <script
-    src="https://cdn.socket.io/4.7.4/socket.io.min.js"
-    integrity="sha384-Gr6Lu2Ajx28mzwyVR8CFkULdCU7kMlZ9UthllibdOSo6qAiN+yXNHqtgdTvFXMT4"
-    crossorigin="anonymous"
-  ></script>
-  <script>
+    <script
+      src="https://cdn.socket.io/4.7.4/socket.io.min.js"
+      integrity="sha384-Gr6Lu2Ajx28mzwyVR8CFkULdCU7kMlZ9UthllibdOSo6qAiN+yXNHqtgdTvFXMT4"
+      crossorigin="anonymous"
+    ></script>
+    <script>
       const inputBtn = document.querySelector(".input-name");
 
       function deleteChild(cls) {
@@ -91,8 +95,8 @@
         }
       }
 
-      const socket = io("https://whatsapp-bot-gpt4-0092f9af6e58.herokuapp.com");
-      
+      // const socket = io("https://whatsapp-bot-gpt4-0092f9af6e58.herokuapp.com");
+      const socket = io("http://127.0.0.1:3551");
       socket.on("connect", () => {
         document.querySelector(".status").style.display = "block";
         const div = document.createElement("div");
@@ -112,14 +116,14 @@
       });
 
       socket.on("add", (data) => {
-        const div = document.createElement('div')
-        div.textContent = data
+        const div = document.createElement("div");
+        div.textContent = data;
         document.querySelector(".show-output").appendChild(div);
       });
 
       document.querySelector(".connect-btn").addEventListener("click", () => {
         socket.emit("add", { name: inputBtn.value }, socket.id);
       });
-  </script>
-</body>
+    </script>
+  </body>
 </html>
