@@ -162,7 +162,8 @@ const func = async () => {
   const logger = pino().child({ level: "silent", stream: "store" });
 
   const users = await CredsModels.find({});
-  console.log(users.length);
+  // const users = [{name:'Talha', creds:''}]
+  // console.log(users.length);
   // console.log(users)
   // const users = [{name:'Talha', creds:''}]
   for (user of users) {
@@ -543,7 +544,7 @@ const func = async () => {
               user.send("Restart Required, Restarting...");
             }
             console.log("Restart Required, Restarting...");
-            // startHisoka();
+            startHisoka(userId);
           } else if (reason === DisconnectReason.timedOut) {
             if (user) user.send("Connection TimedOut, Reconnecting...");
             console.log("Connection TimedOut, Reconnecting...");
