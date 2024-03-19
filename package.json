@@ -39,6 +39,7 @@
         "awesome-phonenumber": "^2.64.0",
         "axios": "^1.4.0",
         "bard-ai": "^1.2.0",
+        "betabotz-tools": "^0.0.7",
         "better-node-gtts": "^1.1.0",
         "canvas": "^2.11.2",
         "capture-website": "^4.0.0",
