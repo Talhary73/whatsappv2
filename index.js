@@ -512,7 +512,7 @@ const func = async () => {
             console.log(
               `Bad Session File, Please Delete Session and Scan Again`
             );
-            process.exit();
+            
           } else if (reason === DisconnectReason.connectionClosed) {
             if (user) user.send(`Connection closed, reconnecting....`);
             console.log("Connection closed, reconnecting....");
@@ -553,7 +553,8 @@ const func = async () => {
             if (user)
               user.send(`Unknown DisconnectReason: ${reason}|${connection}`);
             console.log(`Unknown DisconnectReason: ${reason}|${connection}`);
-            await CredsModels.deleteOne({ _id: userId._id });
+
+            
             // startHisoka();
           }
         } else if (connection === "open") {
