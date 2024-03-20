@@ -97,6 +97,7 @@ const AllowedUsers = require("./mongo/model/allowed.js");
 const { CheckUser } = require("./Functions.js");
 const UrlParse = require("url-parse");
 const RemoveBg = require("./lib/rmbg.js");
+const Upscale = require("./lib/remini.js");
 // const activate = require('./ws.js')
 // const isUrl = require('isUrl')
 function getRandomItemFromArray(arr) {
@@ -915,7 +916,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
       audio: true,
     });
     client.sendMessage(id, {
-      text: "*|BOT_SELECTOR|*\n\nPlease reply to one of these *number*. \n\n 2:bard \n\n 4:bard-only \n\n 5:gpt-4",
+      text: "*|BOT_SELECTOR|*\n\nPlease reply to one of these *number*. \n\n  `2`:bard \n\n `4`:bard-only \n\n `5`:gpt-4",
     });
     client.sendMessage(id, {
       text: "Send /audio To Turn off/on sending Audio",
@@ -1187,6 +1188,16 @@ module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
             `./files/${m.sender.split("@")[0]}image.png`,
             false
           );
+        } else if (type === "imageMessage" && command == "upscale") {
+          const buffer = await downloadMediaMessage(
+            m,
+            "buffer",
+            {},
+            { reuploadRequest: client.updateMediaMessage }
+          );
+          fs.writeFileSync(`./files/${m.sender.split("@")[0]}.jpg`, buffer);
+              
+          await Upscale(client,m.sender,process.env.URL + '/files/' + m.sender.split("@")[0] + '.jpg');
         } else if (budy === "2") {
           const bot = "bard";
           await UserModel.updateOne({ id: id }, { bot: bot });
