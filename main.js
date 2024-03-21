@@ -1362,9 +1362,9 @@ module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
         } else if (command == "fb") {
           fb(client, m, budy.split(" ")[1], true, false);
         } else if (command == "el") {
-          client.sendMessage(m.sender, {
-            text: "hey you are using test version of chatgpt4",
-          });
+          // client.sendMessage(m.sender, {
+          //   text: "hey you are using test version of chatgpt4",
+          // });
           gptBing(client, m, budy.split(" ").splice(1).join(" "));
         } else if (command == "insta") {
           console.log("insta");
