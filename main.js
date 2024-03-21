@@ -15,7 +15,8 @@ const {
   Mimetype,
 } = require("@whiskeysockets/baileys");
 const gptBing = require("./lib/GptBing.js");
-const remini = require("./lib/remini.js");
+
+// const remini = require("./lib/remini.js");
 // const { isUri } = require('./lib/my-func')
 const wa = require("@whiskeysockets/baileys");
 const fs = require("fs");
