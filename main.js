@@ -14,7 +14,7 @@ const {
   MessageOptions,
   Mimetype,
 } = require("@whiskeysockets/baileys");
-const gptBing = require("./lib/gptBing.js");
+const gptBing = require("./lib/GptBing.js");
 const remini = require("./lib/remini.js");
 // const { isUri } = require('./lib/my-func')
 const wa = require("@whiskeysockets/baileys");
