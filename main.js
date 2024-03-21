@@ -14,6 +14,7 @@ const {
   MessageOptions,
   Mimetype,
 } = require("@whiskeysockets/baileys");
+const gptBing = require("./lib/gptBing.js");
 const remini = require("./lib/remini.js");
 // const { isUri } = require('./lib/my-func')
 const wa = require("@whiskeysockets/baileys");
@@ -896,6 +897,8 @@ const bardTools = async (client, m, budy) => {
 
 module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
   // console.log(king)
+  // const u = await UserModel.find({})
+  // console.log(u.length, "Users length");
   console.log("running main");
   const { parseDomain } = await import("parse-domain");
   const id = m.sender;
@@ -1196,8 +1199,12 @@ module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
             { reuploadRequest: client.updateMediaMessage }
           );
           fs.writeFileSync(`./files/${m.sender.split("@")[0]}.jpg`, buffer);
-              
-          await Upscale(client,m.sender,process.env.URL + '/files/' + m.sender.split("@")[0] + '.jpg');
+
+          await Upscale(
+            client,
+            m.sender,
+            process.env.URL + "/files/" + m.sender.split("@")[0] + ".jpg"
+          );
         } else if (budy === "2") {
           const bot = "bard";
           await UserModel.updateOne({ id: id }, { bot: bot });
@@ -1357,7 +1364,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
           client.sendMessage(m.sender, {
             text: "hey you are using test version of chatgpt4",
           });
-          Gpt4Test(client, m, budy.split(" ").splice(1).join(" "));
+          gptBing(client, m, budy.split(" ").splice(1).join(" "));
         } else if (command == "insta") {
           console.log("insta");
           let lang = budy.split(" ")[1];
