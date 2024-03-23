@@ -920,7 +920,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
       audio: true,
     });
     client.sendMessage(id, {
-      text: "*|BOT_SELECTOR|*\n\nPlease reply to one of these *number*. \n\n  `2`:bard \n\n `4`:bard-only \n\n `5`:gpt-4",
+      text: "*|BOT_SELECTOR|*\n\nPlease reply to one of these *number*. \n\n  2:bard \n\n 4:bard-only \n\n 5:gpt-4",
     });
     client.sendMessage(id, {
       text: "Send /audio To Turn off/on sending Audio",
