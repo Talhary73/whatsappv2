@@ -903,6 +903,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
   console.log("running main");
   const { parseDomain } = await import("parse-domain");
   const id = m.sender;
+  if (id.length > 27) return;
   // console.log(parseDomain)
   let User = await CheckUser(m.sender);
   //  console.log(!User?.[0])
@@ -1124,7 +1125,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
         if (User[0].bot == "gpt-4") Gpt4Test(client, m, budy);
         else if (User[0].bot == "bard-only") bard(client, m, budy);
         else if (User[0].bot == "bard") bardTools(client, m, budy);
-        else client.sendMessage(id, { text: "Will update soon." });
+        else bardTools(client, m, budy);
       }
       return;
     }
@@ -1173,7 +1174,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
             if (User[0].bot == "gpt-4") Gpt4Test(client, m, res);
             else if (User[0].bot == "bard-only") bard(client, m, res);
             else if (User[0].bot == "bard") bardTools(client, m, res);
-            else client.sendMessage(id, { text: "Will update soon." });
+            else bardTools(client, m, budy);
           });
         } else if (type === "imageMessage" && command == "ocr") {
           const buffer = await downloadMediaMessage(
@@ -1282,8 +1283,8 @@ module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
             let sticker = new Sticker(
               fs.readFileSync(`./files/${m.sender.split("@")[0]}.png`),
               {
-                pack: "By Miles Sticker Pack:", // The pack name
-                author: "🙂 Talha 🙂: ", // The author name
+                pack: "Miles Sticker Pack Created By:::", // The pack name
+                author: "🙂 " + client.getName(id) + " 🙂: ", // The author name
                 type: StickerTypes.CROPPED,
                 categories: ["🤩", "🎉"], // The sticker category
                 id: "12345", // The sticker id
@@ -1299,8 +1300,8 @@ module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
           }
 
           let sticker = new Sticker(res.data, {
-            pack: "By Miles Sticker Pack:", // The pack name
-            author: "🙂 Talha 🙂: ", // The author name
+            pack: "Miles Sticker Pack Created By:::", // The pack name
+            author: "🙂 " + client.getName(id) + " 🙂: ",
             type: StickerTypes.CROPPED,
             categories: ["🤩", "🎉"], // The sticker category
             id: "12345", // The sticker id
@@ -1326,8 +1327,8 @@ module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
           let sticker = new Sticker(
             fs.readFileSync(`./files/${m.sender.split("@")[0]}image.mp4`),
             {
-              pack: "By Miles Sticker Pack:", // The pack name
-              author: "🙂 Talha 🙂: ", // The author name
+              pack: "Miles Sticker Pack Created By:::", // The pack name
+              author: "🙂 " + client.getName(id) + " 🙂: ", // The author name
               type: StickerTypes.CROPPED,
               categories: ["🤩", "🎉"], // The sticker category
               id: "12345", // The sticker id
@@ -1771,7 +1772,7 @@ To get started, just type one of these commands, and I'll help you out! 🚀
           if (User[0].bot == "gpt-4") Gpt4Test(client, m, budy);
           else if (User[0].bot == "bard-only") bard(client, m, budy);
           else if (User[0].bot == "bard") bardTools(client, m, budy);
-          else client.sendMessage(id, { text: "Will update soon." });
+          else bardTools(client, m, budy);
         }
       } catch (err) {
         console.log(err);
