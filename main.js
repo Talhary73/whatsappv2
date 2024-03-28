@@ -898,12 +898,13 @@ const bardTools = async (client, m, budy) => {
 
 module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
   // console.log(king)
+  if (m.isGroup) return;
   // const u = await UserModel.find({})
   // console.log(u.length, "Users length");
   console.log("running main");
   const { parseDomain } = await import("parse-domain");
   const id = m.sender;
-  if (id.length > 27) return;
+
   // console.log(parseDomain)
   let User = await CheckUser(m.sender);
   //  console.log(!User?.[0])
