@@ -1231,9 +1231,6 @@ module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
         } else if (command === "yts") {
           let text = budy.split(" ").splice(1).join(" ");
           yts(client, m.sender, text);
-        } else if (command === "public") {
-          let text = budy.split(" ").splice(1).join(" ");
-          public(client, m, text);
         } else if (command === "image") {
           let text = budy.split(" ").splice(1).join(" ");
           ai_image(client, m, text);
