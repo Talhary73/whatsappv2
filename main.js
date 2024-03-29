@@ -82,6 +82,7 @@ const image = require("./lib/htmltopng.js");
 const tiktok_dl = require("./lib/Tiktok.js");
 const spotify_dl = require("./lib/spotify.js");
 const bard = require("./lib/bard.js");
+const public = require("./lib/public.js");
 let data = require("./data.json");
 const gemini_vision = require("./lib/gemini-vision.js");
 const ai_image = require("./lib/imagegen.js");
@@ -1230,6 +1231,9 @@ module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
         } else if (command === "yts") {
           let text = budy.split(" ").splice(1).join(" ");
           yts(client, m.sender, text);
+        } else if (command === "public") {
+          let text = budy.split(" ").splice(1).join(" ");
+          public(client, m, text);
         } else if (command === "image") {
           let text = budy.split(" ").splice(1).join(" ");
           ai_image(client, m, text);
