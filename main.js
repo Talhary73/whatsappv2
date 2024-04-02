@@ -101,6 +101,11 @@ const { CheckUser } = require("./Functions.js");
 const UrlParse = require("url-parse");
 const RemoveBg = require("./lib/rmbg.js");
 const Upscale = require("./lib/remini.js");
+const {
+  FbNayan,
+  TiktokNayan,
+  twitterNayan,
+} = require("./lib/nayan-downloader.js");
 // const activate = require('./ws.js')
 // const isUrl = require('isUrl')
 function getRandomItemFromArray(arr) {
@@ -924,8 +929,8 @@ module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
   // return;
   if (m.isGroup) {
     console.log(m.chat);
-    const group = await client.groupFetchAllParticipating(m.chat);
-    console.log("hi This is from gorup", group[m.chat].participants);
+    // const group = await client.groupFetchAllParticipating(m.chat);
+    // console.log("hi This is from gorup", group[m.chat].participants);
   }
   if (m.isGroup) return;
   // const u = await UserModel.find({})
@@ -1286,10 +1291,13 @@ module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
             ytNew(client, m, budy);
             return;
           } else if (domain === "facebook" || domain === "fb") {
-            fb(client, m, budy);
+            FbNayan(client, m, budy);
             return;
           } else if (domain === "tiktok") {
-            tiktok_dl(client, m, budy);
+            TiktokNayan(client, m, budy);
+            return;
+          } else if (domain === "x" || domain === "twitter") {
+            twitterNayan(client, m, budy);
             return;
           } else if (domain == "instagram") {
             instaDl(client, m, budy);

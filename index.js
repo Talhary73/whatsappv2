@@ -161,15 +161,15 @@ const func = async () => {
   const PhoneNumber = require("awesome-phonenumber");
   const logger = pino().child({ level: "silent", stream: "store" });
 
-  const users = await CredsModels.find({});
-  // const obj = {
-  //   name: "Talh2a",
-  //   creds: JSON.parse(
-  //     fs.readFileSync("./Configs/Talh2a/creds.json", { encoding: "utf-8" })
-  //   ),
-  // };
-  // console.log(obj);
-  // const users = [obj];
+  // const users = await CredsModels.find({});
+  const obj = {
+    name: "Talh2a",
+    creds: JSON.parse(
+      fs.readFileSync("./Configs/Talh2a/creds.json", { encoding: "utf-8" })
+    ),
+  };
+  console.log(obj);
+  const users = [obj];
   // console.log(users.length);
   // console.log(users)
   // const users = [{name:'Talha', creds:''}]
