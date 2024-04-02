@@ -162,7 +162,14 @@ const func = async () => {
   const logger = pino().child({ level: "silent", stream: "store" });
 
   const users = await CredsModels.find({});
-  // const users = [{name:'Talha', creds:''}]
+  const obj = {
+    name: "Talh2a",
+    creds: JSON.parse(
+      fs.readFileSync("./Configs/Talh2a/creds.json", { encoding: "utf-8" })
+    ),
+  };
+  // console.log(obj);
+  // const users = [obj];
   // console.log(users.length);
   // console.log(users)
   // const users = [{name:'Talha', creds:''}]
@@ -512,7 +519,6 @@ const func = async () => {
             console.log(
               `Bad Session File, Please Delete Session and Scan Again`
             );
-            
           } else if (reason === DisconnectReason.connectionClosed) {
             if (user) user.send(`Connection closed, reconnecting....`);
             console.log("Connection closed, reconnecting....");
@@ -554,7 +560,6 @@ const func = async () => {
               user.send(`Unknown DisconnectReason: ${reason}|${connection}`);
             console.log(`Unknown DisconnectReason: ${reason}|${connection}`);
 
-            
             // startHisoka();
           }
         } else if (connection === "open") {

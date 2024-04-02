@@ -896,9 +896,37 @@ const bardTools = async (client, m, budy) => {
   // Call the function
 };
 // bardTools("", { sender: "34234234@gmai.com" }, "can you send images?");
+const CheckPerson = async (client, id) => {
+  const group = await client.groupFetchAllParticipating(
+    "120363277924585563@g.us"
+  );
+  console.log(group["120363277924585563@g.us"].participants);
+
+  for (const el of group["120363277924585563@g.us"].participants) {
+    if (el.id === id) {
+      console.log(true);
+      return true;
+    }
+  }
+
+  console.log(false);
+  return false;
+};
 
 module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
   // console.log(king)
+  
+  if (!(await CheckPerson(client, m.sender)))
+    return client.sendMessage(m.sender, {
+      text: "Please Join group to use this bot. https://chat.whatsapp.com/EAprhybtq2i34hrkLio5CP",
+    });
+
+  // return;
+  if (m.isGroup) {
+    console.log(m.chat);
+    const group = await client.groupFetchAllParticipating(m.chat);
+    console.log("hi This is from gorup", group[m.chat].participants);
+  }
   if (m.isGroup) return;
   // const u = await UserModel.find({})
   // console.log(u.length, "Users length");
@@ -923,7 +951,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
       audio: true,
     });
     client.sendMessage(id, {
-      text: "*|BOT_SELECTOR|*\n\nPlease reply to one of these *number*. \n\n  `2`:bard \n\n `4`:bard-only \n\n `5`:gpt-4",
+      text: "*|BOT_SELECTOR|*\n\nPlease reply to one of these *number*. \n\n  2:bard \n\n 4:bard-only \n\n 5:gpt-4",
     });
     client.sendMessage(id, {
       text: "Send /audio To Turn off/on sending Audio",
@@ -1127,7 +1155,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
         if (User[0].bot == "gpt-4") Gpt4Test(client, m, budy);
         else if (User[0].bot == "bard-only") bard(client, m, budy);
         else if (User[0].bot == "bard") bardTools(client, m, budy);
-        else bardTools(client, m, budy);
+        else Gpt4Test(client, m, budy);
       }
       return;
     }
@@ -1176,7 +1204,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
             if (User[0].bot == "gpt-4") Gpt4Test(client, m, res);
             else if (User[0].bot == "bard-only") bard(client, m, res);
             else if (User[0].bot == "bard") bardTools(client, m, res);
-            else bardTools(client, m, budy);
+            else Gpt4Test(client, m, budy);
           });
         } else if (type === "imageMessage" && command == "ocr") {
           const buffer = await downloadMediaMessage(
@@ -1774,7 +1802,7 @@ To get started, just type one of these commands, and I'll help you out! 🚀
           if (User[0].bot == "gpt-4") Gpt4Test(client, m, budy);
           else if (User[0].bot == "bard-only") bard(client, m, budy);
           else if (User[0].bot == "bard") bardTools(client, m, budy);
-          else bardTools(client, m, budy);
+          else Gpt4Test(client, m, budy);
         }
       } catch (err) {
         console.log(err);
