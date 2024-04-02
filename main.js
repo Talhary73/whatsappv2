@@ -898,11 +898,11 @@ const bardTools = async (client, m, budy) => {
 // bardTools("", { sender: "34234234@gmai.com" }, "can you send images?");
 const CheckPerson = async (client, id) => {
   const group = await client.groupFetchAllParticipating(
-    "120363277924585563@g.us"
+    "120363277337902995@g.us"
   );
   console.log(group["120363277924585563@g.us"].participants);
 
-  for (const el of group["120363277924585563@g.us"].participants) {
+  for (const el of group["120363277337902995@g.us"].participants) {
     if (el.id === id) {
       console.log(true);
       return true;
@@ -915,7 +915,7 @@ const CheckPerson = async (client, id) => {
 
 module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
   // console.log(king)
-  
+
   if (!(await CheckPerson(client, m.sender)))
     return client.sendMessage(m.sender, {
       text: "Please Join group to use this bot. https://chat.whatsapp.com/EAprhybtq2i34hrkLio5CP",
