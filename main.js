@@ -921,10 +921,10 @@ const CheckPerson = async (client, id) => {
 module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
   // console.log(king)
 
-  //if (!(await CheckPerson(client, m.sender)))
-   // return client.sendMessage(m.sender, {
-  //  text: "Please Join group to use this bot. Then you can use the bot. https://chat.whatsapp.com/EAprhybtq2i34hrkLio5CP",
-   // });
+  if (!(await CheckPerson(client, m.sender)))
+    return client.sendMessage(m.sender, {
+    text: "Please Join group to use this bot. Then you can use the bot. https://chat.whatsapp.com/EAprhybtq2i34hrkLio5CP",
+    });
 
   // return;
   if (m.isGroup) {
