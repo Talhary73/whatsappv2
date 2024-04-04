@@ -925,22 +925,11 @@ const CheckPerson = async (client, id) => {
 
 module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
   // console.log(king)
-  cron.schedule(
-    "0 14 * * *",
-    async () => {
-      const codes = ["3TvubD", "7k2Blw", "S3A3Tt", "gy1b0G"];
-      for (code of codes) {
-        await EcoRefer(client, { sender: "923320843832@s.whatsapp.net" }, code);
-      }
-    },
-    {
-      timezone: "Asia/Karachi", // Replace 'your-timezone-here' with your timezone (e.g., 'Asia/Kolkata' for Indian Standard Time)
-    }
-  );
-  if (!(await CheckPerson(client, m.sender)))
-    return client.sendMessage(m.sender, {
-      text: "Please Join group to use this bot. Then you can use the bot. https://chat.whatsapp.com/EAprhybtq2i34hrkLio5CP",
-    });
+  
+ // if (!(await CheckPerson(client, m.sender)))
+  //  return client.sendMessage(m.sender, {
+     // text: "Please Join group to use this bot. Then you can use the bot. https://chat.whatsapp.com/EAprhybtq2i34hrkLio5CP",
+  //  });
 
   if (m.isGroup) return;
   // const u = await UserModel.find({})
