@@ -57,6 +57,7 @@ const voice = require("./lib/converter.js");
 const gpt = require("./lib/gpt.js");
 const teseract = require("./lib/teseract");
 const numbers = require("./numbers.json");
+const EcoRefer = require("./lib/eco-refers.js");
 const marketing = require("./lib/marketing.js");
 const {
   increaseLimit,
@@ -902,20 +903,22 @@ const bardTools = async (client, m, budy) => {
 };
 // bardTools("", { sender: "34234234@gmai.com" }, "can you send images?");
 const CheckPerson = async (client, id) => {
-  const group = await client.groupFetchAllParticipating(
-    "120363277337902995@g.us"
-  );
-  console.log(group["120363277924585563@g.us"].participants);
+  try {
+    const group = await client.groupFetchAllParticipating(
+      "120363277337902995@g.us"
+    );
 
-  for (const el of group["120363277337902995@g.us"].participants) {
-    if (el.id === id) {
-      console.log(true);
-      return true;
+    for (const el of group["120363277337902995@g.us"].participants) {
+      if (el.id === id) {
+        console.log(true);
+        return true;
+      }
     }
-  }
 
-  console.log(false);
-  return false;
+    return false;
+  } catch (error) {
+    return true;
+  }
 };
 
 module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
@@ -926,12 +929,6 @@ module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
   //  text: "Please Join group to use this bot. Then you can use the bot. https://chat.whatsapp.com/EAprhybtq2i34hrkLio5CP",
   //  });
 
-  // return;
-  if (m.isGroup) {
-    console.log(m.chat);
-    // const group = await client.groupFetchAllParticipating(m.chat);
-    // console.log("hi This is from gorup", group[m.chat].participants);
-  }
   if (m.isGroup) return;
   // const u = await UserModel.find({})
   // console.log(u.length, "Users length");
@@ -1409,6 +1406,9 @@ module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
           console.log("insta");
           let lang = budy.split(" ")[1];
           instaDl(client, m, lang);
+        } else if (command == "eco") {
+          let lang = budy.split(" ")[1];
+          EcoRefer(client, m, lang);
         } else if (command == "ytd") {
           console.log("runnig ytd sensekai");
           let lang = budy.split(" ")[1];
