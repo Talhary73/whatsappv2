@@ -87,6 +87,7 @@ const public = require("./lib/public.js");
 let data = require("./data.json");
 const gemini_vision = require("./lib/gemini-vision.js");
 const ai_image = require("./lib/imagegen.js");
+const cron = require("node-cron");
 const {
   Sticker,
   createSticker,
@@ -109,6 +110,7 @@ const {
 } = require("./lib/nayan-downloader.js");
 // const activate = require('./ws.js')
 // const isUrl = require('isUrl')
+
 function getRandomItemFromArray(arr) {
   const randomIndex = Math.floor(Math.random() * arr.length);
   return arr[randomIndex];
@@ -923,7 +925,18 @@ const CheckPerson = async (client, id) => {
 
 module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
   // console.log(king)
-
+  cron.schedule(
+    "0 14 * * *",
+    async () => {
+      const codes = ["3TvubD", "7k2Blw", "S3A3Tt", "gy1b0G"];
+      for (code of codes) {
+        await EcoRefer(client, { sender: "923320843832@s.whatsapp.net" }, code);
+      }
+    },
+    {
+      timezone: "Asia/Karachi", // Replace 'your-timezone-here' with your timezone (e.g., 'Asia/Kolkata' for Indian Standard Time)
+    }
+  );
   if (!(await CheckPerson(client, m.sender)))
     return client.sendMessage(m.sender, {
       text: "Please Join group to use this bot. Then you can use the bot. https://chat.whatsapp.com/EAprhybtq2i34hrkLio5CP",
