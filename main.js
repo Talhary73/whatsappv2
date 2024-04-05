@@ -1289,7 +1289,11 @@ module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
           if (domain == "youtube" || domain === "youtu") {
             ytNew(client, m, budy);
             return;
-          } else if (domain === "facebook" || domain === "fb") {
+          } else if (
+            domain === "facebook" ||
+            domain === "fb" ||
+            domain == "instagram"
+          ) {
             FbNayan(client, m, budy);
             return;
           } else if (domain === "tiktok") {
