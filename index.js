@@ -151,7 +151,7 @@ setInterval(async () => {
   try {
     require("./testnew.js")();
   } catch (error) {}
-}, 60000);
+}, 61000);
 const func = async () => {
   const FileType = await import("file-type");
 
