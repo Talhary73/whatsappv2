@@ -4,7 +4,7 @@ const Tesseract = require("tesseract.js");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 require("dotenv").config();
 const fs = require("fs");
-
+// const axios = require("axios")
 function getRandomItemFromArray(arr) {
   const randomIndex = Math.floor(Math.random() * arr.length);
   return arr[randomIndex];
@@ -54,7 +54,13 @@ const Captcha = async () => {
   const {
     data: { captcha_src, captcha_id },
   } = await sendCaptchaRequest();
-  const code = await ExtractText(captcha_src);
+  const {
+    data: { res1: code },
+  } = await axios.post(
+    "https://tesseract-api-3211d4288b87.herokuapp.com/api/v1/ocr",
+    { img: captcha_src }
+  );
+
   const text = code
     .split(" ")
     .join("")
@@ -151,14 +157,14 @@ const Register = async (inviteCode) => {
   const data = await res.json();
   return data;
 };
-// Register("NPRhj7").then((res) => console.log("res", res.code));
-// const refer = async () => {
-//   for (let i = 0; i <= 30; i++) {
-//     const res = await Register("NPRhj7");
-//     console.log("res", res);
-//   }
-// };
-// refer();
+Register("NPRhj7").then((res) => console.log("res", res.code));
+const refer = async () => {
+  for (let i = 0; i <= 30; i++) {
+    const res = await Register("NPRhj7");
+    console.log("res", res);
+  }
+};
+refer();
 let i = 0;
 const wait = () => {
   i = i + 1;

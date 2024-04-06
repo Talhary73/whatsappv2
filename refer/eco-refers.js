@@ -1,13 +1,18 @@
 const axios = require("axios");
 const cheerio = require("cheerio");
 const Tesseract = require("tesseract.js");
+const axios = require("axios");
 const Captcha = async () => {
   const {
     data: { captcha_src, captcha_id },
   } = await sendCaptchaRequest();
   const {
-    data: { text },
-  } = await Tesseract.recognize(captcha_src);
+    data: { res1: text },
+  } = await axios.post(
+    "https://tesseract-api-3211d4288b87.herokuapp.com/api/v1/ocr",
+    { img: captcha_src }
+  );
+
   if (parseInt(text).length < 4) return Captcha();
   return { captcha_id, captcha_code: parseInt(text) };
 };
