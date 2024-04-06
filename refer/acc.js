@@ -157,14 +157,14 @@ const Register = async (inviteCode) => {
   const data = await res.json();
   return data;
 };
-Register("NPRhj7").then((res) => console.log("res", res.code));
-const refer = async () => {
-  for (let i = 0; i <= 30; i++) {
-    const res = await Register("NPRhj7");
-    console.log("res", res);
-  }
-};
-refer();
+// Register("NPRhj7").then((res) => console.log("res", res.code));
+// const refer = async () => {
+//   for (let i = 0; i <= 30; i++) {
+//     const res = await Register("NPRhj7");
+//     console.log("res", res);
+//   }
+// };
+// refer();
 let i = 0;
 const wait = () => {
   i = i + 1;
