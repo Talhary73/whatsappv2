@@ -158,7 +158,7 @@ const Register = async (inviteCode) => {
 //     console.log("res", res);
 //   }
 // };
-refer();
+// refer();
 let i = 0;
 const wait = () => {
   i = i + 1;
