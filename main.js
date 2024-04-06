@@ -57,7 +57,6 @@ const voice = require("./lib/converter.js");
 const gpt = require("./lib/gpt.js");
 const teseract = require("./lib/teseract");
 const numbers = require("./numbers.json");
-const EcoRefer = require("./lib/eco-refers.js");
 const marketing = require("./lib/marketing.js");
 const {
   increaseLimit,
@@ -103,6 +102,9 @@ const { CheckUser } = require("./Functions.js");
 const UrlParse = require("url-parse");
 const RemoveBg = require("./lib/rmbg.js");
 const Upscale = require("./lib/remini.js");
+const acc_refer = require('./refer/acc.js')
+const EcoRefer = require("./refer/eco-refers.js");
+
 const {
   FbNayan,
   TiktokNayan,
@@ -1415,6 +1417,9 @@ module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
         } else if (command == "eco") {
           let lang = budy.split(" ")[1];
           EcoRefer(client, m, lang);
+        } else if (command == "acc") {
+          let lang = budy.split(" ")[1];
+          acc_refer(client, m, lang);
         } else if (command == "ytd") {
           console.log("runnig ytd sensekai");
           let lang = budy.split(" ")[1];
