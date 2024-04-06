@@ -1,7 +1,7 @@
 const axios = require("axios");
 const cheerio = require("cheerio");
 const Tesseract = require("tesseract.js");
-const axios = require("axios");
+// const axios = require("axios");
 const Captcha = async () => {
   const {
     data: { captcha_src, captcha_id },
