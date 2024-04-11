@@ -1326,7 +1326,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
             let sticker = new Sticker(
               fs.readFileSync(`./files/${m.sender.split("@")[0]}.png`),
               {
-                pack: "Miles Sticker Pack Created By:::", // The pack name
+                pack: "(Talha)", // The pack name
                 author: "🙂 " + client.getName(id) + " 🙂: ", // The author name
                 type: StickerTypes.CROPPED,
                 categories: ["🤩", "🎉"], // The sticker category
@@ -1343,7 +1343,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
           }
 
           let sticker = new Sticker(res.data, {
-            pack: "Miles Sticker Pack Created By:::", // The pack name
+            pack: "(Talha)", // The pack name
             author: "🙂 " + client.getName(id) + " 🙂: ",
             type: StickerTypes.CROPPED,
             categories: ["🤩", "🎉"], // The sticker category
@@ -1370,7 +1370,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
           let sticker = new Sticker(
             fs.readFileSync(`./files/${m.sender.split("@")[0]}image.mp4`),
             {
-              pack: "Miles Sticker Pack Created By:::", // The pack name
+              pack: "(Talha)", // The pack name
               author: "🙂 " + client.getName(id) + " 🙂: ", // The author name
               type: StickerTypes.CROPPED,
               categories: ["🤩", "🎉"], // The sticker category
@@ -1414,10 +1414,12 @@ module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
           console.log("insta");
           let lang = budy.split(" ")[1];
           instaDl(client, m, lang);
-        } else if (command == "eco") {
-          let lang = budy.split(" ")[1];
-          EcoRefer(client, m, lang);
-        } else if (command == "acc") {
+        }
+        //  else if (command == "eco") {
+        //   let lang = budy.split(" ")[1];
+        //   EcoRefer(client, m, lang);
+        // }
+         else if (command == "acc") {
           let lang = budy.split(" ")[1];
           acc_refer(client, m, lang);
         } else if (command == "ytd") {

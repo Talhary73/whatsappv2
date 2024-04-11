@@ -1,13 +1,12 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
+require("dotenv").config();
 
-const connect = async ()=>{
-  try{
-    
-    await mongoose.connect('mongodb+srv://talhariaz23:xGDJ0VnVEjMd16td@nodeexpresspoject.aw8zg3z.mongodb.net/?retryWrites=true&w=majority')
-   
-  }catch(err){
-    console.log(err)
-    throw new Error('Unable to connect')
+const connect = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
+  } catch (err) {
+    console.log(err);
+    throw new Error("Unable to connect");
   }
-}
-module.exports = connect
+};
+module.exports = connect;
