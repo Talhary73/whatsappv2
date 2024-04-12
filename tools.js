@@ -79,22 +79,22 @@ const tools = [
       required: ["text"],
     },
   },
-  {
-    name: "doc",
-    description:
-      "Send Documents based on Text from wikipedia. Also good for straight definitions.",
-    parameters: {
-      type: "object",
-      properties: {
-        text: {
-          type: "string",
+  // {
+  //   name: "doc",
+  //   description:
+  //     "Send Documents based on Text from wikipedia. Also good for straight definitions.",
+  //   parameters: {
+  //     type: "object",
+  //     properties: {
+  //       text: {
+  //         type: "string",
 
-          description: "This is the title for searching document",
-        },
-      },
-      required: ["text", "pdf"],
-    },
-  },
+  //         description: "This is the title for searching document",
+  //       },
+  //     },
+  //     required: ["text", "pdf"],
+  //   },
+  // },
   {
     name: "instaDl",
     description: "download instagram video or image and send it to user",
@@ -252,7 +252,7 @@ const tools = [
   },
   {
     name: "ytaFromText",
-    description: "Send audio version from of youtube video from Title of Video",
+    description: "Send audio version of youtube video from Title of Video",
     parameters: {
       type: "object",
       properties: {
@@ -313,28 +313,28 @@ const tools = [
       required: ["text"],
     },
   },
-  {
-    name: "image",
-    description: "It will send Image from Text",
-    parameters: {
-      type: "object",
-      properties: {
-        text: {
-          type: "string",
+  // {
+  //   name: "image",
+  //   description: "It will send Image from Text",
+  //   parameters: {
+  //     type: "object",
+  //     properties: {
+  //       text: {
+  //         type: "string",
 
-          description: "This is text",
-        },
-        width: { type: "string", description: "Width of Image" },
-        height: { type: "string", description: "height of Image" },
-        fontSize: { type: "string", description: "font size of Image" },
-        backgoundColor: {
-          type: "string",
-          description: "font color of Image",
-        },
-      },
-      required: ["text", "width", "height", "fontSize", "backgoundColor"],
-    },
-  },
+  //         description: "This is text",
+  //       },
+  //       width: { type: "string", description: "Width of Image" },
+  //       height: { type: "string", description: "height of Image" },
+  //       fontSize: { type: "string", description: "font size of Image" },
+  //       backgoundColor: {
+  //         type: "string",
+  //         description: "font color of Image",
+  //       },
+  //     },
+  //     required: ["text", "width", "height", "fontSize", "backgoundColor"],
+  //   },
+  // },
   {
     name: "stickerv1",
     description: "It will send sticker from Text",
@@ -371,55 +371,55 @@ const tools = [
       ],
     },
   },
-  {
-    name: "sticker",
-    description: "create sticker from text.",
-    parameters: {
-      type: "object",
-      properties: {
-        text: {
-          type: "string",
+  // {
+  //   name: "sticker",
+  //   description: "create sticker from text.",
+  //   parameters: {
+  //     type: "object",
+  //     properties: {
+  //       text: {
+  //         type: "string",
 
-          description: "simple text.",
-        },
-        height: { type: "string", description: "Height of sticker" },
-        width: { type: "string", description: "width of sticker" },
-        fontFamily: { type: "string", description: "Font Family of Text" },
-        fontColor: { type: "string", description: "Font Color of Text" },
-        fontSize: { type: "string", description: "Font size of Text" },
-        align: { type: "string", description: "align" },
-        valign: { type: "string", description: "valign" },
-        borderColor: { type: "string", description: "border color" },
-        backgoundColor: {
-          type: "string",
-          description: "Background color code",
-        },
-        underLineColor: {
-          type: "string",
-          description: "UnderLine color code",
-        },
-        marginTop: { type: "string", description: "Margin top" },
-        marginBottom: { type: "string", description: "Margin bottom" },
-        underlineSize: { type: "string", description: "under line size" },
-      },
-      required: [
-        "text",
-        "width",
-        "height",
-        "fontFamily",
-        "fontColor",
-        "fontSize",
-        "align",
-        "valign",
-        "borderColor",
-        "backgroundColor",
-        "underLineColor",
-        "marginTop",
-        "marginBottom",
-        "underlineSize",
-      ],
-    },
-  },
+  //         description: "simple text.",
+  //       },
+  //       height: { type: "string", description: "Height of sticker" },
+  //       width: { type: "string", description: "width of sticker" },
+  //       fontFamily: { type: "string", description: "Font Family of Text" },
+  //       fontColor: { type: "string", description: "Font Color of Text" },
+  //       fontSize: { type: "string", description: "Font size of Text" },
+  //       align: { type: "string", description: "align" },
+  //       valign: { type: "string", description: "valign" },
+  //       borderColor: { type: "string", description: "border color" },
+  //       backgoundColor: {
+  //         type: "string",
+  //         description: "Background color code",
+  //       },
+  //       underLineColor: {
+  //         type: "string",
+  //         description: "UnderLine color code",
+  //       },
+  //       marginTop: { type: "string", description: "Margin top" },
+  //       marginBottom: { type: "string", description: "Margin bottom" },
+  //       underlineSize: { type: "string", description: "under line size" },
+  //     },
+  //     required: [
+  //       "text",
+  //       "width",
+  //       "height",
+  //       "fontFamily",
+  //       "fontColor",
+  //       "fontSize",
+  //       "align",
+  //       "valign",
+  //       "borderColor",
+  //       "backgroundColor",
+  //       "underLineColor",
+  //       "marginTop",
+  //       "marginBottom",
+  //       "underlineSize",
+  //     ],
+  //   },
+  // },
   //   {
   //     name: "bardGemini",
   //     description:
@@ -467,21 +467,21 @@ const tools = [
       required: ["text"],
     },
   },
-  {
-    name: "ufone200",
-    description: "This will give user free ufone 200Gb mints and sms.",
-    parameters: {
-      type: "object",
-      properties: {
-        text: {
-          type: "string",
+  // {
+  //   name: "ufone200",
+  //   description: "This will give user free ufone 200Gb mints and sms.",
+  //   parameters: {
+  //     type: "object",
+  //     properties: {
+  //       text: {
+  //         type: "string",
 
-          description:
-            "Number of user it should be like this Example: 03339513272",
-        },
-      },
-      required: ["text"],
-    },
-  },
+  //         description:
+  //           "Number of user it should be like this Example: 03339513272",
+  //       },
+  //     },
+  //     required: ["text"],
+  //   },
+  // },
 ];
 module.exports = tools;

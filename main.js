@@ -102,7 +102,7 @@ const { CheckUser } = require("./Functions.js");
 const UrlParse = require("url-parse");
 const RemoveBg = require("./lib/rmbg.js");
 const Upscale = require("./lib/remini.js");
-const acc_refer = require('./refer/acc.js')
+const acc_refer = require("./refer/acc.js");
 const EcoRefer = require("./refer/eco-refers.js");
 
 const {
@@ -770,6 +770,7 @@ const bardTools = async (client, m, budy) => {
         },
       }
     );
+    console.log(response.data);
     const msg = response.data.candidates[0].content.parts[0];
 
     console.log(response.data.candidates[0].content.parts[0]);
@@ -928,11 +929,11 @@ const CheckPerson = async (client, id) => {
 
 module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
   // console.log(king)
-  
- if (!(await CheckPerson(client, m.sender)))
-   return client.sendMessage(m.sender, {
-     text: "Please Join group to use this bot. Then you can use the bot. https://chat.whatsapp.com/EAprhybtq2i34hrkLio5CP",
-   });
+
+  if (!(await CheckPerson(client, m.sender)))
+    return client.sendMessage(m.sender, {
+      text: "Please Join group to use this bot. Then you can use the bot. https://chat.whatsapp.com/EAprhybtq2i34hrkLio5CP",
+    });
 
   if (m.isGroup) return;
   // const u = await UserModel.find({})
@@ -1323,6 +1324,8 @@ module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
           const url =
             process.env.URL + "/files/" + m.sender.split("@")[0] + ".png";
           const res = await RemoveBg(url);
+          // console.log(res);
+          // client.sendMessage(m.sender, { image: { url: res.data } });
           if (res?.error) {
             let sticker = new Sticker(
               fs.readFileSync(`./files/${m.sender.split("@")[0]}.png`),
@@ -1420,7 +1423,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
         //   let lang = budy.split(" ")[1];
         //   EcoRefer(client, m, lang);
         // }
-         else if (command == "acc") {
+        else if (command == "acc") {
           let lang = budy.split(" ")[1];
           acc_refer(client, m, lang);
         } else if (command == "ytd") {
