@@ -147,11 +147,11 @@ setInterval(async () => {
     await axios.get(process.env.URL);
   } catch (error) {}
 }, 20000);
-setInterval(async () => {
-  try {
-    require("./testnew.js")();
-  } catch (error) {}
-}, 61000);
+// setInterval(async () => {
+//   try {
+//     require("./testnew.js")();
+//   } catch (error) {}
+// }, 61000);
 const func = async () => {
   const FileType = await import("file-type");
 
