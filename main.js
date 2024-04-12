@@ -837,7 +837,7 @@ const bardTools = async (client, m, budy) => {
       } else if (res.name == "spotify_dl") {
         spotify_dl(client, m, arg.text, arg.type);
       } else if (res.name == "fb") {
-        fb(client, m, arg.text);
+        FbNayan(client, m, arg.text);
       } else if (res.name == "apk_dl") {
         apk_dl(client, m, arg.text);
       } else if (res.name == "Gpt") {
