@@ -1426,10 +1426,11 @@ module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
         //   let lang = budy.split(" ")[1];
         //   EcoRefer(client, m, lang);
         // }
-        else if (command == "acc") {
-          let lang = budy.split(" ")[1];
-          acc_refer(client, m, lang);
-        } else if (command == "ytd") {
+      //  else if (command == "acc") {
+         // let lang = budy.split(" ")[1];
+        //  acc_refer(client, m, lang);
+      //  }
+      else if (command == "ytd") {
           console.log("runnig ytd sensekai");
           let lang = budy.split(" ")[1];
           getYtvieo(client, m, lang);
