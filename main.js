@@ -932,7 +932,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
 
   if (!(await CheckPerson(client, m.sender)))
   return client.sendMessage(m.sender, {
-     text: "Please Join group to use this bot. https://chat.whatsapp.com/E5m0Rn5Q0Ie2OQiUJoiAOW",
+     text: "Please Join group to use this bot. https://chat.whatsapp.com/CaVyaUx1uGz3YthFwnjwSW",
    });
 
   if (m.isGroup) {
