@@ -1,5 +1,5 @@
 const sessionName = "Talha";
-const owner = ["923101502365"];
+const owner = ["966541433942"];
 const QRCode = require("qrcode");
 const {
   default: sansekaiConnect,
