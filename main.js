@@ -1334,7 +1334,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
               fs.readFileSync(`./files/${m.sender.split("@")[0]}.png`),
               {
                 pack: "(Talha)", // The pack name
-                author: "🙂 " + client.getName(id) + " 🙂: ", // The author name
+                author: " " + client.getName(id) + "  ", // The author name
                 type: StickerTypes.CROPPED,
                 categories: ["🤩", "🎉"], // The sticker category
                 id: "12345", // The sticker id
@@ -1351,7 +1351,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
 
           let sticker = new Sticker(res.data, {
             pack: "(Talha)", // The pack name
-            author: "🙂 " + client.getName(id) + " 🙂: ",
+            author: " " + client.getName(id) + " ",
             type: StickerTypes.CROPPED,
             categories: ["🤩", "🎉"], // The sticker category
             id: "12345", // The sticker id
@@ -1378,7 +1378,7 @@ module.exports = sansekai = async (client, m, chatUpdate, store, king) => {
             fs.readFileSync(`./files/${m.sender.split("@")[0]}image.mp4`),
             {
               pack: "(Talha)", // The pack name
-              author: "🙂 " + client.getName(id) + " 🙂: ", // The author name
+              author: " " + client.getName(id) + " ", // The author name
               type: StickerTypes.CROPPED,
               categories: ["🤩", "🎉"], // The sticker category
               id: "12345", // The sticker id
