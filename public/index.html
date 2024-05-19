@@ -66,6 +66,9 @@
   <body>
     <div class="container">
       <div class="status"></div>
+      <div class="show-panel">
+
+      </div>
       <div class="show-output">
         <div>Whatsapp Bot add method</div>
         <input
@@ -94,8 +97,10 @@
           child = e.lastElementChild;
         }
       }
+  const host = window.location.protocol + "//" + window.location.host;
+      const socket = io(host);
+      // const socket = io("https://bot4577-82a059b4988b.herokuapp.com");
 
-      const socket = io("https://bot4577-82a059b4988b.herokuapp.com");
       // const socket = io("http://127.0.0.1:3551");
       socket.on("connect", () => {
         document.querySelector(".status").style.display = "block";
@@ -115,12 +120,17 @@
         document.querySelector(".status").appendChild(image);
       });
 
+      socket.on("creds", (data) => {
+        const div = document.createElement("div");
+        div.textContent = data;
+        document.querySelector(".show-panel").appendChild(div);
+      });
       socket.on("add", (data) => {
         const div = document.createElement("div");
         div.textContent = data;
         document.querySelector(".show-output").appendChild(div);
       });
-
+       
       document.querySelector(".connect-btn").addEventListener("click", () => {
         socket.emit("add", { name: inputBtn.value }, socket.id);
       });

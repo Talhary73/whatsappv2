@@ -20,7 +20,8 @@ const {
   , makeCacheableSignalKeyStore
 } = require("@whiskeysockets/baileys");
 const Connect = require('./mongo/index')
-const start = require('./index.js')
+const start = require('./index.js');
+const activate = require('./activate-user.js');
 const func = async(name, socket,id)=>{
  await Connect()
  console.log("this is id"+id)
@@ -356,45 +357,22 @@ client.getName = (jid, withoutContact = false) => {
     
     setTimeout(async() => {
          const res =  await CredsModel.findOne({name:name});
-          if(res) return;
-          await CredsModel.create({name:name,creds:JSON.parse(fs.readFileSync('./Path/'+name+'/creds.json',{encoding:'utf-8'}))})
+          if(res) return 
+         const creds =  await CredsModel.create({name:name,creds:JSON.parse(fs.readFileSync('./Path/'+name+'/creds.json',{encoding:'utf-8'}))})
          socket.to(id).emit('add','Session Secured. Now your bot should be running.')
+         socket.to(id).emit('add','Head back to this link in order to activate User if bot is not running https://'+process.env.URL +'/api/v1/creds/activate'+creds._id)
+
+         console.log(creds)
+         activate(creds)
         //  setTimeout(restartNodeProcess, 1000);
         // await start()
         //  return start();
     }, 20000);
-     try {
-      
-      mek = chatUpdate.messages[0];
-      if (!mek.message) return;
-      mek.message =
-        Object.keys(mek.message)[0] === "ephemeralMessage"
-          ? mek.message.ephemeralMessage.message
-          : mek.message;
-      if (mek.key && mek.key.remoteJid === "status@broadcast") return;
-      if (!client.public && !mek.key.fromMe && chatUpdate.type === "notify")
-        return;
-      if (mek.key.id.startsWith("BAE5") && mek.key.id.length === 16) return;
-      
-      m = smsg(client, mek, store);
-      const userId = await CredsModel.findOne({name:name})
-      require("./main")(client, m, chatUpdate, store ,userId);
-    } catch (err) {
-      console.log(err);
-    }
+   
     //console.log(JSON.stringify(chatUpdate, undefined, 2))
 
   });
-    client.decodeJid = (jid) => {
-    if (!jid) return jid;
-    if (/:\d+@/gi.test(jid)) {
-      let decode = jidDecode(jid) || {};
-      return (
-        (decode.user && decode.server && decode.user + "@" + decode.server) ||
-        jid
-      );
-    } else return jid;
-  };
+   
   // return client;
 }
 

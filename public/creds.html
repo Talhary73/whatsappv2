@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        button {
+            padding: 5px 10px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>User Management</h1>
+    <table id="userTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Number</th>
+                <th>Name</th>
+                <th>Username</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <script>
+  const host = window.location.protocol + "//" + window.location.host;
+
+        async function fetchUsers() {
+            try {
+                const response = await fetch(host+'/api/v1/creds/user');
+                const users = await response.json();
+                const tbody = document.querySelector('#userTable tbody');
+                tbody.innerHTML = '';
+                users.forEach(user => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${user.id}</td>
+                        <td>${user.number}</td>
+                        <td>${user.name}</td>
+                        <td>${user.userName}</td>
+                        <td><button onclick="activateUser('${user.id}')">Activate</button></td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error fetching users:', error);
+            }
+        }
+
+        async function activateUser(id) {
+            try {
+                const response = await fetch(host +`/api/v1/creds/activate/${id}`);
+                const result = await response.json();
+                alert(result.message);
+                fetchUsers(); // Refresh the user list after activation
+            } catch (error) {
+                console.error('Error activating user:', error);
+                alert('Something went wrong');
+            }
+        }
+
+        // Fetch users when the page loads
+        window.onload = fetchUsers;
+    </script>
+</body>
+</html>
