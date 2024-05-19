@@ -121,12 +121,12 @@ app.use('/api/v1/creds',credsRoute)
 app.get("/check", (req, res) => {
   res.json({ res: "hi, I am a bot" }).status(200);
 });
-app.get("/files/:id", (req, res) => {
+app.get("/files/:id",isAuthenticated, (req, res) => {
   const { id } = req.params;
   res.sendFile(path.join(__dirname, `./files/${id}`));
 });
 
-app.post("/api/v1/creds/remove", async (req, res) => {
+app.post("/api/v1/creds/remove",isAuthenticated, async (req, res) => {
   try {
     const { name } = req.body;
     if (!name)
@@ -139,7 +139,7 @@ app.post("/api/v1/creds/remove", async (req, res) => {
     res.json({ status: "failed" }).status(500);
   }
 });
-app.get("/api/v1/creds/users", async (req, res) => {
+app.get("/api/v1/creds/users",isAuthenticated, async (req, res) => {
   try {
     const Users = await CredsModels.find({});
     //  console.log(Users)
@@ -161,7 +161,7 @@ app.get("/api/v1/creds/users", async (req, res) => {
 //   res.json({status:'success',data:id}).status(201)
 // })
 
-app.post("/api/v1/remove", async (req, res) => {
+app.post("/api/v1/remove",isAuthenticated, async (req, res) => {
   try {
     const { number } = req.body;
     if (!number)
@@ -174,7 +174,7 @@ app.post("/api/v1/remove", async (req, res) => {
     res.json({ status: "failed" }).status(500);
   }
 });
-app.get("/api/v1/users", async (req, res) => {
+app.get("/api/v1/users",isAuthenticated, async (req, res) => {
   try {
     const Users = await AllowedUsers.find({});
     //  console.log(Users)
