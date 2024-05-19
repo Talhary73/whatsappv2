@@ -51,8 +51,72 @@ const AllowedUsers = require("./mongo/model/allowed");
 
 // },20000)
 // Static file middleware
-app.use(express.static("./public"));
+
+const session = require('express-session');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const isAuthenticated = require('./ middleware/auth.js');
+
+
 app.use(express.json());
+// Configure session management
+app.use(session({
+    secret: 'your_secret_key',
+    resave: false,
+    saveUninitialized: false
+}));
+
+// Initialize Passport and session
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Define a simple user authentication strategy
+passport.use(new LocalStrategy((username, password, done) => {
+    // Replace with your user authentication logic
+    if (username === 'adminfdsdfkls' && password === 'passwordfsddfsdfsdfs') {
+        return done(null, { id: 1, username: 'admin' });
+    }
+    return done(null, false, { message: 'Incorrect credentials' });
+}));
+
+passport.serializeUser((user, done) => {
+    done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+    // Replace with your user deserialization logic
+    done(null, { id: 1, username: 'admin' });
+});
+
+// Your existing routes
+
+// Protect specific routes
+app.use('/admin.html', isAuthenticated, express.static(__dirname + '/public/admin.html'));
+app.use('/creds.html', isAuthenticated, express.static(__dirname + '/public/creds.html'));
+
+// Public routes
+
+
+// Login route
+app.get('/login', (req, res) => {
+    res.sendFile(__dirname + '/public/login.html');
+});
+
+app.post('/login', passport.authenticate('local'), (req, res) => {
+    res.json({ message: 'Login successful' });
+});
+
+// Error handling for unauthorized access
+app.use((err, req, res, next) => {
+    if (err.name === 'UnauthorizedError') {
+        res.status(401).send('Invalid token');
+    } else {
+        next(err);
+    }
+});
+
+app.use(express.static("./public"));
+
 app.use('/api/v1/creds',credsRoute)
 app.get("/check", (req, res) => {
   res.json({ res: "hi, I am a bot" }).status(200);
