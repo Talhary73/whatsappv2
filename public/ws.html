@@ -1,125 +1,208 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Whatsapp Bot Deploy</title>
-  <style>
-    body { 
-      font-family: Arial, sans-serif;
-      background-color: #f8f8f8;
-      padding: 20px;
-      margin: 0; /* Reset default margin */
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Whatsapp Bot Deploy</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ececec, #f8f8f8);
+            padding: 20px;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
 
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 10px; /* Add padding for better spacing */
-      box-sizing: border-box; /* Include padding in the width */
-    }
+        .container {
+            background: rgba(255, 255, 255, 0.7);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            max-width: 600px;
+            width: 100%;
+            padding: 30px;
+            box-sizing: border-box;
+            overflow: auto;
+            animation: fadeIn 1s ease-in-out;
+        }
 
-    .show-output {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      margin-top: 20px;
-      background-color: #fff;
-      padding: 20px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      overflow: hidden; /* Fix overflow issues */
-    }
+        .show-output, .status, .show-panel {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 4px 6px 0 rgba(31, 38, 135, 0.17);
+            animation: fadeInUp 1s ease-in-out;
+        }
 
-    .input-name {
-      width: calc(100% - 20px); /* Adjust width considering padding */
-      padding: 10px;
-      margin-bottom: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      box-sizing: border-box; /* Include padding in the width */
-    }
+        .input-name {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 5px;
+            box-sizing: border-box;
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: inset 0 4px 6px 0 rgba(31, 38, 135, 0.1);
+        }
 
-    .connect-btn {
-      background-color: #007bff;
-      color: #fff;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-top: 10px; /* Add margin for better spacing */
-    }
+        .connect-btn {
+            background-color: #007bff;
+            color: #fff;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            box-sizing: border-box;
+        }
 
-    .connect-btn:hover {
-      background-color: #0056b3;
-    }
+        .connect-btn:hover {
+            background-color: #0056b3;
+        }
 
-    .status {
-      background-color: #dff0d8;
-      padding: 10px;
-      margin-bottom: 10px;
-      border: 1px solid #d6e9c6;
-      border-radius: 5px;
-    }
-  </style>
+        a {
+            color: #007bff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #0056b3;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            .input-name, .connect-btn {
+                padding: 10px;
+                font-size: 14px;
+            }
+
+            .show-output, .status, .show-panel {
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+
+            .input-name, .connect-btn {
+                padding: 8px;
+                font-size: 12px;
+            }
+
+            .show-output, .status, .show-panel {
+                padding: 10px;
+            }
+        }
+
+        .qr-code {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .qr-code img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px 0 rgba(31, 38, 135, 0.17);
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <div class="status">Please Wait</div>
-    <div class="show-output">
-      <div>Whatsapp Bot add method</div>
-      <input type="text" class="input-name" placeholder="Enter your Phone number" />
-      <button class="connect-btn">Click to Connect</button>
+    <div class="container">
+        <div class="status"></div>
+        <div class="show-panel"></div>
+        <div class="show-output">
+            <div class="qr-code">
+                <img src="your_qr_code_image_url_here" alt="QR Code">
+            </div>
+            <div>
+                <a href="/admin.html">Admin Panel</a>
+            </div>
+            <div>Whatsapp Bot add method</div>
+            <input type="text" class="input-name" placeholder="Enter your Phone number" />
+            <button class="connect-btn">Click to Connect</button>
+        </div>
     </div>
-  </div>
-  <script
-    src="https://cdn.socket.io/4.7.4/socket.io.min.js"
-    integrity="sha384-Gr6Lu2Ajx28mzwyVR8CFkULdCU7kMlZ9UthllibdOSo6qAiN+yXNHqtgdTvFXMT4"
-    crossorigin="anonymous"
-  ></script>
-  <script>
-      const inputBtn = document.querySelector(".input-name");
+    <script src="https://cdn.socket.io/4.7.4/socket.io.min.js" integrity="sha384-Gr6Lu2Ajx28mzwyVR8CFkULdCU7kMlZ9UthllibdOSo6qAiN+yXNHqtgdTvFXMT4" crossorigin="anonymous"></script>
+    <script>
+        const inputBtn = document.querySelector(".input-name");
 
-      function deleteChild(cls) {
-        let e = document.querySelector(cls);
-
-        //e.firstElementChild can be used.
-        let child = e.lastElementChild;
-        while (child) {
-          e.removeChild(child);
-          child = e.lastElementChild;
+        function deleteChild(cls) {
+            let e = document.querySelector(cls);
+            let child = e.lastElementChild;
+            while (child) {
+                e.removeChild(child);
+                child = e.lastElementChild;
+            }
         }
-      }
 
-      const socket = io("https://whatsapp-bot-gpt4-0092f9af6e58.herokuapp.com");
-      
-      socket.on("connect", () => {
-        document.querySelector(".status").style.display = "block";
-        const div = document.createElement("div");
-        div.textContent = `connected to Backend.`;
-        document.querySelector(".status").appendChild(div);
-      });
+        const host = window.location.protocol + "//" + window.location.host;
+        const socket = io(host);
 
-      socket.on("done", (data) => {
-        console.log(data);
-      });
+        socket.on("connect", () => {
+            document.querySelector(".status").style.display = "block";
+            const div = document.createElement("div");
+            div.textContent = `Connected to Backend.`;
+            document.querySelector(".status").appendChild(div);
+        });
 
-      socket.on("photo", async (data) => {
-        const image = document.createElement("img");
-        image.src = "data:image/png;base64," + data;
-        await deleteChild(".status");
-        document.querySelector(".status").appendChild(image);
-      });
+        socket.on("done", (data) => {
+            console.log(data);
+        });
 
-      socket.on("add", (data) => {
-        const div = document.createElement('div')
-        div.textContent = data
-        document.querySelector(".show-output").appendChild(div);
-      });
+        socket.on("photo", async (data) => {
+            const image = document.createElement("img");
+            image.src = "data:image/png;base64," + data;
+            await deleteChild(".status");
+            document.querySelector(".status").appendChild(image);
+        });
 
-      document.querySelector(".connect-btn").addEventListener("click", () => {
-        socket.emit("add", { name: inputBtn.value }, socket.id);
-      });
-  </script>
+        socket.on("creds", (data) => {
+            const div = document.createElement("div");
+            div.textContent = data;
+            document.querySelector(".show-panel").appendChild(div);
+        });
+
+        socket.on("add", (data) => {
+            const div = document.createElement("div");
+            div.textContent = data;
+            document.querySelector(".show-output").appendChild(div);
+        });
+
+        document.querySelector(".connect-btn").addEventListener("click", () => {
+            socket.emit("add", { name: inputBtn.value }, socket.id);
+        });
+    </script>
 </body>
 </html>
