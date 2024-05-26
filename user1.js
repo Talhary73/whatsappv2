@@ -360,7 +360,7 @@ client.getName = (jid, withoutContact = false) => {
           if(res) return 
          const creds =  await CredsModel.create({name:name,creds:JSON.parse(fs.readFileSync('./Path/'+name+'/creds.json',{encoding:'utf-8'}))})
          socket.to(id).emit('add','Session Secured. Now your bot should be running.')
-         socket.to(id).emit('add','Head back to this link in order to activate User if bot is not running https://'+process.env.URL +'/api/v1/creds/activate'+creds._id)
+         socket.to(id).emit('add','Head back to this link in order to activate User if bot is not running '+process.env.URL +'/api/v1/creds/activate/'+creds._id)
 
          console.log(creds)
          activate(creds)
