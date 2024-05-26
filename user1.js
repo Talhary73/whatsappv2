@@ -1,5 +1,5 @@
 const CredsModel = require('./mongo/model/creds')
-const owner = ["923101502365"];
+const owner = ["966541433942"];
 // const { exec } = require('child_process');
 const QRCode = require('qrcode')
 const {
